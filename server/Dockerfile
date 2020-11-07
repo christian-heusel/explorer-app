@@ -1,0 +1,11 @@
+FROM golang:1.15
+MAINTAINER Christian Heusel <christian@heusel.eu>
+
+WORKDIR /go/src
+COPY graph ./graph
+COPY go.mod .
+COPY go.sum .
+COPY server.go .
+
+RUN go build -a -o graphQLServer server.go
+ENTRYPOINT ["./graphQLServer"]

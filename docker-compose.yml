@@ -1,0 +1,32 @@
+---
+version: '3.0'
+
+services:
+  explorer_app-server_db:
+    image: postgres:13.0
+    environment:
+      POSTGRES_PASSWORD: randomtest1
+      POSTGRES_USER: explorer
+      POSTGRES_DB: explorer
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  explorer_app-server:
+    build: server
+    image: "explorer_app-server:latest"
+    ports:
+      - "127.0.0.1:8081:8081"
+    env_file:
+      - server/explorer_app-server.env
+    networks:
+      - internal
+    depends_on:
+      - explorer_app-server_db
+
+networks:
+  internal: {}
+
+volumes:
+  db: {}
