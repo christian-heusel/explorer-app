@@ -4,14 +4,12 @@ version: '3.0'
 services:
   explorer_app-server_db:
     image: postgres:13.0
-    environment:
-      POSTGRES_PASSWORD: explorer
-      POSTGRES_USER: explorer
-      POSTGRES_DB: explorer
-    volumes:
-      - db:/var/lib/postgresql/data
+    env_file:
+      - server/explorer_app-server.env
     networks:
       - internal
+    volumes:
+      - db:/var/lib/postgresql/data
 
   explorer_app-server:
     build: server
