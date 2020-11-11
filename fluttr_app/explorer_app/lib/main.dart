@@ -38,7 +38,7 @@ class MainPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             SizedBox(
-              width: 10.0,
+              width: 10,
             ),
             Text(_title),
           ],
