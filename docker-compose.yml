@@ -5,7 +5,7 @@ services:
   explorer_app-server_db:
     image: postgres:13.0
     environment:
-      POSTGRES_PASSWORD: randomtest1
+      POSTGRES_PASSWORD: explorer
       POSTGRES_USER: explorer
       POSTGRES_DB: explorer
     volumes:
