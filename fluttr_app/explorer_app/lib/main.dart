@@ -34,6 +34,7 @@ class _MainPageState extends State<MainPage> {
   static const String _title = "Explorer 2021";
   bool _isFavorited = true;
   int _favoriteCount = 41;
+  String _queryResult = "";
 
   @override
   Widget build(BuildContext context) {
@@ -68,27 +69,25 @@ class _MainPageState extends State<MainPage> {
               onPressed: _toggleFavorite,
             ),
           ),
-          SizedBox(
-            width: 18,
-            child: Container(
-              child: Text('$_favoriteCount'),
-            ),
+          Center(
+            child: Text(_queryResult),
           ),
         ],
       ),
     );
   }
 
-  void _toggleFavorite() {
+  void _toggleFavorite() async {
     final client = ArtemisClient(
-      'https://graphql-pokemon.now.sh/graphql',
+      'http://joeryzen.fritz.box:8000/query',
     );
     final simpleQuery = GetTodosQuery();
-    final simpleQueryResponse = client.execute(simpleQuery);
+    final simpleQueryResponse = await client.execute(simpleQuery);
     client.dispose();
 
     setState(() {
       if (_isFavorited) {
+        _queryResult = simpleQueryResponse.data.todos[0].id;
         _favoriteCount -= 1;
         _isFavorited = false;
       } else {
