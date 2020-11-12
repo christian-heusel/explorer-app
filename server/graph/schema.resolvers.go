@@ -16,7 +16,9 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+	var results []*model.Todo
+	results = append(results, &model.Todo{ID: "Successfull Query via GraphQL!"})
+	return results, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
