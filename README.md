@@ -8,16 +8,19 @@ Problem bei der Auswertung ist, dass die alle Teams zum Ende der 33 Stunden glei
 
 ### App
 
-Die Dateneingabe und Synchronisation der Ergebnisse an den einzelnen Stationen soll über eine App funktionieren: [`./fluttr_app/explorer_app/`](./fluttr_app/explorer_app/)
+Die Dateneingabe und Synchronisation der Ergebnisse an den einzelnen Stationen soll über eine App funktionieren:  
+[`fluttr_app/explorer_app/`](./fluttr_app/explorer_app/)
 
 ### Backend
 
-Die Speicherung der Eingaben funktioniert über ein in Go geschriebenes Backend mit PostgreSQL: [`./server/`](./server/)
+Die Speicherung der Eingaben funktioniert über ein in Go geschriebenes Backend mit PostgreSQL:  
+[`server/`](./server/)
 
 Dieses Backend soll dann später auch für die Auswertung
 
 ### GraphQL-API
-Die Datentypen zur Kommunikation werden in einer GraphQL Schittstelle spezifiziert, die dann die Grundlage für die Codegenerierung in App und Backend liefert: [`./api/`](./api/)
+Die Datentypen zur Kommunikation werden in einer GraphQL Schittstelle spezifiziert, die dann die Grundlage für die Codegenerierung in App und Backend liefert:  
+[`api/`](./api/)
 
 ## Lizenz
 
