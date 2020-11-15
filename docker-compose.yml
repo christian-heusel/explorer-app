@@ -15,7 +15,7 @@ services:
     build: server
     image: "explorer_app-server:latest"
     ports:
-      - "0.0.0.0:8000:8081"
+      - "127.0.0.1:3000:8081"
     env_file:
       - server/explorer_app-server.env
     networks:
