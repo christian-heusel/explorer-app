@@ -5,7 +5,7 @@ services:
   explorer_app-server_db:
     image: postgres:13.0
     env_file:
-      - server/explorer_app-server.env
+      - server/explorer_app-server_db.env
     networks:
       - internal
     volumes:
