@@ -63,8 +63,17 @@ class _MainPageState extends State<MainPage> {
             child: IconButton(
               padding: EdgeInsets.all(0),
               alignment: Alignment.centerRight,
-              icon:
-                  (_isFavorited ? Icon((Icons.star)) : Icon(Icons.star_border)),
+              icon: (_isFavorited
+                  ? Icon(
+                      Icons.favorite,
+                      color: Colors.pink,
+                      size: 24.0,
+                    )
+                  : Icon(
+                      Icons.favorite,
+                      color: Colors.blue,
+                      size: 24.0,
+                    )),
               color: Colors.red[500],
               onPressed: _toggleFavorite,
             ),
@@ -91,6 +100,7 @@ class _MainPageState extends State<MainPage> {
         _favoriteCount -= 1;
         _isFavorited = false;
       } else {
+        _queryResult = "";
         _favoriteCount += 1;
         _isFavorited = true;
       }
