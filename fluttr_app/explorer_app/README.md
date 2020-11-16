@@ -1,16 +1,20 @@
-# explorer_app
+# Teilprojekt: Die Explorer App
 
-Die App zum Explorer 2021
+Die Dateneingabe und Synchronisation der Ergebnisse an den einzelnen Stationen soll über eine App funktionieren, die die Daten erst lokal speichert und dann an geeigneten Stationen dann mit dem Backend synchronisiert.
 
-## Getting Started
+Die App ist mit dem [Flutter-Framework](https://flutter.dev/) geschrieben, da man so einen sehr produktiven Workflow sicher stellen kann, die App auf vielen Plattformen (Android, iOS, Web) läuft und eine integration mit GraphQL besteht.  
 
-This project is a starting point for a Flutter application.
+Alle zugehörigen Issues sollten mit dem Label ["App"](https://github.com/christian-heusel/explorer-app/labels/App) gekennzeichnet.
 
-A few resources to get you started if this is your first Flutter project:
+## Ausführen
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```
+flutter run
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Typengenerierung aus der GraphQL API
+Die Typengenerieung funktioniert mit [graphql-flutter](https://github.com/zino-app/graphql-flutter) und [artemis](https://github.com/comigor/artemis).
+
+```
+flutter pub run build_runner build
+```
