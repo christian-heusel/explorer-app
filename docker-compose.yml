@@ -3,7 +3,7 @@ version: '3.0'
 
 services:
   explorer_app-server_db:
-    image: postgres:13.0
+    image: postgres:13
     restart: always
     env_file:
       - server/explorer_app-server_db.env
