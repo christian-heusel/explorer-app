@@ -4,6 +4,7 @@ version: '3.0'
 services:
   explorer_app-server_db:
     image: postgres:13.0
+    restart: always
     env_file:
       - server/explorer_app-server_db.env
     networks:
@@ -16,6 +17,7 @@ services:
     image: "explorer_app-server:latest"
     ports:
       - "127.0.0.1:3000:8081"
+    restart: always
     env_file:
       - server/explorer_app-server.env
     networks:
