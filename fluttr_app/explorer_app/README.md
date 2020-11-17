@@ -8,11 +8,20 @@ Alle zugehörigen Issues sollten mit dem Label ["App"](https://github.com/christ
 
 ## Ausführen
 
+Die Assetdatei richtig ausfüllen und umbenennen / kopieren:
+
+```
+cp assets/cfg/config_settings.json.example assets/cfg/config_settings.json
+```
+
+Die App mit flutter ausführen:
+
 ```
 flutter run
 ```
 
 ## Typengenerierung aus der GraphQL API
+
 Die Typengenerieung funktioniert mit [graphql-flutter](https://github.com/zino-app/graphql-flutter) und [artemis](https://github.com/comigor/artemis).
 
 ```

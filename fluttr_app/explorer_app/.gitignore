@@ -39,3 +39,6 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# ignore the real config
+assets/cfg/api_settings.json
