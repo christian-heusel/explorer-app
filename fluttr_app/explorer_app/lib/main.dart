@@ -1,8 +1,9 @@
 import 'package:explorer_app/api_gen/graphql_api.graphql.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:artemis/artemis.dart';
 
-void main() {
+void main() async {
   runApp(ExplorerApp());
 }
 
@@ -87,8 +88,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _toggleFavorite() async {
+    GlobalConfiguration cfg =
+        await GlobalConfiguration().loadFromAsset("api_settings");
     final client = ArtemisClient(
-      'http://joeryzen.fritz.box:8000/query',
+      cfg.get("graphql_api_url"),
     );
     final simpleQuery = GetTodosQuery();
     final simpleQueryResponse = await client.execute(simpleQuery);
