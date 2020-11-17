@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
         title: Row(
           children: [
             new Image.asset(
-              'images/logo_jungenschaft.png',
+              'assets/images/logo_jungenschaft.png',
               width: 25.0,
               fit: BoxFit.cover,
             ),
