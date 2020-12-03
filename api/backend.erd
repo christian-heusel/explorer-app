@@ -18,6 +18,8 @@ title {label: "Entity-Relationship Diagram für das Backend", size: "17"}
 [answer] {bgcolor: "#ececfc"}
   *answer_id {label: "UUID, not null"}
   station_number {label: "Int, not null"}
+  answer_time {label: "Time, not null"}
+  synchronization_time {label: "Time, not null"}
   answer_type {label: "Int, not null"}
   result_option {label: "Int, null"}
   result_text {label: "Text, null"}
@@ -37,7 +39,7 @@ title {label: "Entity-Relationship Diagram für das Backend", size: "17"}
   brand {label: "String, null"}
   model {label: "String, null"}
   android_codename {label: "String, null"}
-  android_relaese {label: "String, null"}
+  android_release {label: "String, null"}
   team_id {label: "Int, not null"}
 
 # Relationships
