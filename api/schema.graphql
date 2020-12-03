@@ -2,27 +2,37 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+type Team {
+  team_id: Int!
+  members: Int!
+  authcode: String!
+  name: String
 }
 
-type User {
-  id: ID!
-  name: String!
+type Answer {
+  answer_id: String!
+  station_number: Int!
+  answer_id: Int!
+  result_option: Int
+  result_text: String
+  # result_image: Image
+  result_number: Float
 }
 
-type Query {
-  todos: [Todo!]!
+type Station {
+  station_number: Int!
+  points: Int!
+  station_type: Int!
+  coordinates: String
+  grid_square: String
+  Title: String
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
-}
-
-type Mutation {
-  createTodo(input: NewTodo!): Todo!
+type Device {
+  android_id: String!
+  team_id: Int!
+  brand: String
+  model: String
+  android_codename: String
+  android_release: String
 }
