@@ -1,0 +1,20 @@
+---
+- name: docker setup
+  hosts: server
+  vars:
+    docker_apt_arch: armhf
+    pip_install_packages:
+      - name: docker
+
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+    - role: gantsign.oh-my-zsh
+      users:
+        - username: root
+      oh_my_zsh_theme: kafeitu
+
+- name: project setup
+  hosts: server
+  roles:
+    - backend

@@ -1,0 +1,2 @@
+[server]
+midget      ansible_user=root ansible_host=midget.fritz.box ansible_python_interpreter=/usr/bin/python3
