@@ -1,0 +1,17 @@
+--- 
+
+- include_tasks: deploymentkey.yml
+
+- name: Creates Project directory
+  file:
+    path: "{{ project_root }}"
+    state: directory
+
+- name: clone the project
+  git:
+    repo: 'git@github.com:christian-heusel/explorer-app.git'
+    dest: "{{ project_root }}{{ project_name }}"
+    key_file: /root/.ssh/explorer_app-server-key
+    accept_hostkey: yes
+
+- include_tasks: start_docker.yml

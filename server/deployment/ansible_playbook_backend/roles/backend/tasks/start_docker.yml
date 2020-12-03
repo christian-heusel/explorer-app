@@ -1,0 +1,15 @@
+---
+
+- name: create the .env files
+  copy:
+    src: "{{ project_root }}{{ project_name }}/server/{{ item }}"
+    dest: "{{ project_root }}{{ project_name }}/server/{{ item.split('.')[0] + '.' + item.split('.')[1] }}"
+    remote_src: yes
+  with_items:
+    - "explorer_app-server_db.env.example"
+    - "explorer_app-server.env.example"
+
+- name: build and start the docker image
+  community.general.docker_compose:
+    project_src: "{{ project_root }}{{ project_name }}"
+    state: present
