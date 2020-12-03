@@ -16,7 +16,7 @@ Die Dateneingabe und Synchronisation der Ergebnisse an den einzelnen Stationen s
 Die Speicherung der Eingaben funktioniert über ein in Go geschriebenes Backend mit PostgreSQL:  
 [`server/`](./server/)
 
-Dieses Backend soll dann später auch für die Auswertung
+Dieses Backend soll dann später auch für die Auswertung die Daten bereit stellen, indem ein CSV-File erstellt wird.
 
 ### GraphQL-API
 Die Datentypen zur Kommunikation werden in einer GraphQL Schittstelle spezifiziert, die dann die Grundlage für die Codegenerierung in App und Backend liefert:  
