@@ -2,19 +2,40 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+import (
+	"time"
+)
+
+type Answer struct {
+	AnswerID      string    `json:"answer_id"`
+	StationNumber int       `json:"station_number"`
+	AnswerTime    time.Time `json:"answer_time"`
+	ResultOption  *int      `json:"result_option"`
+	ResultText    *string   `json:"result_text"`
+	ResultNumber  *float64  `json:"result_number"`
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type Device struct {
+	AndroidID       string  `json:"android_id"`
+	TeamID          int     `json:"team_id"`
+	Brand           *string `json:"brand"`
+	Model           *string `json:"model"`
+	AndroidCodename *string `json:"android_codename"`
+	AndroidRelease  *string `json:"android_release"`
 }
 
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type Station struct {
+	StationNumber int     `json:"station_number"`
+	Points        int     `json:"points"`
+	StationType   int     `json:"station_type"`
+	Coordinates   *string `json:"coordinates"`
+	GridSquare    *string `json:"grid_square"`
+	Title         *string `json:"Title"`
+}
+
+type Team struct {
+	TeamID   int     `json:"team_id"`
+	Members  int     `json:"members"`
+	Authcode string  `json:"authcode"`
+	Name     *string `json:"name"`
 }

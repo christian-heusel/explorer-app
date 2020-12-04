@@ -1,6 +1,6 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
+# GraphQL schema
+
+scalar Time
 
 type Team {
   team_id: Int!
@@ -12,7 +12,6 @@ type Team {
 type Answer {
   answer_id: String!
   station_number: Int!
-  answer_id: Int!
   answer_time: Time!
   result_option: Int
   result_text: String
