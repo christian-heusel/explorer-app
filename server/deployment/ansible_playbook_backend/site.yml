@@ -9,6 +9,7 @@
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
+    - usersetup
     - role: gantsign.oh-my-zsh
       users:
         - username: root
