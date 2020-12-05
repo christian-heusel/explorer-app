@@ -1,4 +1,9 @@
 ---
+- name: general setup
+  hosts: server
+  roles:
+    - usersetup
+
 - name: docker setup
   hosts: server
   vars:
@@ -10,7 +15,6 @@
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
-    - usersetup
     - role: gantsign.oh-my-zsh
       users:
         - username: root
@@ -20,7 +24,7 @@
   hosts: server
   roles:
     - backend
-  
+
 - hosts: server
   vars_files:
     - vars/apache.yml
