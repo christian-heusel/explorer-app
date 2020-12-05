@@ -1,11 +1,11 @@
---- 
-
+---
 - include_tasks: deploymentkey.yml
 
 - name: Creates Project directory
   file:
     path: "{{ project_root }}"
     state: directory
+    mode: 0755
 
 - name: clone the project
   git:
@@ -13,6 +13,7 @@
     dest: "{{ project_root }}{{ project_name }}"
     key_file: /root/.ssh/explorer_app-server-key
     accept_hostkey: yes
+    version: master
 
 - include_tasks: start_docker.yml
 - include_tasks: setup_apache.yml

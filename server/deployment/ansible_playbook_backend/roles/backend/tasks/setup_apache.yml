@@ -4,7 +4,7 @@
     name: apache2
     state: present
 
-- name: Enable the Apache2 module 
+- name: Enable the Apache2 module
   community.general.apache2_module:
     state: present
     name: "{{ item }}"
