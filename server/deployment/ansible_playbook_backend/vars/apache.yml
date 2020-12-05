@@ -1,0 +1,6 @@
+---
+apache_vhosts:
+  - servername: "{{ hostvars[inventory_hostname].ansible_host }}"
+    extra_parameters: |
+      ProxyPass /explorer-app-api http://localhost:3000/query
+      ProxyPassReverse /explorer-app-api http://localhost:3000/query

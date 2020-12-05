@@ -9,6 +9,11 @@
     - "explorer_app-server_db.env.example"
     - "explorer_app-server.env.example"
 
+- name: install docker-compose
+  apt:
+    name: docker-compose
+    state: present
+
 - name: build and start the docker image
   community.general.docker_compose:
     project_src: "{{ project_root }}{{ project_name }}"

@@ -3,6 +3,7 @@
   hosts: server
   vars:
     docker_apt_arch: armhf
+    docker_install_compose: false
     pip_install_packages:
       - name: docker
 
@@ -19,3 +20,9 @@
   hosts: server
   roles:
     - backend
+  
+- hosts: server
+  vars_files:
+    - vars/apache.yml
+  roles:
+    - { role: geerlingguy.apache }

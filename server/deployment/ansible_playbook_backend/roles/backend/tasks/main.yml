@@ -15,3 +15,4 @@
     accept_hostkey: yes
 
 - include_tasks: start_docker.yml
+- include_tasks: setup_apache.yml
