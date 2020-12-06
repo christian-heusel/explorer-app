@@ -14,6 +14,8 @@
     key_file: /root/.ssh/explorer_app-server-key
     accept_hostkey: yes
     version: master
+  register: git__project_checkout
 
 - include_tasks: start_docker.yml
+  when: git__project_checkout.changed
 - include_tasks: setup_apache.yml
