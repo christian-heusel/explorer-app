@@ -1,0 +1,12 @@
+auto lo
+
+iface lo inet loopback
+iface {{interface_out}} inet dhcp
+
+allow-hotplug {{interface_in}}
+
+iface {{interface_in}} inet static
+ address {{router_ip}}
+ netmask 255.255.255.0
+
+up iptables-restore < /etc/iptables.ipv4.nat

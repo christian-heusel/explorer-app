@@ -1,0 +1,27 @@
+---
+# Interface to used for wifi.
+interface_in: wlan0
+
+# Interface for internet connection.
+interface_out: eth0
+
+# SSID / Name of network
+ssid: explorer
+
+# Wifi password.
+passphrase: explorer
+
+# Router IP
+router_ip: 192.168.10.1
+
+# Subnet
+subnet_start: 192.168.10.10
+subnet_end: 192.168.10.200
+
+# Broadcast address
+broadcast_address: 192.168.10.255
+
+# Allow client Internet connection
+allow_connection: True
+
+wifi_country: DE

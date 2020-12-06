@@ -1,0 +1,16 @@
+auth_algs=1
+channel=11 # Channel to use
+hw_mode=g
+ieee80211n=1 # 802.11n assuming your device supports it
+ignore_broadcast_ssid=0
+interface={{interface_in}}
+macaddr_acl=0
+rsn_pairwise=CCMP
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+# Change the to the proper driver
+driver=nl80211
+# Change these to something else if you want
+ssid={{ssid}}
+wpa_passphrase={{passphrase}}
