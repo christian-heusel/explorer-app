@@ -19,7 +19,7 @@ auto {{ interface_in }}
 	up /sbin/iptables -t nat -F
 
 # Kabelnetzwerk maskieren, Port-Forwarding sowie Nat aktivieren
-	up iptables -A FORWARD -o {{ interface_out }} -i {{ interface_in}} -s {{ router_ip }}/24 -m conntrack --ctstate NEW -j ACCEPT
+	up iptables -A FORWARD -o {{ interface_out }} -i {{ interface_in }} -s {{ router_ip }}/24 -m conntrack --ctstate NEW -j ACCEPT
 	up iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 	up iptables -t nat -A POSTROUTING -o {{ interface_out}} -j MASQUERADE
 	up sysctl -w net.ipv4.ip_forward=1

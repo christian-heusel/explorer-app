@@ -22,6 +22,7 @@ subnet_end: 192.168.1.200
 broadcast_address: 192.168.1.255
 
 # Allow client Internet connection
-allow_connection: True
+# TODO: This is not yet respected!
+allow_connection: False
 
 wifi_country: DE

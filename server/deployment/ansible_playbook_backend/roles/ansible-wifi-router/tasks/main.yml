@@ -14,14 +14,20 @@
     owner: root
     group: root
     mode: 0644
+  notify: restart networking
 
 - name: Set used newtwork interface down
   command: ifconfig {{ interface_in }} down
 
+- name: ensure that the files in interfaces.d are sourced
+  lineinfile:
+    dest: /etc/network/interfaces
+    line: "source /etc/network/interfaces.d/*"
+
 - name: Set /etc/network/interfaces configuration
   template:
     src: interfaces.j2
-    dest: /etc/network/interfaces
+    dest: /etc/network/interfaces.d/
     owner: root
     group: root
     mode: 0644
@@ -34,12 +40,14 @@
     owner: root
     group: root
     mode: 0644
+  notify: restart networking
 
 - name: Set hostapd to use hostapd.conf configure
   lineinfile:
     dest: /etc/default/hostapd
     regexp: '^(#?DAEMON_CONF=")'
     line: 'DAEMON_CONF="/etc/hostapd/hostapd.conf"'
+  notify: restart networking
 
 - name: Set NAT
   lineinfile:
@@ -51,8 +59,8 @@
   command: sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
   when: allow_connection
 
-- name: set the correct WiFi country
-  shell: raspi-config nonint do_wifi_country "{{ wifi_country }}"
+# - name: set the correct WiFi country
+#   command: raspi-config nonint do_wifi_country "{{ wifi_country }}"
 
 - name: set the correct country code in /etc/default/crda
   lineinfile:
@@ -72,6 +80,7 @@
     - -A FORWARD -i {{interface_out}} -o {{interface_in}} -m state --state RELATED,ESTABLISHED -j ACCEPT
     - -A FORWARD -i {{interface_in}} -o {{interface_out}} -j ACCEPT
   when: allow_connection
+  notify: restart networking
 
 - name: Backup the NAT configuration
   command: sh -c "iptables-save > /etc/iptables.ipv4.nat"
