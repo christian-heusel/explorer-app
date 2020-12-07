@@ -1,2 +1,11 @@
 ---
 # handlers file for ansible-wifi-router
+- name: restart networking
+  systemd:
+    name: networking
+    state: restarted
+
+- name: unmask hostapd
+  systemd:
+    name: hostapd.service
+    masked: no
