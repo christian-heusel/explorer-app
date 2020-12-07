@@ -30,3 +30,7 @@
     - vars/apache.yml
   roles:
     - { role: geerlingguy.apache }
+
+- hosts: server
+  roles:
+   - ansible-wifi-router
