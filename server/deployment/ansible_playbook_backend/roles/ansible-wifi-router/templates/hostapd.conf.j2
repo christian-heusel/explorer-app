@@ -1,16 +1,22 @@
-auth_algs=1
-channel=11 # Channel to use
-hw_mode=g
-ieee80211n=1 # 802.11n assuming your device supports it
-ignore_broadcast_ssid=0
-interface={{interface_in}}
-macaddr_acl=0
-rsn_pairwise=CCMP
-wpa=2
-wpa_key_mgmt=WPA-PSK
-wpa_pairwise=TKIP
-# Change the to the proper driver
+# USB-Stick oder WLAN-Gerät
+interface={{ interface_in }}
+# Netlink-Treiber laden
 driver=nl80211
-# Change these to something else if you want
-ssid={{ssid}}
-wpa_passphrase={{passphrase}}
+# AP-Name
+ssid={{ ssid }}
+# Kanal
+channel=1
+# bis 54Mbit, unterstützt auch 802.11 und 802.11b
+hw_mode=g
+# Authentifizierungsmodus "Open System Authentication"
+auth_algs=1
+# akzeptiert nur WPA2-Verbindungen
+wpa=2
+# Pre-Shared-Key (PSK) im Klartext
+wpa_passphrase={{ passphrase }}
+
+## Ländercode
+# Ländercode setzen
+country_code={{ wifi_country }}
+# Ländercode aktivieren, "0" = aus (default)
+ieee80211d=1

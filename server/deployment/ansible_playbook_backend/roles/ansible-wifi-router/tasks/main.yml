@@ -2,58 +2,30 @@
 # tasks file for ansible-wifi-router
 # This playbook installs and configures needed packages.
 
-- name: Install hostapd & isc-dhcp-server package
+- name: Install the needed packages
   apt:
     name: ["firmware-ralink", "hostapd",  "wireless-tools", "dnsmasq", "iw"]
     state: present
 
-- name: Comment domain-name in dhcpd.conf
-  lineinfile:
-    dest: /etc/dhcp/dhcpd.conf
-    regexp: '^(#?option domain-name )'
-    line: '#option domain-name '
-
-- name: Comment domain-name-servers in dhcpd.conf
-  lineinfile:
-    dest: /etc/dhcp/dhcpd.conf
-    regexp: '^(#?option domain-name-servers )'
-    line: '#option domain-name-servers '
-
-- name: Uncomment authoritative in dhcpd.conf
-  lineinfile:
-    dest: /etc/dhcp/dhcpd.conf
-    regexp: '^(#?authoritative;)'
-    line: 'authoritative;'
-
-- name: Insert subnet block into dhcpd.conf
-  blockinfile:
-    path: /etc/dhcp/dhcpd.conf
-    block: |
-      subnet 192.168.10.0 netmask 255.255.255.0 {
-        range {{subnet_start}} {{subnet_end}};
-        option broadcast-address {{broadcast_address}};
-        option routers 192.168.10.1;
-        default-lease-time 600;
-        max-lease-time 7200;
-        option domain-name "local-network";
-        option domain-name-servers 8.8.8.8, 8.8.4.4;
-      }
-- name: Set interfaces to isc-dhcp-server configuration
-  lineinfile:
-    dest: /etc/default/isc-dhcp-server
-    regexp: '^(#?INTERFACES=")'
-    line: 'INTERFACES="{{interface_in}}"'
+- name: configure dnsmasq
+  template:
+    src: dnsmasq.j2
+    dest: /etc/dnsmasq.conf
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Set used newtwork interface down
-  command: ifconfig {{interface_in}} down
+  command: ifconfig {{ interface_in }} down
 
 - name: Set /etc/network/interfaces configuration
   template:
     src: interfaces.j2
-    dest: /etc/network/interfaces.d/
+    dest: /etc/network/interfaces
     owner: root
     group: root
     mode: 0644
+  notify: restart networking
 
 - name: Create hostapd.conf configuration
   template:
@@ -87,10 +59,12 @@
     path: /etc/default/crda
     regexp: '^REGDOMAIN='
     line: "REGDOMAIN={{ wifi_country }}"
+  notify: unmask hostapd
 
 - name: Set used network interface up
   command: ifconfig {{interface_in}} up
 
+# TODO: replace this with ansible.builtin.iptables
 - name: Iptable settings
   command: iptables {{item}}
   with_items:
@@ -99,18 +73,6 @@
     - -A FORWARD -i {{interface_in}} -o {{interface_out}} -j ACCEPT
   when: allow_connection
 
-- name: Set hostapd and isc-dhcp-server to start in boot
-  command: update-rc.d {{item}} enable
-  with_items:
-    - hostapd
-    - isc-dhcp-server
-
 - name: Backup the NAT configuration
   command: sh -c "iptables-save > /etc/iptables.ipv4.nat"
   when: allow_connection
-
-- name: Reboot
-  command: /sbin/shutdown -r +1
-  async: 0
-  poll: 0
-  ignore_errors: True
