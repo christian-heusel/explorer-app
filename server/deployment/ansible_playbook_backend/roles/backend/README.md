@@ -2,6 +2,12 @@ Ansible Role Backend
 =========
 
 Diese Rolle setzt das Backend auf einem Raspberry mit Raspbian auf.
+Genauers:
+
+1. erstellt sie ein Projektverzeichnis
+2. klont das Projekt von GitHub
+3. Baut und startet das docker image
+4. Setzt einen Apache2 Vhost mit ReverseProxy auf
 
 Requirements
 ------------
@@ -15,13 +21,7 @@ A description of the settable variables for this role should go here, including 
 
 Dependencies
 ------------
-Man kann die Dependencies für diese Rolle über den folgenden Befehl installieren:
-
-```
-ansible-galaxy install -r requirements.yml
-```
-
-Zusätzlich wird erwartet, dass die Collection `community.general` installiert ist:
+Es wird erwartet, dass die Collection `community.general` installiert ist:
 
 ```
 ansible-galaxy collection install community.general
@@ -30,7 +30,7 @@ ansible-galaxy collection install community.general
 License
 -------
 
-BSD
+GPL-3
 
 Author Information
 ------------------
