@@ -1,0 +1,2 @@
+[server]
+explorer      ansible_user=root ansible_host=explorer.fritz.box ansible_python_interpreter=/usr/bin/python3

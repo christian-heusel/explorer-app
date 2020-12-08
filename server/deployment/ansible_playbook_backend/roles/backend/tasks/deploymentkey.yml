@@ -1,0 +1,14 @@
+---
+- name: Creates SSH directory
+  file:
+    path: /root/.ssh/
+    state: directory
+    mode: 0755
+
+- name: Copy file with owner and permissions
+  copy:
+    src: explorer_app-server-key
+    dest: /root/.ssh/explorer_app-server-key
+    owner: root
+    group: root
+    mode: 0600

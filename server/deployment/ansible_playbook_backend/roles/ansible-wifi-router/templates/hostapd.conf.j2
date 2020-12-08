@@ -1,0 +1,22 @@
+# USB-Stick oder WLAN-Gerät
+interface={{ interface_in }}
+# Netlink-Treiber laden
+driver=nl80211
+# AP-Name
+ssid={{ ssid }}
+# Kanal
+channel=1
+# bis 54Mbit, unterstützt auch 802.11 und 802.11b
+hw_mode=g
+# Authentifizierungsmodus "Open System Authentication"
+auth_algs=1
+# akzeptiert nur WPA2-Verbindungen
+wpa=2
+# Pre-Shared-Key (PSK) im Klartext
+wpa_passphrase={{ passphrase }}
+
+## Ländercode
+# Ländercode setzen
+country_code={{ wifi_country }}
+# Ländercode aktivieren, "0" = aus (default)
+ieee80211d=1

@@ -1,0 +1,5 @@
+---
+- src: geerlingguy.docker
+- src: geerlingguy.pip
+- src: geerlingguy.apache
+- src: gantsign.oh-my-zsh

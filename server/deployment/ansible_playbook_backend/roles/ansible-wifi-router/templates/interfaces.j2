@@ -1,0 +1,29 @@
+# The loopback network interface
+auto lo
+	iface lo inet loopback
+
+# The primary network interface
+auto {{interface_out}}
+	iface {{interface_out}} inet dhcp
+
+# WLAN mit fester Adresse für hostapd
+auto {{ interface_in }}
+	iface {{ interface_in }} inet static
+	address {{ router_ip }}
+	netmask 255.255.255.0
+	broadcast {{ broadcast_address }}
+
+# Firewall zurücksetzen, Tabellen leeren
+	up /sbin/iptables -F
+	up /sbin/iptables -X
+	up /sbin/iptables -t nat -F
+
+# Kabelnetzwerk maskieren, Port-Forwarding sowie Nat aktivieren
+	up iptables -A FORWARD -o {{ interface_out }} -i {{ interface_in }} -s {{ router_ip }}/24 -m conntrack --ctstate NEW -j ACCEPT
+	up iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+	up iptables -t nat -A POSTROUTING -o {{ interface_out}} -j MASQUERADE
+	up sysctl -w net.ipv4.ip_forward=1
+
+# hostapd und dnsmasq (neu) starten
+	up service hostapd restart
+	up service dnsmasq restart
