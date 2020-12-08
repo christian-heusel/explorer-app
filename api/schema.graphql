@@ -3,14 +3,14 @@
 scalar Time
 
 type Team {
-  team_id: Int!
+  ID: Int!
   members: Int!
   authcode: String!
   name: String
 }
 
 type Answer {
-  answer_id: String!
+  ID: String!
   station_number: Int!
   answer_time: Time!
   result_option: Int

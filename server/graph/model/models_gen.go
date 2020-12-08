@@ -7,7 +7,7 @@ import (
 )
 
 type Answer struct {
-	AnswerID      string    `json:"answer_id"`
+	ID            string    `json:"ID"`
 	StationNumber int       `json:"station_number"`
 	AnswerTime    time.Time `json:"answer_time"`
 	ResultOption  *int      `json:"result_option"`
@@ -34,7 +34,7 @@ type Station struct {
 }
 
 type Team struct {
-	TeamID   int     `json:"team_id"`
+	ID       int     `json:"ID"`
 	Members  int     `json:"members"`
 	Authcode string  `json:"authcode"`
 	Name     *string `json:"name"`

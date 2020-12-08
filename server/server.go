@@ -25,8 +25,7 @@ func initDB() *gorm.DB {
 	if databaseConnectionString != "" {
 		log.Println(databaseConnectionString)
 	} else {
-		log.Println("DB_CONNECTION_STRING empty!")
-		os.Exit(1)
+		log.Fatal("DB_CONNECTION_STRING empty!")
 	}
 	err := fmt.Errorf("initial connect failed")
 
@@ -45,7 +44,10 @@ func initDB() *gorm.DB {
 		db.LogMode(true)
 	}
 
+	db.AutoMigrate(&model.Answer{})
+	db.AutoMigrate(&model.Device{})
 	db.AutoMigrate(&model.Station{})
+	db.AutoMigrate(&model.Team{})
 
 	return db
 }

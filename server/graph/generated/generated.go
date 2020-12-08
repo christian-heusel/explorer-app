@@ -35,6 +35,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Mutation() MutationResolver
 }
 
 type DirectiveRoot struct {
@@ -42,8 +43,8 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Answer struct {
-		AnswerID      func(childComplexity int) int
 		AnswerTime    func(childComplexity int) int
+		ID            func(childComplexity int) int
 		ResultNumber  func(childComplexity int) int
 		ResultOption  func(childComplexity int) int
 		ResultText    func(childComplexity int) int
@@ -57,6 +58,10 @@ type ComplexityRoot struct {
 		Brand           func(childComplexity int) int
 		Model           func(childComplexity int) int
 		TeamID          func(childComplexity int) int
+	}
+
+	Mutation struct {
+		CreateTeam func(childComplexity int, name *string, members int) int
 	}
 
 	Query struct {
@@ -73,10 +78,14 @@ type ComplexityRoot struct {
 
 	Team struct {
 		Authcode func(childComplexity int) int
+		ID       func(childComplexity int) int
 		Members  func(childComplexity int) int
 		Name     func(childComplexity int) int
-		TeamID   func(childComplexity int) int
 	}
+}
+
+type MutationResolver interface {
+	CreateTeam(ctx context.Context, name *string, members int) (*model.Team, error)
 }
 
 type executableSchema struct {
@@ -94,19 +103,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "Answer.answer_id":
-		if e.complexity.Answer.AnswerID == nil {
-			break
-		}
-
-		return e.complexity.Answer.AnswerID(childComplexity), true
-
 	case "Answer.answer_time":
 		if e.complexity.Answer.AnswerTime == nil {
 			break
 		}
 
 		return e.complexity.Answer.AnswerTime(childComplexity), true
+
+	case "Answer.ID":
+		if e.complexity.Answer.ID == nil {
+			break
+		}
+
+		return e.complexity.Answer.ID(childComplexity), true
 
 	case "Answer.result_number":
 		if e.complexity.Answer.ResultNumber == nil {
@@ -178,6 +187,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Device.TeamID(childComplexity), true
 
+	case "Mutation.createTeam":
+		if e.complexity.Mutation.CreateTeam == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createTeam_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateTeam(childComplexity, args["name"].(*string), args["members"].(int)), true
+
 	case "Station.coordinates":
 		if e.complexity.Station.Coordinates == nil {
 			break
@@ -227,6 +248,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Team.Authcode(childComplexity), true
 
+	case "Team.ID":
+		if e.complexity.Team.ID == nil {
+			break
+		}
+
+		return e.complexity.Team.ID(childComplexity), true
+
 	case "Team.members":
 		if e.complexity.Team.Members == nil {
 			break
@@ -240,13 +268,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Team.Name(childComplexity), true
-
-	case "Team.team_id":
-		if e.complexity.Team.TeamID == nil {
-			break
-		}
-
-		return e.complexity.Team.TeamID(childComplexity), true
 
 	}
 	return 0, false
@@ -265,6 +286,20 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 			}
 			first = false
 			data := ec._Query(ctx, rc.Operation.SelectionSet)
+			var buf bytes.Buffer
+			data.MarshalGQL(&buf)
+
+			return &graphql.Response{
+				Data: buf.Bytes(),
+			}
+		}
+	case ast.Mutation:
+		return func(ctx context.Context) *graphql.Response {
+			if !first {
+				return nil
+			}
+			first = false
+			data := ec._Mutation(ctx, rc.Operation.SelectionSet)
 			var buf bytes.Buffer
 			data.MarshalGQL(&buf)
 
@@ -298,19 +333,23 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
+	{Name: "../api/mutations/create_team.graphql", Input: `type Mutation {
+  createTeam(name: String, members: Int!): Team!
+}
+`, BuiltIn: false},
 	{Name: "../api/schema.graphql", Input: `# GraphQL schema
 
 scalar Time
 
 type Team {
-  team_id: Int!
+  ID: Int!
   members: Int!
   authcode: String!
   name: String
 }
 
 type Answer {
-  answer_id: String!
+  ID: String!
   station_number: Int!
   answer_time: Time!
   result_option: Int
@@ -343,6 +382,30 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) field_Mutation_createTeam_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *string
+	if tmp, ok := rawArgs["name"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+		arg0, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["name"] = arg0
+	var arg1 int
+	if tmp, ok := rawArgs["members"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("members"))
+		arg1, err = ec.unmarshalNInt2int(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["members"] = arg1
+	return args, nil
+}
 
 func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -397,7 +460,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Answer_answer_id(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Answer_ID(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -415,7 +478,7 @@ func (ec *executionContext) _Answer_answer_id(ctx context.Context, field graphql
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.AnswerID, nil
+		return obj.ID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -796,6 +859,48 @@ func (ec *executionContext) _Device_android_release(ctx context.Context, field g
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_createTeam(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createTeam_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateTeam(rctx, args["name"].(*string), args["members"].(int))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Team)
+	fc.Result = res
+	return ec.marshalNTeam2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐTeam(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -1068,7 +1173,7 @@ func (ec *executionContext) _Station_Title(ctx context.Context, field graphql.Co
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Team_team_id(ctx context.Context, field graphql.CollectedField, obj *model.Team) (ret graphql.Marshaler) {
+func (ec *executionContext) _Team_ID(ctx context.Context, field graphql.CollectedField, obj *model.Team) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1086,7 +1191,7 @@ func (ec *executionContext) _Team_team_id(ctx context.Context, field graphql.Col
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TeamID, nil
+		return obj.ID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2311,8 +2416,8 @@ func (ec *executionContext) _Answer(ctx context.Context, sel ast.SelectionSet, o
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Answer")
-		case "answer_id":
-			out.Values[i] = ec._Answer_answer_id(ctx, field, obj)
+		case "ID":
+			out.Values[i] = ec._Answer_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2372,6 +2477,37 @@ func (ec *executionContext) _Device(ctx context.Context, sel ast.SelectionSet, o
 			out.Values[i] = ec._Device_android_codename(ctx, field, obj)
 		case "android_release":
 			out.Values[i] = ec._Device_android_release(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var mutationImplementors = []string{"Mutation"}
+
+func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, mutationImplementors)
+
+	ctx = graphql.WithFieldContext(ctx, &graphql.FieldContext{
+		Object: "Mutation",
+	})
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Mutation")
+		case "createTeam":
+			out.Values[i] = ec._Mutation_createTeam(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2467,8 +2603,8 @@ func (ec *executionContext) _Team(ctx context.Context, sel ast.SelectionSet, obj
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Team")
-		case "team_id":
-			out.Values[i] = ec._Team_team_id(ctx, field, obj)
+		case "ID":
+			out.Values[i] = ec._Team_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2783,6 +2919,20 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNTeam2githubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐTeam(ctx context.Context, sel ast.SelectionSet, v model.Team) graphql.Marshaler {
+	return ec._Team(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNTeam2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐTeam(ctx context.Context, sel ast.SelectionSet, v *model.Team) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Team(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNTime2timeᚐTime(ctx context.Context, v interface{}) (time.Time, error) {
