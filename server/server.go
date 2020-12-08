@@ -11,6 +11,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/christian-heusel/explorer-app/server/graph"
 	"github.com/christian-heusel/explorer-app/server/graph/generated"
+	"github.com/christian-heusel/explorer-app/server/graph/model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -38,7 +39,13 @@ func initDB() *gorm.DB {
 
 	log.Print("connected successfully to the Database")
 
-	// db.AutoMigrate(&model.Comment{})
+	deploymentEnv := os.Getenv("DEPLOYMENT_ENV")
+	if deploymentEnv != "production" {
+		log.Print("deployment environment: " + deploymentEnv)
+		db.LogMode(true)
+	}
+
+	db.AutoMigrate(&model.Station{})
 
 	return db
 }
