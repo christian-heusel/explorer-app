@@ -43,12 +43,13 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Answer struct {
-		AnswerTime    func(childComplexity int) int
-		ID            func(childComplexity int) int
-		ResultNumber  func(childComplexity int) int
-		ResultOption  func(childComplexity int) int
-		ResultText    func(childComplexity int) int
-		StationNumber func(childComplexity int) int
+		AnswerTime          func(childComplexity int) int
+		ID                  func(childComplexity int) int
+		ResultNumber        func(childComplexity int) int
+		ResultOption        func(childComplexity int) int
+		ResultText          func(childComplexity int) int
+		StationNumber       func(childComplexity int) int
+		SynchronizationTime func(childComplexity int) int
 	}
 
 	Device struct {
@@ -61,7 +62,8 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateTeam func(childComplexity int, name *string, members *int) int
+		CreateAnswer func(childComplexity int, stationNumber int, answerTime *time.Time, resultOption *int, resultText *string, resultNumber *float64) int
+		CreateTeam   func(childComplexity int, name *string, members *int) int
 	}
 
 	Query struct {
@@ -86,6 +88,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	CreateTeam(ctx context.Context, name *string, members *int) (*model.Team, error)
+	CreateAnswer(ctx context.Context, stationNumber int, answerTime *time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error)
 }
 
 type executableSchema struct {
@@ -145,6 +148,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Answer.StationNumber(childComplexity), true
 
+	case "Answer.synchronization_time":
+		if e.complexity.Answer.SynchronizationTime == nil {
+			break
+		}
+
+		return e.complexity.Answer.SynchronizationTime(childComplexity), true
+
 	case "Device.android_codename":
 		if e.complexity.Device.AndroidCodename == nil {
 			break
@@ -186,6 +196,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Device.TeamID(childComplexity), true
+
+	case "Mutation.createAnswer":
+		if e.complexity.Mutation.CreateAnswer == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createAnswer_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateAnswer(childComplexity, args["station_number"].(int), args["answer_time"].(*time.Time), args["result_option"].(*int), args["result_text"].(*string), args["result_number"].(*float64)), true
 
 	case "Mutation.createTeam":
 		if e.complexity.Mutation.CreateTeam == nil {
@@ -333,8 +355,16 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../api/mutations/create_team.graphql", Input: `type Mutation {
+	{Name: "../api/mutations.graphql", Input: `type Mutation {
   createTeam(name: String, members: Int): Team!
+
+  createAnswer(
+    station_number: Int!
+    answer_time: Time
+    result_option: Int
+    result_text: String
+    result_number: Float
+  ): Answer!
 }
 `, BuiltIn: false},
 	{Name: "../api/schema.graphql", Input: `# GraphQL schema
@@ -349,9 +379,10 @@ type Team {
 }
 
 type Answer {
-  ID: String!
+  ID: Int!
   station_number: Int!
   answer_time: Time!
+  synchronization_time: Time!
   result_option: Int
   result_text: String
   # result_image: Image
@@ -382,6 +413,57 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) field_Mutation_createAnswer_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 int
+	if tmp, ok := rawArgs["station_number"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("station_number"))
+		arg0, err = ec.unmarshalNInt2int(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["station_number"] = arg0
+	var arg1 *time.Time
+	if tmp, ok := rawArgs["answer_time"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("answer_time"))
+		arg1, err = ec.unmarshalOTime2ᚖtimeᚐTime(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["answer_time"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["result_option"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("result_option"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["result_option"] = arg2
+	var arg3 *string
+	if tmp, ok := rawArgs["result_text"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("result_text"))
+		arg3, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["result_text"] = arg3
+	var arg4 *float64
+	if tmp, ok := rawArgs["result_number"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("result_number"))
+		arg4, err = ec.unmarshalOFloat2ᚖfloat64(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["result_number"] = arg4
+	return args, nil
+}
 
 func (ec *executionContext) field_Mutation_createTeam_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -490,9 +572,9 @@ func (ec *executionContext) _Answer_ID(ctx context.Context, field graphql.Collec
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Answer_station_number(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
@@ -549,6 +631,41 @@ func (ec *executionContext) _Answer_answer_time(ctx context.Context, field graph
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.AnswerTime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Answer_synchronization_time(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Answer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SynchronizationTime, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -899,6 +1016,48 @@ func (ec *executionContext) _Mutation_createTeam(ctx context.Context, field grap
 	res := resTmp.(*model.Team)
 	fc.Result = res
 	return ec.marshalNTeam2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐTeam(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createAnswer(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createAnswer_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateAnswer(rctx, args["station_number"].(int), args["answer_time"].(*time.Time), args["result_option"].(*int), args["result_text"].(*string), args["result_number"].(*float64))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Answer)
+	fc.Result = res
+	return ec.marshalNAnswer2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐAnswer(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2428,6 +2587,11 @@ func (ec *executionContext) _Answer(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "synchronization_time":
+			out.Values[i] = ec._Answer_synchronization_time(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "result_option":
 			out.Values[i] = ec._Answer_result_option(ctx, field, obj)
 		case "result_text":
@@ -2502,6 +2666,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = graphql.MarshalString("Mutation")
 		case "createTeam":
 			out.Values[i] = ec._Mutation_createTeam(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createAnswer":
+			out.Values[i] = ec._Mutation_createAnswer(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2869,6 +3038,20 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 // endregion **************************** object.gotpl ****************************
 
 // region    ***************************** type.gotpl *****************************
+
+func (ec *executionContext) marshalNAnswer2githubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐAnswer(ctx context.Context, sel ast.SelectionSet, v model.Answer) graphql.Marshaler {
+	return ec._Answer(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNAnswer2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐAnswer(ctx context.Context, sel ast.SelectionSet, v *model.Answer) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Answer(ctx, sel, v)
+}
 
 func (ec *executionContext) unmarshalNBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
 	res, err := graphql.UnmarshalBoolean(v)
@@ -3249,6 +3432,21 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 		return graphql.Null
 	}
 	return graphql.MarshalString(*v)
+}
+
+func (ec *executionContext) unmarshalOTime2ᚖtimeᚐTime(ctx context.Context, v interface{}) (*time.Time, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := graphql.UnmarshalTime(v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOTime2ᚖtimeᚐTime(ctx context.Context, sel ast.SelectionSet, v *time.Time) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalTime(*v)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

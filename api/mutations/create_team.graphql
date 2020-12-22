@@ -1,3 +1,0 @@
-type Mutation {
-  createTeam(name: String, members: Int): Team!
-}

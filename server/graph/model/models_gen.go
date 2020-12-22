@@ -7,12 +7,13 @@ import (
 )
 
 type Answer struct {
-	ID            string    `json:"ID"`
-	StationNumber int       `json:"station_number"`
-	AnswerTime    time.Time `json:"answer_time"`
-	ResultOption  *int      `json:"result_option"`
-	ResultText    *string   `json:"result_text"`
-	ResultNumber  *float64  `json:"result_number"`
+	ID                  int       `json:"ID"`
+	StationNumber       int       `json:"station_number"`
+	AnswerTime          time.Time `json:"answer_time"`
+	SynchronizationTime time.Time `json:"synchronization_time"`
+	ResultOption        *int      `json:"result_option"`
+	ResultText          *string   `json:"result_text"`
+	ResultNumber        *float64  `json:"result_number"`
 }
 
 type Device struct {

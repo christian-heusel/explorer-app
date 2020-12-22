@@ -10,9 +10,10 @@ type Team {
 }
 
 type Answer {
-  ID: String!
+  ID: Int!
   station_number: Int!
   answer_time: Time!
+  synchronization_time: Time!
   result_option: Int
   result_text: String
   # result_image: Image
