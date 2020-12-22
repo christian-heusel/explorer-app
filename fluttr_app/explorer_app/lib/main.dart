@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'Pages/subPageTest.dart';
-import 'Pages/homePage.dart';
-import 'Pages/openTaskPage.dart';
-import 'Pages/closedTaskPage.dart';
-
+import 'pages/subPageTest.dart';
+import 'pages/homePage.dart';
+import 'pages/openTaskPage.dart';
+import 'pages/closedTaskPage.dart';
 
 import 'package:explorer_app/bloc/samplequery_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +25,7 @@ class ExplorerApp extends StatelessWidget {
           // closer together (more dense) than on mobile platforms.
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home:
-          statefullMainPage()
-    );
+        home: statefullMainPage());
   }
 }
 
@@ -39,17 +36,15 @@ class statefullMainPage extends StatefulWidget {
   MainPage createState() => MainPage();
 }
 
-
 class MainPage extends State<statefullMainPage> {
-
   final Key keyOne = PageStorageKey('sqlTest');
   final Key keyTwo = PageStorageKey('homePage');
   final Key keythree = PageStorageKey('openTasks');
   final Key keyFour = PageStorageKey('closedTasks');
 
   int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(
-      fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   List<Widget> pages;
   Widget currentPage;
@@ -59,9 +54,8 @@ class MainPage extends State<statefullMainPage> {
   OpenTaskPage openTaskView;
   ClosedTaskPage closedTaskview;
 
-
- final PageStorageBucket bucket = PageStorageBucket(); //SS: needed, but don't know why
-
+  final PageStorageBucket bucket =
+      PageStorageBucket(); //SS: needed, but don't know why
 
   void initState() {
     testSqlPage = subPageTest(key: keyOne);
@@ -100,12 +94,10 @@ class MainPage extends State<statefullMainPage> {
           ],
         ),
       ),
-
       body: PageStorage(
         child: currentPage,
         bucket: bucket,
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -125,10 +117,8 @@ class MainPage extends State<statefullMainPage> {
             label: 'Closed Points ',
           ),
         ],
-
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         showSelectedLabels: true,
@@ -137,5 +127,3 @@ class MainPage extends State<statefullMainPage> {
     );
   }
 }
-
-
