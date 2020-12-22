@@ -31,8 +31,8 @@ func initDB() *gorm.DB {
 
 	db, err := gorm.Open(databaseConnectionType, databaseConnectionString)
 	for err != nil {
-		db, err = gorm.Open(databaseConnectionType, databaseConnectionString)
 		log.Println(err)
+		db, err = gorm.Open(databaseConnectionType, databaseConnectionString)
 		time.Sleep(500 * time.Millisecond)
 	}
 
