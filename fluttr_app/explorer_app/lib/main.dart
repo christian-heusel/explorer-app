@@ -37,11 +37,6 @@ class statefullMainPage extends StatefulWidget {
 }
 
 class MainPage extends State<statefullMainPage> {
-  final Key sqlTestKey = PageStorageKey('sqlTest');
-  final Key homePageKey = PageStorageKey('homePage');
-  final Key openTasksKey = PageStorageKey('openTasks');
-  final Key closedTasksKey = PageStorageKey('closedTasks');
-
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -54,14 +49,11 @@ class MainPage extends State<statefullMainPage> {
   OpenTaskPage openTaskView;
   ClosedTaskPage closedTaskview;
 
-  final PageStorageBucket bucket =
-      PageStorageBucket(); //SS: needed, but don't know why
-
   void initState() {
-    testSqlPage = subPageTest(key: sqlTestKey);
-    homeView = HomePage(key: homePageKey);
-    openTaskView = OpenTaskPage(key: openTasksKey);
-    closedTaskview = ClosedTaskPage(key: closedTasksKey);
+    testSqlPage = subPageTest();
+    homeView = HomePage();
+    openTaskView = OpenTaskPage();
+    closedTaskview = ClosedTaskPage();
 
     pages = <Widget>[testSqlPage, homeView, openTaskView, closedTaskview];
     currentPage = testSqlPage;
@@ -94,10 +86,8 @@ class MainPage extends State<statefullMainPage> {
           ],
         ),
       ),
-      body: PageStorage(
-        child: currentPage,
-        bucket: bucket,
-      ),
+      body: currentPage,
+
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -106,15 +96,15 @@ class MainPage extends State<statefullMainPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Mainview',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.format_list_bulleted),
-            label: 'OpenPoint',
+            label: 'offen',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.playlist_add_check),
-            label: 'Closed Points ',
+            label: 'bearbeitet',
           ),
         ],
         currentIndex: _selectedIndex,
