@@ -35,7 +35,7 @@ type Station struct {
 
 type Team struct {
 	ID       int     `json:"ID"`
-	Members  int     `json:"members"`
+	Members  *int    `json:"members"`
 	Authcode string  `json:"authcode"`
 	Name     *string `json:"name"`
 }

@@ -61,7 +61,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateTeam func(childComplexity int, name *string, members int) int
+		CreateTeam func(childComplexity int, name *string, members *int) int
 	}
 
 	Query struct {
@@ -85,7 +85,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateTeam(ctx context.Context, name *string, members int) (*model.Team, error)
+	CreateTeam(ctx context.Context, name *string, members *int) (*model.Team, error)
 }
 
 type executableSchema struct {
@@ -197,7 +197,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTeam(childComplexity, args["name"].(*string), args["members"].(int)), true
+		return e.complexity.Mutation.CreateTeam(childComplexity, args["name"].(*string), args["members"].(*int)), true
 
 	case "Station.coordinates":
 		if e.complexity.Station.Coordinates == nil {
@@ -334,7 +334,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 
 var sources = []*ast.Source{
 	{Name: "../api/mutations/create_team.graphql", Input: `type Mutation {
-  createTeam(name: String, members: Int!): Team!
+  createTeam(name: String, members: Int): Team!
 }
 `, BuiltIn: false},
 	{Name: "../api/schema.graphql", Input: `# GraphQL schema
@@ -343,7 +343,7 @@ scalar Time
 
 type Team {
   ID: Int!
-  members: Int!
+  members: Int
   authcode: String!
   name: String
 }
@@ -395,10 +395,10 @@ func (ec *executionContext) field_Mutation_createTeam_args(ctx context.Context, 
 		}
 	}
 	args["name"] = arg0
-	var arg1 int
+	var arg1 *int
 	if tmp, ok := rawArgs["members"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("members"))
-		arg1, err = ec.unmarshalNInt2int(ctx, tmp)
+		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -884,7 +884,7 @@ func (ec *executionContext) _Mutation_createTeam(ctx context.Context, field grap
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTeam(rctx, args["name"].(*string), args["members"].(int))
+		return ec.resolvers.Mutation().CreateTeam(rctx, args["name"].(*string), args["members"].(*int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1233,14 +1233,11 @@ func (ec *executionContext) _Team_members(ctx context.Context, field graphql.Col
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(*int)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Team_authcode(ctx context.Context, field graphql.CollectedField, obj *model.Team) (ret graphql.Marshaler) {
@@ -2610,9 +2607,6 @@ func (ec *executionContext) _Team(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "members":
 			out.Values[i] = ec._Team_members(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		case "authcode":
 			out.Values[i] = ec._Team_authcode(ctx, field, obj)
 			if out.Values[i] == graphql.Null {

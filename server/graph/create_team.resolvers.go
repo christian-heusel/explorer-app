@@ -10,7 +10,7 @@ import (
 	"github.com/christian-heusel/explorer-app/server/graph/model"
 )
 
-func (r *mutationResolver) CreateTeam(ctx context.Context, name *string, members int) (*model.Team, error) {
+func (r *mutationResolver) CreateTeam(ctx context.Context, name *string, members *int) (*model.Team, error) {
 	team := model.Team{Name: name, Members: members, Authcode: "Test"}
 	result := r.DB.Create(&team)
 

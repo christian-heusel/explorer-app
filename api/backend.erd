@@ -12,7 +12,7 @@
 [team] {bgcolor: "#ececfc"}
   *team_id {label: "Int, not null"}
   name {label: "String, null"}
-  members {label: "Int, not null"}
+  members {label: "Int, null"}
   authcode {label: "String, not null"}
 
 [answer] {bgcolor: "#ececfc"}
