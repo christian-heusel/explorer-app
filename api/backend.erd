@@ -16,7 +16,7 @@
   authcode {label: "String, not null"}
 
 [answer] {bgcolor: "#ececfc"}
-  *answer_id {label: "UUID, not null"}
+  *answer_id {label: "Int, not null"}
   station_number {label: "Int, not null"}
   answer_time {label: "Time, not null"}
   synchronization_time {label: "Time, not null"}
