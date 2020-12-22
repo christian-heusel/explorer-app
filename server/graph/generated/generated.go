@@ -62,7 +62,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateAnswer func(childComplexity int, stationNumber int, answerTime *time.Time, resultOption *int, resultText *string, resultNumber *float64) int
+		CreateAnswer func(childComplexity int, stationNumber int, answerTime time.Time, resultOption *int, resultText *string, resultNumber *float64) int
 		CreateTeam   func(childComplexity int, name *string, members *int) int
 	}
 
@@ -88,7 +88,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	CreateTeam(ctx context.Context, name *string, members *int) (*model.Team, error)
-	CreateAnswer(ctx context.Context, stationNumber int, answerTime *time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error)
+	CreateAnswer(ctx context.Context, stationNumber int, answerTime time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error)
 }
 
 type executableSchema struct {
@@ -207,7 +207,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateAnswer(childComplexity, args["station_number"].(int), args["answer_time"].(*time.Time), args["result_option"].(*int), args["result_text"].(*string), args["result_number"].(*float64)), true
+		return e.complexity.Mutation.CreateAnswer(childComplexity, args["station_number"].(int), args["answer_time"].(time.Time), args["result_option"].(*int), args["result_text"].(*string), args["result_number"].(*float64)), true
 
 	case "Mutation.createTeam":
 		if e.complexity.Mutation.CreateTeam == nil {
@@ -360,7 +360,7 @@ var sources = []*ast.Source{
 
   createAnswer(
     station_number: Int!
-    answer_time: Time
+    answer_time: Time!
     result_option: Int
     result_text: String
     result_number: Float
@@ -426,10 +426,10 @@ func (ec *executionContext) field_Mutation_createAnswer_args(ctx context.Context
 		}
 	}
 	args["station_number"] = arg0
-	var arg1 *time.Time
+	var arg1 time.Time
 	if tmp, ok := rawArgs["answer_time"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("answer_time"))
-		arg1, err = ec.unmarshalOTime2ᚖtimeᚐTime(ctx, tmp)
+		arg1, err = ec.unmarshalNTime2timeᚐTime(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1043,7 +1043,7 @@ func (ec *executionContext) _Mutation_createAnswer(ctx context.Context, field gr
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateAnswer(rctx, args["station_number"].(int), args["answer_time"].(*time.Time), args["result_option"].(*int), args["result_text"].(*string), args["result_number"].(*float64))
+		return ec.resolvers.Mutation().CreateAnswer(rctx, args["station_number"].(int), args["answer_time"].(time.Time), args["result_option"].(*int), args["result_text"].(*string), args["result_number"].(*float64))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3432,21 +3432,6 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 		return graphql.Null
 	}
 	return graphql.MarshalString(*v)
-}
-
-func (ec *executionContext) unmarshalOTime2ᚖtimeᚐTime(ctx context.Context, v interface{}) (*time.Time, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := graphql.UnmarshalTime(v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOTime2ᚖtimeᚐTime(ctx context.Context, sel ast.SelectionSet, v *time.Time) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalTime(*v)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

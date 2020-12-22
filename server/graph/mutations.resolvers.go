@@ -5,7 +5,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/christian-heusel/explorer-app/server/graph/generated"
@@ -23,8 +22,23 @@ func (r *mutationResolver) CreateTeam(ctx context.Context, name *string, members
 	return &team, nil
 }
 
-func (r *mutationResolver) CreateAnswer(ctx context.Context, stationNumber int, answerTime *time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) CreateAnswer(ctx context.Context, stationNumber int, answerTime time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error) {
+	answer := model.Answer{
+		StationNumber:       stationNumber,
+		AnswerTime:          answerTime,
+		SynchronizationTime: time.Now(),
+		ResultOption:        resultOption,
+		ResultText:          resultText,
+		ResultNumber:        resultNumber,
+	}
+
+	result := r.DB.Create(&answer)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &answer, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
