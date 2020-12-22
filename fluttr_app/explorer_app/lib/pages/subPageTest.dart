@@ -21,21 +21,18 @@ class subPageTestState extends State<subPageTest> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider<SamplequeryBloc>(
-        create: (context) => SamplequeryBloc(),
-        child: TestSql(),
-      )
-    );
+        body: BlocProvider<SamplequeryBloc>(
+      create: (context) => SamplequeryBloc(),
+      child: TestSql(),
+    ));
   }
 }
 
-class TestSql extends StatelessWidget
-{
+class TestSql extends StatelessWidget {
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     final SamplequeryBloc samplequeryBloc =
-    BlocProvider.of<SamplequeryBloc>(context);
+        BlocProvider.of<SamplequeryBloc>(context);
 
     return Scaffold(
       body: BlocBuilder<SamplequeryBloc, SamplequeryState>(
@@ -50,15 +47,15 @@ class TestSql extends StatelessWidget
                     alignment: Alignment.centerRight,
                     icon: ((state is SamplequeryEmpty)
                         ? Icon(
-                      Icons.favorite,
-                      color: Colors.pink,
-                      size: 24.0,
-                    )
+                            Icons.favorite,
+                            color: Colors.pink,
+                            size: 24.0,
+                          )
                         : Icon(
-                      Icons.favorite,
-                      color: Colors.blue,
-                      size: 24.0,
-                    )),
+                            Icons.favorite,
+                            color: Colors.blue,
+                            size: 24.0,
+                          )),
                     color: Colors.red[500],
                     onPressed: () {
                       if (state is SamplequeryEmpty) {
