@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
+import 'pages/subPageTest.dart';
+import 'pages/homePage.dart';
+import 'pages/openTaskPage.dart';
+import 'pages/closedTaskPage.dart';
+
 import 'package:explorer_app/bloc/samplequery_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
 
 void main() async {
   runApp(ExplorerApp());
@@ -20,20 +25,50 @@ class ExplorerApp extends StatelessWidget {
           // closer together (more dense) than on mobile platforms.
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: BlocProvider<SamplequeryBloc>(
-          create: (context) => SamplequeryBloc(),
-          child: MainPage(),
-        ));
+        home: statefullMainPage());
   }
 }
 
-class MainPage extends StatelessWidget {
-  static const String _title = "Explorer 2021";
+class statefullMainPage extends StatefulWidget {
+  statefullMainPage({Key key}) : super(key: key);
+  String title = "Explorer 2021";
+  @override
+  MainPage createState() => MainPage();
+}
+
+class MainPage extends State<statefullMainPage> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  List<Widget> pages;
+  Widget currentPage;
+
+  subPageTest testSqlPage;
+  HomePage homeView;
+  OpenTaskPage openTaskView;
+  ClosedTaskPage closedTaskview;
+
+  void initState() {
+    testSqlPage = subPageTest();
+    homeView = HomePage();
+    openTaskView = OpenTaskPage();
+    closedTaskview = ClosedTaskPage();
+
+    pages = <Widget>[testSqlPage, homeView, openTaskView, closedTaskview];
+    currentPage = testSqlPage;
+    super.initState();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      currentPage = pages[index];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final SamplequeryBloc samplequeryBloc =
-        BlocProvider.of<SamplequeryBloc>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -47,48 +82,37 @@ class MainPage extends StatelessWidget {
             SizedBox(
               width: 10,
             ),
-            Text(_title),
+            Text(widget.title),
           ],
         ),
       ),
-      body: BlocBuilder<SamplequeryBloc, SamplequeryState>(
-        builder: (context, state) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: EdgeInsets.all(0),
-                child: IconButton(
-                    padding: EdgeInsets.all(0),
-                    alignment: Alignment.centerRight,
-                    icon: ((state is SamplequeryEmpty)
-                        ? Icon(
-                            Icons.favorite,
-                            color: Colors.pink,
-                            size: 24.0,
-                          )
-                        : Icon(
-                            Icons.favorite,
-                            color: Colors.blue,
-                            size: 24.0,
-                          )),
-                    color: Colors.red[500],
-                    onPressed: () {
-                      if (state is SamplequeryEmpty) {
-                        samplequeryBloc.add(SamplequeryQueryApi());
-                      } else {
-                        samplequeryBloc.add(SamplequeryClearResult());
-                      }
-                    }),
-              ),
-              Center(
-                child: ((state is SamplequeryEmpty)
-                    ? Text("")
-                    : Text(state.response.data.todos[0].id)),
-              ),
-            ],
-          );
-        },
+      body: currentPage,
+
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.adb),
+            label: 'Test Site',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.format_list_bulleted),
+            label: 'offen',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.playlist_add_check),
+            label: 'bearbeitet',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
       ),
     );
   }
