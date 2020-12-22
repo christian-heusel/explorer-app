@@ -37,10 +37,10 @@ class statefullMainPage extends StatefulWidget {
 }
 
 class MainPage extends State<statefullMainPage> {
-  final Key keyOne = PageStorageKey('sqlTest');
-  final Key keyTwo = PageStorageKey('homePage');
-  final Key keythree = PageStorageKey('openTasks');
-  final Key keyFour = PageStorageKey('closedTasks');
+  final Key sqlTestKey = PageStorageKey('sqlTest');
+  final Key homePageKey = PageStorageKey('homePage');
+  final Key openTasksKey = PageStorageKey('openTasks');
+  final Key closedTasksKey = PageStorageKey('closedTasks');
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
@@ -58,10 +58,10 @@ class MainPage extends State<statefullMainPage> {
       PageStorageBucket(); //SS: needed, but don't know why
 
   void initState() {
-    testSqlPage = subPageTest(key: keyOne);
-    homeView = HomePage(key: keyTwo);
-    openTaskView = OpenTaskPage(key: keythree);
-    closedTaskview = ClosedTaskPage(key: keyFour);
+    testSqlPage = subPageTest(key: sqlTestKey);
+    homeView = HomePage(key: homePageKey);
+    openTaskView = OpenTaskPage(key: openTasksKey);
+    closedTaskview = ClosedTaskPage(key: closedTasksKey);
 
     pages = <Widget>[testSqlPage, homeView, openTaskView, closedTaskview];
     currentPage = testSqlPage;
