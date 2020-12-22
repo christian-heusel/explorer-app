@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'subPageTest.dart';
-import 'homePage.dart';
-import 'openTaskPage.dart';
-import 'closedTaskPage.dart';
+import 'Pages/subPageTest.dart';
+import 'Pages/homePage.dart';
+import 'Pages/openTaskPage.dart';
+import 'Pages/closedTaskPage.dart';
 
 
 import 'package:explorer_app/bloc/samplequery_bloc.dart';
