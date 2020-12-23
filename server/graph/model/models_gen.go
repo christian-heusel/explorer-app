@@ -31,7 +31,7 @@ type Station struct {
 	StationType   int     `json:"station_type"`
 	Coordinates   *string `json:"coordinates"`
 	GridSquare    *string `json:"grid_square"`
-	Title         *string `json:"Title"`
+	Title         *string `json:"title"`
 }
 
 type Team struct {

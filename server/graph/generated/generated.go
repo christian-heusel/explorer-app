@@ -270,7 +270,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Station.StationType(childComplexity), true
 
-	case "Station.Title":
+	case "Station.title":
 		if e.complexity.Station.Title == nil {
 			break
 		}
@@ -418,7 +418,7 @@ type Station {
   station_type: Int!
   coordinates: String
   grid_square: String
-  Title: String
+  title: String
 }
 
 type Device {
@@ -1422,7 +1422,7 @@ func (ec *executionContext) _Station_grid_square(ctx context.Context, field grap
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Station_Title(ctx context.Context, field graphql.CollectedField, obj *model.Station) (ret graphql.Marshaler) {
+func (ec *executionContext) _Station_title(ctx context.Context, field graphql.CollectedField, obj *model.Station) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2869,8 +2869,8 @@ func (ec *executionContext) _Station(ctx context.Context, sel ast.SelectionSet, 
 			out.Values[i] = ec._Station_coordinates(ctx, field, obj)
 		case "grid_square":
 			out.Values[i] = ec._Station_grid_square(ctx, field, obj)
-		case "Title":
-			out.Values[i] = ec._Station_Title(ctx, field, obj)
+		case "title":
+			out.Values[i] = ec._Station_title(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
