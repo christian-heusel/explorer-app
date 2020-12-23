@@ -1,10 +1,14 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -17,6 +21,58 @@ import (
 )
 
 const defaultPort = "8080"
+
+func getInt(input string) int {
+	if result, err := strconv.Atoi(input); err == nil {
+		return result
+	} else {
+		log.Fatalln(input, "is not an integer.")
+		return 0
+	}
+}
+
+func setupStations(db *gorm.DB, filepath string) error {
+	// Open the file
+	csvfile, err := os.Open(filepath)
+	if err != nil {
+		log.Fatalln("Couldn't open the csv file", filepath, err)
+	}
+
+	// Parse the file
+	r := csv.NewReader(csvfile)
+
+	header, err := r.Read()
+	log.Println(strings.Join(header, ", "))
+
+	// Iterate through the station
+	for {
+		// Read each station from csv
+		record, err := r.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Line: ", strings.Join(record, ", "))
+		station := model.Station{
+			StationNumber: getInt(record[0]),
+			Points:        getInt(record[1]),
+			StationType:   getInt(record[2]),
+			Coordinates:   &record[3],
+			GridSquare:    &record[4],
+			Title:         &record[5],
+		}
+
+		result := db.Create(&station)
+
+		if result.Error != nil {
+			log.Fatalln("Error while inserting into the DB", result.Error)
+			return result.Error
+		}
+	}
+	return nil
+}
 
 func initDB() *gorm.DB {
 	databaseConnectionType := "postgres"
@@ -48,6 +104,8 @@ func initDB() *gorm.DB {
 	db.AutoMigrate(&model.Device{})
 	db.AutoMigrate(&model.Station{})
 	db.AutoMigrate(&model.Team{})
+
+	setupStations(db, "initial_data/stations.csv")
 
 	return db
 }
