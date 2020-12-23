@@ -20,7 +20,7 @@ type Device struct {
 	AndroidID       string  `json:"android_id"`
 	TeamID          int     `json:"team_id"`
 	Brand           *string `json:"brand"`
-	Model           *string `json:"model"`
+	PhoneModel      *string `json:"phone_model"`
 	AndroidCodename *string `json:"android_codename"`
 	AndroidRelease  *string `json:"android_release"`
 }

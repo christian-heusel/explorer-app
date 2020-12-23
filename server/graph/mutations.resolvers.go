@@ -41,6 +41,25 @@ func (r *mutationResolver) CreateAnswer(ctx context.Context, stationNumber int, 
 	return &answer, nil
 }
 
+func (r *mutationResolver) CreateDevice(ctx context.Context, androidID string, teamID int, brand *string, phoneModel *string, androidCodename *string, androidRelease *string) (*model.Device, error) {
+	device := model.Device{
+		AndroidID:       androidID,
+		TeamID:          teamID,
+		Brand:           brand,
+		PhoneModel:      phoneModel,
+		AndroidCodename: androidCodename,
+		AndroidRelease:  androidRelease,
+	}
+
+	result := r.DB.Create(&device)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &device, nil
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 

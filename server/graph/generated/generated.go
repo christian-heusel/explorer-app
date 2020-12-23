@@ -57,12 +57,13 @@ type ComplexityRoot struct {
 		AndroidID       func(childComplexity int) int
 		AndroidRelease  func(childComplexity int) int
 		Brand           func(childComplexity int) int
-		Model           func(childComplexity int) int
+		PhoneModel      func(childComplexity int) int
 		TeamID          func(childComplexity int) int
 	}
 
 	Mutation struct {
 		CreateAnswer func(childComplexity int, stationNumber int, answerTime time.Time, resultOption *int, resultText *string, resultNumber *float64) int
+		CreateDevice func(childComplexity int, androidID string, teamID int, brand *string, phoneModel *string, androidCodename *string, androidRelease *string) int
 		CreateTeam   func(childComplexity int, name *string, members *int) int
 	}
 
@@ -89,6 +90,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CreateTeam(ctx context.Context, name *string, members *int) (*model.Team, error)
 	CreateAnswer(ctx context.Context, stationNumber int, answerTime time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error)
+	CreateDevice(ctx context.Context, androidID string, teamID int, brand *string, phoneModel *string, androidCodename *string, androidRelease *string) (*model.Device, error)
 }
 
 type executableSchema struct {
@@ -183,12 +185,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Device.Brand(childComplexity), true
 
-	case "Device.model":
-		if e.complexity.Device.Model == nil {
+	case "Device.phone_model":
+		if e.complexity.Device.PhoneModel == nil {
 			break
 		}
 
-		return e.complexity.Device.Model(childComplexity), true
+		return e.complexity.Device.PhoneModel(childComplexity), true
 
 	case "Device.team_id":
 		if e.complexity.Device.TeamID == nil {
@@ -208,6 +210,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateAnswer(childComplexity, args["station_number"].(int), args["answer_time"].(time.Time), args["result_option"].(*int), args["result_text"].(*string), args["result_number"].(*float64)), true
+
+	case "Mutation.createDevice":
+		if e.complexity.Mutation.CreateDevice == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createDevice_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateDevice(childComplexity, args["android_id"].(string), args["team_id"].(int), args["brand"].(*string), args["phone_model"].(*string), args["android_codename"].(*string), args["android_release"].(*string)), true
 
 	case "Mutation.createTeam":
 		if e.complexity.Mutation.CreateTeam == nil {
@@ -365,6 +379,15 @@ var sources = []*ast.Source{
     result_text: String
     result_number: Float
   ): Answer!
+
+  createDevice(
+    android_id: String!
+    team_id: Int!
+    brand: String
+    phone_model: String
+    android_codename: String
+    android_release: String
+  ): Device
 }
 `, BuiltIn: false},
 	{Name: "../api/schema.graphql", Input: `# GraphQL schema
@@ -402,7 +425,7 @@ type Device {
   android_id: String!
   team_id: Int!
   brand: String
-  model: String
+  phone_model: String
   android_codename: String
   android_release: String
 }
@@ -462,6 +485,66 @@ func (ec *executionContext) field_Mutation_createAnswer_args(ctx context.Context
 		}
 	}
 	args["result_number"] = arg4
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createDevice_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["android_id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("android_id"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["android_id"] = arg0
+	var arg1 int
+	if tmp, ok := rawArgs["team_id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("team_id"))
+		arg1, err = ec.unmarshalNInt2int(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["team_id"] = arg1
+	var arg2 *string
+	if tmp, ok := rawArgs["brand"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("brand"))
+		arg2, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["brand"] = arg2
+	var arg3 *string
+	if tmp, ok := rawArgs["phone_model"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("phone_model"))
+		arg3, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["phone_model"] = arg3
+	var arg4 *string
+	if tmp, ok := rawArgs["android_codename"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("android_codename"))
+		arg4, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["android_codename"] = arg4
+	var arg5 *string
+	if tmp, ok := rawArgs["android_release"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("android_release"))
+		arg5, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["android_release"] = arg5
 	return args, nil
 }
 
@@ -880,7 +963,7 @@ func (ec *executionContext) _Device_brand(ctx context.Context, field graphql.Col
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Device_model(ctx context.Context, field graphql.CollectedField, obj *model.Device) (ret graphql.Marshaler) {
+func (ec *executionContext) _Device_phone_model(ctx context.Context, field graphql.CollectedField, obj *model.Device) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -898,7 +981,7 @@ func (ec *executionContext) _Device_model(ctx context.Context, field graphql.Col
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Model, nil
+		return obj.PhoneModel, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1058,6 +1141,45 @@ func (ec *executionContext) _Mutation_createAnswer(ctx context.Context, field gr
 	res := resTmp.(*model.Answer)
 	fc.Result = res
 	return ec.marshalNAnswer2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐAnswer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createDevice(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createDevice_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateDevice(rctx, args["android_id"].(string), args["team_id"].(int), args["brand"].(*string), args["phone_model"].(*string), args["android_codename"].(*string), args["android_release"].(*string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*model.Device)
+	fc.Result = res
+	return ec.marshalODevice2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐDevice(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2632,8 +2754,8 @@ func (ec *executionContext) _Device(ctx context.Context, sel ast.SelectionSet, o
 			}
 		case "brand":
 			out.Values[i] = ec._Device_brand(ctx, field, obj)
-		case "model":
-			out.Values[i] = ec._Device_model(ctx, field, obj)
+		case "phone_model":
+			out.Values[i] = ec._Device_phone_model(ctx, field, obj)
 		case "android_codename":
 			out.Values[i] = ec._Device_android_codename(ctx, field, obj)
 		case "android_release":
@@ -2674,6 +2796,8 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "createDevice":
+			out.Values[i] = ec._Mutation_createDevice(ctx, field)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3378,6 +3502,13 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 		return graphql.Null
 	}
 	return graphql.MarshalBoolean(*v)
+}
+
+func (ec *executionContext) marshalODevice2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐDevice(ctx context.Context, sel ast.SelectionSet, v *model.Device) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Device(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOFloat2ᚖfloat64(ctx context.Context, v interface{}) (*float64, error) {

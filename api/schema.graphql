@@ -33,7 +33,7 @@ type Device {
   android_id: String!
   team_id: Int!
   brand: String
-  model: String
+  phone_model: String
   android_codename: String
   android_release: String
 }
