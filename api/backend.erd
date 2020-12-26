@@ -1,0 +1,49 @@
+# title {label: "Entity-Relationship Diagram für das Backend", size: "17"}
+
+# Nice colors from Erwiz:
+# red #fcecec
+# blue #ececfc
+# green #d0e0d0
+# yellow #fbfbdb
+# orange #eee0a0
+
+# Entities
+
+[team] {bgcolor: "#ececfc"}
+  *ID {label: "Int, not null"}
+  authcode {label: "String, not null"}
+  name {label: "String, null"}
+  members {label: "Int, null"}
+
+[answer] {bgcolor: "#ececfc"}
+  *ID {label: "Int, not null"}
+  station {label: "Station, not null"}
+  answer_time {label: "Time, not null"}
+  synchronization_time {label: "Time, not null"}
+  answer_type {label: "Int, not null"}
+  result_option {label: "Int, null"}
+  result_text {label: "Text, null"}
+  result_image {label: "Image, null"}
+  result_number {label: "Float, null"}
+
+[station] {bgcolor: "#ececfc"}
+  *ID {label: "Int, not null"}
+  points {label: "Int, not null"}
+  station_type {label: "Int, not null"}
+  coordinates {label: "String, null"}
+  grid_square {label: "String, null"}
+  title {label: "String, null"}
+
+[device] {bgcolor: "#ececfc"}
+  *ID {label: "String, not null"}
+  brand {label: "String, null"}
+  model {label: "String, null"}
+  android_codename {label: "String, null"}
+  android_release {label: "String, null"}
+  Team {label: "Team, not null"}
+
+# Relationships
+
+team   *--1 answer
+team   1--1 device
+answer 1--* station

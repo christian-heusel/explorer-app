@@ -1,28 +1,39 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
+# GraphQL schema
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+scalar Time
+
+type Team {
+  ID: Int!
+  authcode: String!
+  name: String
+  members: Int
 }
 
-type User {
-  id: ID!
-  name: String!
+type Answer {
+  ID: Int!
+  station: Station!
+  answer_time: Time!
+  synchronization_time: Time!
+  result_option: Int
+  result_text: String
+  # result_image: Image
+  result_number: Float
 }
 
-type Query {
-  todos: [Todo!]!
+type Station {
+  ID: Int!
+  points: Int!
+  station_type: Int!
+  coordinates: String
+  grid_square: String
+  title: String
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
-}
-
-type Mutation {
-  createTodo(input: NewTodo!): Todo!
+type Device {
+  ID: String!
+  team: Team!
+  brand: String
+  phone_model: String
+  android_codename: String
+  android_release: String
 }

@@ -1,0 +1,20 @@
+type Mutation {
+  createTeam(name: String, members: Int): Team!
+
+  createAnswer(
+    station_number: Int!
+    answer_time: Time!
+    result_option: Int
+    result_text: String
+    result_number: Float
+  ): Answer!
+
+  createDevice(
+    android_id: String!
+    team_id: Int!
+    brand: String
+    phone_model: String
+    android_codename: String
+    android_release: String
+  ): Device
+}
