@@ -7,11 +7,13 @@ Alle zugehörigen Issues sollten mit dem Label ["Backend"](https://github.com/ch
 ## Ausführen
 
 ```
-go run server.go
+sudo docker-compose up --build
 ```
-oder
+
+## Zurücksetzen 
+Achtung: Das Kommando löscht alle Daten in der DB!
 ```
-sudo docker-compose up
+sudo docker-compose down --volumes
 ```
 
 ## Typengenerierung aus der GraphQL API
