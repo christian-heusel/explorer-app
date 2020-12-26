@@ -25,11 +25,11 @@ func (r *mutationResolver) CreateTeam(ctx context.Context, name *string, members
 
 func (r *mutationResolver) CreateAnswer(ctx context.Context, stationNumber int, answerTime time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error) {
 	station := &model.Station{}
-	createStation := r.DB.First(station, stationNumber)
+	findStation := r.DB.First(station, stationNumber)
 
-	if createStation.Error != nil {
-		log.Print("Error while creating a station: ", createStation.Error)
-		return nil, createStation.Error
+	if findStation.Error != nil {
+		log.Print("Error while creating a station: ", findStation.Error)
+		return nil, findStation.Error
 	}
 	answer := model.Answer{
 		Station:             station,
@@ -51,11 +51,11 @@ func (r *mutationResolver) CreateAnswer(ctx context.Context, stationNumber int, 
 
 func (r *mutationResolver) CreateDevice(ctx context.Context, androidID string, teamID int, brand *string, phoneModel *string, androidCodename *string, androidRelease *string) (*model.Device, error) {
 	team := &model.Team{}
-	createTeam := r.DB.First(team, teamID)
+	findTeam := r.DB.First(team, teamID)
 
-	if createTeam.Error != nil {
-		log.Print("Error while creating a team: ", createTeam.Error)
-		return nil, createTeam.Error
+	if findTeam.Error != nil {
+		log.Print("Error while searching for the matching team: ", findTeam.Error)
+		return nil, findTeam.Error
 	}
 
 	device := model.Device{
