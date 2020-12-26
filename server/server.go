@@ -59,7 +59,7 @@ func createTeamFromSplice(db *gorm.DB, input []string) *gorm.DB {
 	return db.Create(&model.Team{
 		Name:     &input[0],
 		Members:  members,
-		Authcode: strings.Join(authcode, " "),
+		Authcode: strings.Join(authcode, "") + fmt.Sprint(*members),
 	})
 }
 
