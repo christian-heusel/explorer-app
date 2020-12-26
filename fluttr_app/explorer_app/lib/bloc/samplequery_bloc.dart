@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:artemis/client.dart';
 import 'package:artemis/schema/graphql_response.dart';
 import 'package:bloc/bloc.dart';
-import 'package:explorer_app/api_gen/graphql_api.graphql.dart';
+import 'package:explorer_app/api_gen/query.graphql.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:meta/meta.dart';
 
@@ -26,7 +26,7 @@ class SamplequeryBloc extends Bloc<SamplequeryEvent, SamplequeryState> {
       this.client = ArtemisClient(this.cfg.getValue("graphql_api_url"));
     }
     if (event is SamplequeryQueryApi) {
-      final simpleQuery = GetTodosQuery();
+      final simpleQuery = GetStationsQuery();
       final simpleQueryResponse = await this.client.execute(simpleQuery);
       if (!simpleQueryResponse.hasErrors) {
         yield SamplequeryRequestSucessfull(simpleQueryResponse);

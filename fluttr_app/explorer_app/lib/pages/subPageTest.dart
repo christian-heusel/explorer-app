@@ -68,7 +68,8 @@ class TestSql extends StatelessWidget {
               Center(
                 child: ((state is SamplequeryEmpty)
                     ? Text("")
-                    : Text(state.response.data.todos[0].id)),
+                    : Text("Titel der Station: " +
+                        state.response.data.getStations[0].title.toString())),
               ),
             ],
           );

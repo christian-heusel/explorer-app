@@ -3,14 +3,14 @@ targets:
     builders:
       artemis:
         options:
-          scalar_mapping:
-            - custom_parser_import: 'lib/util/coercers.dart'
-              graphql_type: Time
-              dart_type: DateTime
+          # scalar_mapping:
+          #   - custom_parser_import: 'lib/util/coercers.dart'
+          #     graphql_type: Time
+          #     dart_type: DateTime
           schema_mapping:
-            - output: lib/api_gen/queries.graphql.dart
+            - output: lib/api_gen/query.graphql.dart
               schema: api/schema.graphql
-              queries_glob: api/queries.graphql
+              queries_glob: api/getStations.graphql
     sources:
       - api/**.graphql
       - lib/**

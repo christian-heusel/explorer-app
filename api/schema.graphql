@@ -39,5 +39,6 @@ type Device {
 }
 
 type Query {
-  getStations: [Station]
+  query: Query
+  getStations(): [Station]
 }
