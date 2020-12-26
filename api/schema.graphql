@@ -11,7 +11,7 @@ type Team {
 
 type Answer {
   ID: Int!
-  station_number: Int!
+  station: Station
   answer_time: Time!
   synchronization_time: Time!
   result_option: Int
@@ -21,7 +21,7 @@ type Answer {
 }
 
 type Station {
-  station_number: Int!
+  ID: Int!
   points: Int!
   station_type: Int!
   coordinates: String
@@ -31,7 +31,7 @@ type Station {
 
 type Device {
   android_id: String!
-  team_id: Int!
+  team: Team!
   brand: String
   phone_model: String
   android_codename: String

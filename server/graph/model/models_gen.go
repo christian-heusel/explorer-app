@@ -8,7 +8,7 @@ import (
 
 type Answer struct {
 	ID                  int       `json:"ID"`
-	StationNumber       int       `json:"station_number"`
+	Station             *Station  `json:"station"`
 	AnswerTime          time.Time `json:"answer_time"`
 	SynchronizationTime time.Time `json:"synchronization_time"`
 	ResultOption        *int      `json:"result_option"`
@@ -18,7 +18,7 @@ type Answer struct {
 
 type Device struct {
 	AndroidID       string  `json:"android_id"`
-	TeamID          int     `json:"team_id"`
+	Team            *Team   `json:"team"`
 	Brand           *string `json:"brand"`
 	PhoneModel      *string `json:"phone_model"`
 	AndroidCodename *string `json:"android_codename"`
@@ -26,12 +26,12 @@ type Device struct {
 }
 
 type Station struct {
-	StationNumber int     `json:"station_number"`
-	Points        int     `json:"points"`
-	StationType   int     `json:"station_type"`
-	Coordinates   *string `json:"coordinates"`
-	GridSquare    *string `json:"grid_square"`
-	Title         *string `json:"title"`
+	ID          int     `json:"ID"`
+	Points      int     `json:"points"`
+	StationType int     `json:"station_type"`
+	Coordinates *string `json:"coordinates"`
+	GridSquare  *string `json:"grid_square"`
+	Title       *string `json:"title"`
 }
 
 type Team struct {

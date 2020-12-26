@@ -5,6 +5,7 @@ package graph
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/christian-heusel/explorer-app/server/graph/generated"
@@ -23,8 +24,15 @@ func (r *mutationResolver) CreateTeam(ctx context.Context, name *string, members
 }
 
 func (r *mutationResolver) CreateAnswer(ctx context.Context, stationNumber int, answerTime time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error) {
+	station := &model.Station{}
+	createStation := r.DB.First(station, stationNumber)
+
+	if createStation.Error != nil {
+		log.Print("Error while creating a station: ", createStation.Error)
+		return nil, createStation.Error
+	}
 	answer := model.Answer{
-		StationNumber:       stationNumber,
+		Station:             station,
 		AnswerTime:          answerTime,
 		SynchronizationTime: time.Now(),
 		ResultOption:        resultOption,
@@ -42,9 +50,17 @@ func (r *mutationResolver) CreateAnswer(ctx context.Context, stationNumber int, 
 }
 
 func (r *mutationResolver) CreateDevice(ctx context.Context, androidID string, teamID int, brand *string, phoneModel *string, androidCodename *string, androidRelease *string) (*model.Device, error) {
+	team := &model.Team{}
+	createTeam := r.DB.First(team, teamID)
+
+	if createTeam.Error != nil {
+		log.Print("Error while creating a team: ", createTeam.Error)
+		return nil, createTeam.Error
+	}
+
 	device := model.Device{
 		AndroidID:       androidID,
-		TeamID:          teamID,
+		Team:            team,
 		Brand:           brand,
 		PhoneModel:      phoneModel,
 		AndroidCodename: androidCodename,

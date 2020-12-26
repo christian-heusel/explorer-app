@@ -34,12 +34,12 @@ func getInt(input string) int {
 
 func createStationFromSplice(db *gorm.DB, input []string) *gorm.DB {
 	return db.Create(&model.Station{
-		StationNumber: getInt(input[0]),
-		Points:        getInt(input[1]),
-		StationType:   getInt(input[2]),
-		Coordinates:   &input[3],
-		GridSquare:    &input[4],
-		Title:         &input[5],
+		ID:          getInt(input[0]),
+		Points:      getInt(input[1]),
+		StationType: getInt(input[2]),
+		Coordinates: &input[3],
+		GridSquare:  &input[4],
+		Title:       &input[5],
 	})
 }
 
