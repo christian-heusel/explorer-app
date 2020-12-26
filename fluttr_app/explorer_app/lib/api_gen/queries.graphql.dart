@@ -5,6 +5,7 @@ import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
+import 'lib/util/coercers.dart';
 part 'queries.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
