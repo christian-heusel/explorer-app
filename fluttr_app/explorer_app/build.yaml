@@ -10,7 +10,7 @@ targets:
           schema_mapping:
             - output: lib/api_gen/query.graphql.dart
               schema: api/schema.graphql
-              queries_glob: api/getStations.graphql
+              queries_glob: api/queries/getStations.graphql
     sources:
       - api/**.graphql
       - lib/**
