@@ -18,7 +18,6 @@ import (
 	"github.com/christian-heusel/explorer-app/server/graph/model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/sethvargo/go-diceware/diceware"
 )
 
 const defaultPort = "8080"
@@ -51,15 +50,10 @@ func createTeamFromSplice(db *gorm.DB, input []string) *gorm.DB {
 		members = nil
 	}
 
-	authcode, err := diceware.Generate(2)
-	if err != nil {
-		log.Fatalln("Error while creating the password", err, authcode)
-	}
-
 	return db.Create(&model.Team{
 		Name:     &input[0],
 		Members:  members,
-		Authcode: strings.Join(authcode, "") + fmt.Sprint(*members),
+		Authcode: input[2],
 	})
 }
 
@@ -130,7 +124,7 @@ func initDB() *gorm.DB {
 	db.AutoMigrate(&model.Team{})
 
 	setupTableFromCSV(db, "initial_data/stations.csv", createStationFromSplice)
-	setupTableFromCSV(db, "initial_data/teams.csv", createTeamFromSplice)
+	setupTableFromCSV(db, "initial_data/teams_with_pw.csv", createTeamFromSplice)
 
 	return db
 }
