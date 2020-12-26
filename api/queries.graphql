@@ -1,3 +1,5 @@
-type Query {
-  getStations: [Station]
+query {
+  getStations {
+    ID
+  }
 }

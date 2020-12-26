@@ -5,55 +5,55 @@ import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
-part 'graphql_api.graphql.g.dart';
+part 'queries.graphql.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class GetTodos$Query$Todo with EquatableMixin {
-  GetTodos$Query$Todo();
+class Queries$Query$Station with EquatableMixin {
+  Queries$Query$Station();
 
-  factory GetTodos$Query$Todo.fromJson(Map<String, dynamic> json) =>
-      _$GetTodos$Query$TodoFromJson(json);
+  factory Queries$Query$Station.fromJson(Map<String, dynamic> json) =>
+      _$Queries$Query$StationFromJson(json);
 
-  String id;
+  int ID;
 
   @override
-  List<Object> get props => [id];
-  Map<String, dynamic> toJson() => _$GetTodos$Query$TodoToJson(this);
+  List<Object> get props => [ID];
+  Map<String, dynamic> toJson() => _$Queries$Query$StationToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class GetTodos$Query with EquatableMixin {
-  GetTodos$Query();
+class Queries$Query with EquatableMixin {
+  Queries$Query();
 
-  factory GetTodos$Query.fromJson(Map<String, dynamic> json) =>
-      _$GetTodos$QueryFromJson(json);
+  factory Queries$Query.fromJson(Map<String, dynamic> json) =>
+      _$Queries$QueryFromJson(json);
 
-  List<GetTodos$Query$Todo> todos;
+  List<Queries$Query$Station> getStations;
 
   @override
-  List<Object> get props => [todos];
-  Map<String, dynamic> toJson() => _$GetTodos$QueryToJson(this);
+  List<Object> get props => [getStations];
+  Map<String, dynamic> toJson() => _$Queries$QueryToJson(this);
 }
 
-class GetTodosQuery extends GraphQLQuery<GetTodos$Query, JsonSerializable> {
-  GetTodosQuery();
+class QueriesQuery extends GraphQLQuery<Queries$Query, JsonSerializable> {
+  QueriesQuery();
 
   @override
   final DocumentNode document = DocumentNode(definitions: [
     OperationDefinitionNode(
         type: OperationType.query,
-        name: NameNode(value: 'getTodos'),
+        name: null,
         variableDefinitions: [],
         directives: [],
         selectionSet: SelectionSetNode(selections: [
           FieldNode(
-              name: NameNode(value: 'todos'),
+              name: NameNode(value: 'getStations'),
               alias: null,
               arguments: [],
               directives: [],
               selectionSet: SelectionSetNode(selections: [
                 FieldNode(
-                    name: NameNode(value: 'id'),
+                    name: NameNode(value: 'ID'),
                     alias: null,
                     arguments: [],
                     directives: [],
@@ -63,11 +63,11 @@ class GetTodosQuery extends GraphQLQuery<GetTodos$Query, JsonSerializable> {
   ]);
 
   @override
-  final String operationName = 'getTodos';
+  final String operationName = 'queries';
 
   @override
   List<Object> get props => [document, operationName];
   @override
-  GetTodos$Query parse(Map<String, dynamic> json) =>
-      GetTodos$Query.fromJson(json);
+  Queries$Query parse(Map<String, dynamic> json) =>
+      Queries$Query.fromJson(json);
 }
