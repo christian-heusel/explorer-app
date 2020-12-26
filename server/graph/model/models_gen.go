@@ -17,7 +17,7 @@ type Answer struct {
 }
 
 type Device struct {
-	AndroidID       string  `json:"android_id"`
+	ID              string  `json:"ID"`
 	Team            *Team   `json:"team"`
 	Brand           *string `json:"brand"`
 	PhoneModel      *string `json:"phone_model"`
@@ -36,7 +36,7 @@ type Station struct {
 
 type Team struct {
 	ID       int     `json:"ID"`
-	Members  *int    `json:"members"`
 	Authcode string  `json:"authcode"`
 	Name     *string `json:"name"`
+	Members  *int    `json:"members"`
 }

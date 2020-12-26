@@ -10,14 +10,14 @@
 # Entities
 
 [team] {bgcolor: "#ececfc"}
-  *team_id {label: "Int, not null"}
+  *ID {label: "Int, not null"}
+  authcode {label: "String, not null"}
   name {label: "String, null"}
   members {label: "Int, null"}
-  authcode {label: "String, not null"}
 
 [answer] {bgcolor: "#ececfc"}
-  *answer_id {label: "Int, not null"}
-  station_number {label: "Int, not null"}
+  *ID {label: "Int, not null"}
+  station {label: "Station, not null"}
   answer_time {label: "Time, not null"}
   synchronization_time {label: "Time, not null"}
   answer_type {label: "Int, not null"}
@@ -27,7 +27,7 @@
   result_number {label: "Float, null"}
 
 [station] {bgcolor: "#ececfc"}
-  *station_number {label: "Int, not null"}
+  *ID {label: "Int, not null"}
   points {label: "Int, not null"}
   station_type {label: "Int, not null"}
   coordinates {label: "String, null"}
@@ -35,12 +35,12 @@
   title {label: "String, null"}
 
 [device] {bgcolor: "#ececfc"}
-  *android_id {label: "String, not null"}
+  *ID {label: "String, not null"}
   brand {label: "String, null"}
   model {label: "String, null"}
   android_codename {label: "String, null"}
   android_release {label: "String, null"}
-  team_id {label: "Int, not null"}
+  Team {label: "Team, not null"}
 
 # Relationships
 

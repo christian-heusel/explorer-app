@@ -28,7 +28,7 @@ func (r *mutationResolver) CreateAnswer(ctx context.Context, stationNumber int, 
 	findStation := r.DB.First(station, stationNumber)
 
 	if findStation.Error != nil {
-		log.Print("Error while creating a station: ", findStation.Error)
+		log.Print("Error while finding a matching station for answer: ", findStation.Error)
 		return nil, findStation.Error
 	}
 	answer := model.Answer{
@@ -59,7 +59,7 @@ func (r *mutationResolver) CreateDevice(ctx context.Context, androidID string, t
 	}
 
 	device := model.Device{
-		AndroidID:       androidID,
+		ID:              androidID,
 		Team:            team,
 		Brand:           brand,
 		PhoneModel:      phoneModel,

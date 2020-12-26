@@ -55,9 +55,9 @@ type ComplexityRoot struct {
 
 	Device struct {
 		AndroidCodename func(childComplexity int) int
-		AndroidID       func(childComplexity int) int
 		AndroidRelease  func(childComplexity int) int
 		Brand           func(childComplexity int) int
+		ID              func(childComplexity int) int
 		PhoneModel      func(childComplexity int) int
 		Team            func(childComplexity int) int
 	}
@@ -169,13 +169,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Device.AndroidCodename(childComplexity), true
 
-	case "Device.android_id":
-		if e.complexity.Device.AndroidID == nil {
-			break
-		}
-
-		return e.complexity.Device.AndroidID(childComplexity), true
-
 	case "Device.android_release":
 		if e.complexity.Device.AndroidRelease == nil {
 			break
@@ -189,6 +182,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Device.Brand(childComplexity), true
+
+	case "Device.ID":
+		if e.complexity.Device.ID == nil {
+			break
+		}
+
+		return e.complexity.Device.ID(childComplexity), true
 
 	case "Device.phone_model":
 		if e.complexity.Device.PhoneModel == nil {
@@ -412,14 +412,14 @@ scalar Time
 
 type Team {
   ID: Int!
-  members: Int
   authcode: String!
   name: String
+  members: Int
 }
 
 type Answer {
   ID: Int!
-  station: Station
+  station: Station!
   answer_time: Time!
   synchronization_time: Time!
   result_option: Int
@@ -438,7 +438,7 @@ type Station {
 }
 
 type Device {
-  android_id: String!
+  ID: String!
   team: Team!
   brand: String
   phone_model: String
@@ -701,11 +701,14 @@ func (ec *executionContext) _Answer_station(ctx context.Context, field graphql.C
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(*model.Station)
 	fc.Result = res
-	return ec.marshalOStation2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐStation(ctx, field.Selections, res)
+	return ec.marshalNStation2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐStation(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Answer_answer_time(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
@@ -874,7 +877,7 @@ func (ec *executionContext) _Answer_result_number(ctx context.Context, field gra
 	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Device_android_id(ctx context.Context, field graphql.CollectedField, obj *model.Device) (ret graphql.Marshaler) {
+func (ec *executionContext) _Device_ID(ctx context.Context, field graphql.CollectedField, obj *model.Device) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -892,7 +895,7 @@ func (ec *executionContext) _Device_android_id(ctx context.Context, field graphq
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.AndroidID, nil
+		return obj.ID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1534,38 +1537,6 @@ func (ec *executionContext) _Team_ID(ctx context.Context, field graphql.Collecte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Team_members(ctx context.Context, field graphql.CollectedField, obj *model.Team) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Team",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Members, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*int)
-	fc.Result = res
-	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Team_authcode(ctx context.Context, field graphql.CollectedField, obj *model.Team) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -1631,6 +1602,38 @@ func (ec *executionContext) _Team_name(ctx context.Context, field graphql.Collec
 	res := resTmp.(*string)
 	fc.Result = res
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Team_members(ctx context.Context, field graphql.CollectedField, obj *model.Team) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Team",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Members, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -2746,6 +2749,9 @@ func (ec *executionContext) _Answer(ctx context.Context, sel ast.SelectionSet, o
 			}
 		case "station":
 			out.Values[i] = ec._Answer_station(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "answer_time":
 			out.Values[i] = ec._Answer_answer_time(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -2784,8 +2790,8 @@ func (ec *executionContext) _Device(ctx context.Context, sel ast.SelectionSet, o
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Device")
-		case "android_id":
-			out.Values[i] = ec._Device_android_id(ctx, field, obj)
+		case "ID":
+			out.Values[i] = ec._Device_ID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2951,8 +2957,6 @@ func (ec *executionContext) _Team(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "members":
-			out.Values[i] = ec._Team_members(ctx, field, obj)
 		case "authcode":
 			out.Values[i] = ec._Team_authcode(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -2960,6 +2964,8 @@ func (ec *executionContext) _Team(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "name":
 			out.Values[i] = ec._Team_name(ctx, field, obj)
+		case "members":
+			out.Values[i] = ec._Team_members(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3258,6 +3264,16 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNStation2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐStation(ctx context.Context, sel ast.SelectionSet, v *model.Station) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Station(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
