@@ -18,6 +18,7 @@ import (
 	"github.com/christian-heusel/explorer-app/server/graph/model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/sethvargo/go-diceware/diceware"
 )
 
 const defaultPort = "8080"
@@ -31,7 +32,38 @@ func getInt(input string) int {
 	}
 }
 
-func setupStations(db *gorm.DB, filepath string) error {
+func createStationFromSplice(db *gorm.DB, input []string) *gorm.DB {
+	return db.Create(&model.Station{
+		StationNumber: getInt(input[0]),
+		Points:        getInt(input[1]),
+		StationType:   getInt(input[2]),
+		Coordinates:   &input[3],
+		GridSquare:    &input[4],
+		Title:         &input[5],
+	})
+}
+
+func createTeamFromSplice(db *gorm.DB, input []string) *gorm.DB {
+	var members *int
+	if result, err := strconv.Atoi(input[1]); err == nil {
+		members = &result
+	} else {
+		members = nil
+	}
+
+	authcode, err := diceware.Generate(2)
+	if err != nil {
+		log.Fatalln("Error while creating the password", err, authcode)
+	}
+
+	return db.Create(&model.Team{
+		Name:     &input[0],
+		Members:  members,
+		Authcode: strings.Join(authcode, " "),
+	})
+}
+
+func setupTableFromCSV(db *gorm.DB, filepath string, adapter func(*gorm.DB, []string) *gorm.DB) error {
 	// Open the file
 	csvfile, err := os.Open(filepath)
 	if err != nil {
@@ -42,11 +74,11 @@ func setupStations(db *gorm.DB, filepath string) error {
 	r := csv.NewReader(csvfile)
 
 	header, err := r.Read()
-	log.Println(strings.Join(header, ", "))
+	log.Println("Header:" + strings.Join(header, ", "))
 
-	// Iterate through the station
+	// Iterate through the csv data
 	for {
-		// Read each station from csv
+		// Read each row from csv
 		record, err := r.Read()
 		if err == io.EOF {
 			break
@@ -54,17 +86,9 @@ func setupStations(db *gorm.DB, filepath string) error {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("Line: ", strings.Join(record, ", "))
-		station := model.Station{
-			StationNumber: getInt(record[0]),
-			Points:        getInt(record[1]),
-			StationType:   getInt(record[2]),
-			Coordinates:   &record[3],
-			GridSquare:    &record[4],
-			Title:         &record[5],
-		}
+		log.Println("Line: ", strings.Join(record, ", "))
 
-		result := db.Create(&station)
+		result := adapter(db, record)
 
 		if result.Error != nil {
 			log.Fatalln("Error while inserting into the DB", result.Error)
@@ -105,7 +129,8 @@ func initDB() *gorm.DB {
 	db.AutoMigrate(&model.Station{})
 	db.AutoMigrate(&model.Team{})
 
-	setupStations(db, "initial_data/stations.csv")
+	setupTableFromCSV(db, "initial_data/stations.csv", createStationFromSplice)
+	setupTableFromCSV(db, "initial_data/teams.csv", createTeamFromSplice)
 
 	return db
 }
@@ -121,7 +146,7 @@ func main() {
 
 	if deploymentEnv == "testing" {
 		http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-		log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+		log.Printf("connect to http://127.0.0.1:%s/ for GraphQL playground", port)
 	}
 	http.Handle("/query", srv)
 
