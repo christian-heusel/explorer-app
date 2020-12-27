@@ -2,7 +2,7 @@ part of 'samplequery_bloc.dart';
 
 @immutable
 abstract class SamplequeryState {
-  final GraphQLResponse<GetTodos$Query> response;
+  final GraphQLResponse<GetStations$Query> response;
   SamplequeryState(this.response);
 }
 

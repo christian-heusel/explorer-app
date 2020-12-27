@@ -37,3 +37,7 @@ type Device {
   android_codename: String
   android_release: String
 }
+
+type Query {
+  getStations: [Station]
+}

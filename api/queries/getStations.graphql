@@ -1,0 +1,6 @@
+query getStations {
+  getStations {
+    ID
+    title
+  }
+}

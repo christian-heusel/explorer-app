@@ -402,10 +402,6 @@ var sources = []*ast.Source{
   ): Device
 }
 `, BuiltIn: false},
-	{Name: "../api/queries.graphql", Input: `type Query {
-  getStations: [Station]
-}
-`, BuiltIn: false},
 	{Name: "../api/schema.graphql", Input: `# GraphQL schema
 
 scalar Time
@@ -444,6 +440,10 @@ type Device {
   phone_model: String
   android_codename: String
   android_release: String
+}
+
+type Query {
+  getStations: [Station]
 }
 `, BuiltIn: false},
 }
