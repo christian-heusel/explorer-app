@@ -31,33 +31,47 @@ func getInt(input string) int {
 	}
 }
 
-func createStationFromSplice(db *gorm.DB, input []string) *gorm.DB {
+func createStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
+	// check that all the keys exist in the indexMap
+	for _, key := range [...]string{"id", "points", "station_type", "coordinates", "grid_square", "title"} {
+		if _, inserted := indexMap[key]; !inserted {
+			log.Fatalln("You are missing the", key, "column in the Stations CSV!")
+		}
+	}
+
 	return db.Create(&model.Station{
-		ID:          getInt(input[0]),
-		Points:      getInt(input[1]),
-		StationType: getInt(input[2]),
-		Coordinates: &input[3],
-		GridSquare:  &input[4],
-		Title:       &input[5],
+		ID:          getInt(input[indexMap["id"]]),
+		Points:      getInt(input[indexMap["points"]]),
+		StationType: getInt(input[indexMap["station_type"]]),
+		Coordinates: &input[indexMap["coordinates"]],
+		GridSquare:  &input[indexMap["grid_square"]],
+		Title:       &input[indexMap["title"]],
 	})
 }
 
-func createTeamFromSplice(db *gorm.DB, input []string) *gorm.DB {
+func createTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
+	// check that all the keys exist in the indexMap
+	for _, key := range [...]string{"name", "authcode", "members"} {
+		if _, inserted := indexMap[key]; !inserted {
+			log.Fatalln("You are missing the", key, "column in the Teams CSV!")
+		}
+	}
+
 	var members *int
-	if result, err := strconv.Atoi(input[1]); err == nil {
+	if result, err := strconv.Atoi(input[indexMap["members"]]); err == nil {
 		members = &result
 	} else {
 		members = nil
 	}
 
 	return db.Create(&model.Team{
-		Name:     &input[0],
+		Name:     &input[indexMap["name"]],
 		Members:  members,
-		Authcode: input[2],
+		Authcode: input[indexMap["authcode"]],
 	})
 }
 
-func setupTableFromCSV(db *gorm.DB, filepath string, adapter func(*gorm.DB, []string) *gorm.DB) error {
+func setupTableFromCSV(db *gorm.DB, filepath string, adapter func(*gorm.DB, []string, map[string]int) *gorm.DB) error {
 	// Open the file
 	csvfile, err := os.Open(filepath)
 	if err != nil {
@@ -70,6 +84,18 @@ func setupTableFromCSV(db *gorm.DB, filepath string, adapter func(*gorm.DB, []st
 	header, err := r.Read()
 	log.Println("Header:" + strings.Join(header, ", "))
 
+	indexMap := make(map[string]int)
+	for index, colHead := range header {
+		// Check that the value has not already been inserted
+		// since this would mean that we have a column twice
+		if _, inserted := indexMap[colHead]; inserted {
+			log.Fatalln("The column", colHead, "has already been inserted into the indexMap which means that you defined it twice in the CSV file!")
+		} else {
+			indexMap[strings.ToLower(colHead)] = index
+		}
+	}
+	log.Println(indexMap)
+
 	// Iterate through the csv data
 	for {
 		// Read each row from csv
@@ -80,9 +106,9 @@ func setupTableFromCSV(db *gorm.DB, filepath string, adapter func(*gorm.DB, []st
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println("Line: ", strings.Join(record, ", "))
+		log.Println("Line:", strings.Join(record, ", "))
 
-		result := adapter(db, record)
+		result := adapter(db, record, indexMap)
 
 		if result.Error != nil {
 			log.Fatalln("Error while inserting into the DB", result.Error)
