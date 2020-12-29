@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -144,15 +145,43 @@ func initDB() *gorm.DB {
 		db.LogMode(true)
 	}
 
-	db.AutoMigrate(&model.Answer{})
-	db.AutoMigrate(&model.Device{})
-	db.AutoMigrate(&model.Station{})
-	db.AutoMigrate(&model.Team{})
+	if hasToInitialize() {
+		db.AutoMigrate(&model.Answer{})
+		db.AutoMigrate(&model.Device{})
+		db.AutoMigrate(&model.Station{})
+		db.AutoMigrate(&model.Team{})
 
-	setupTableFromCSV(db, "initial_data/stations.csv", createStationFromSplice)
-	setupTableFromCSV(db, "initial_data/teams_with_pw.csv", createTeamFromSplice)
+		setupTableFromCSV(db, "initial_data/stations.csv", createStationFromSplice)
+		setupTableFromCSV(db, "initial_data/teams_with_pw.csv", createTeamFromSplice)
+
+		finishInitialization()
+	}
 
 	return db
+}
+
+func hasToInitialize() bool {
+	_, fileErr := os.Stat("/initialized")
+	forceInitialization, envPresent := os.LookupEnv("FORCE_INITIALIZATION")
+
+	if envPresent {
+		if forceInitializationBool, err := strconv.ParseBool(forceInitialization); err == nil {
+			log.Println("envvar 'FORCE_INITIALIZATION' has value", forceInitializationBool)
+			return forceInitializationBool
+		}
+		log.Fatalln(forceInitialization, "is not parsable as a bool.")
+	}
+	log.Println("No envvar 'FORCE_INITIALIZATION' found!")
+	log.Println("File '/initialized' exists:", !os.IsNotExist(fileErr))
+	return os.IsNotExist(fileErr)
+}
+
+func finishInitialization() {
+	err := ioutil.WriteFile("/initialized", []byte("intialized"), 0755)
+	if err != nil {
+		log.Printf("Unable to write file: %v", err)
+	}
+	log.Println("--> Finished the initialization! <--")
 }
 
 func main() {
