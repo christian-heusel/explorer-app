@@ -1,58 +1,67 @@
 // Copyright 2018 The Flutter Architecture Sample Authors. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found
 // in the LICENSE file.
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:explorer_app/models/answer.dart';
 
 class TodoEntity extends Equatable {
-  final bool complete;
-  final String id;
-  final String note;
-  final String task;
 
-  const TodoEntity(this.task, this.id, this.note, this.complete);
+  final int id;
+  final int type;
+  final bool complete;
+
+  final String task;
+  final Answer userInput;
+
+  const TodoEntity( this.id, this.type, this.complete, this.task, this.userInput);
 
   Map<String, Object> toJson() {
     return {
+      'id': id,
+      'type': type,
       'complete': complete,
       'task': task,
-      'note': note,
-      'id': id,
+      'userInput': userInput,
     };
   }
 
   @override
-  List<Object> get props => [complete, id, note, task];
+  List<Object> get props => [ id, type, complete, task, userInput];
 
   @override
   String toString() {
-    return 'TodoEntity { complete: $complete, task: $task, note: $note, id: $id }';
+    return 'TodoEntity {  id: $id, type:$type, complete: $complete, task: $task, }';
   }
 
-  static TodoEntity fromJson(Map<String, Object> json) {
+  static TodoEntity fromJson(Map<String, dynamic> json) {
     return TodoEntity(
-      json['task'] as String,
-      json['id'] as String,
-      json['note'] as String,
+      json['id'] as int,
+      json['type'] as int,
       json['complete'] as bool,
+      json['task'] as String,
+      Answer.fromJson(json['userInput']),
     );
   }
 
+
   static TodoEntity fromSnapshot(DocumentSnapshot snap) {
     return TodoEntity(
-      snap.data()['task'],
-      snap.id,
-      snap.data()['note'],
+      snap.data()['id'],
+      snap.data()['type'],
       snap.data()['complete'],
+      snap.data()['task'],
+      snap.data()['userInput'],
     );
   }
 
   Map<String, Object> toDocument() {
     return {
+      'id': id,
+      'type': type,
       'complete': complete,
       'task': task,
-      'note': note,
+      'userInput': userInput,
     };
   }
 }

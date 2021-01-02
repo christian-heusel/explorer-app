@@ -4,7 +4,8 @@
 
 import 'dart:async';
 import "package:explorer_app/externalFiles/todo_entity.dart";
-
+import 'package:explorer_app/models/todo.dart';
+//import 'package:explorer_app/models/answer.dart';
 
 abstract class TodosRepository {
   Future<void> addNewTodo(Todo todo);
@@ -16,29 +17,44 @@ abstract class TodosRepository {
   Future<void> updateTodo(Todo todo);
 }
 
-
+/*
 class Todo {
+  final int id;
+  final int type; //which type of quest?
+
   final bool complete;
-  final String id;
-  final String note;
-  final String task;
+  //we neede date and time(in the future)
 
-  Todo(this.task, {this.complete = false, String note = '', String id})
-      : this.note = note ?? '',
-        this.id = id;
+  final String task; //um die aufgabe zu beschreiben
+  final Answer userInput;
 
-  Todo copyWith({bool complete, String id, String note, String task}) {
+  Todo.fromScratch(
+      this.id,
+      this.type, {
+        this.complete = false,
+        this.task = '',
+      }): userInput = Answer(type);
+
+  Todo(this.id,
+      this.type,
+      this.complete,
+      this.task,
+      this.userInput
+      );
+
+  Todo copyWith({int id, int type, bool complete,String task, Answer userInput}) {
     return Todo(
+      id ?? this.id,
+      type ?? this.type,
+      complete ?? this.complete,
       task ?? this.task,
-      complete: complete ?? this.complete,
-      id: id ?? this.id,
-      note: note ?? this.note,
+      userInput ?? this.userInput,
     );
   }
 
   @override
   int get hashCode =>
-      complete.hashCode ^ task.hashCode ^ note.hashCode ^ id.hashCode;
+      complete.hashCode ^ task.hashCode ^ type.hashCode ^ id.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -47,24 +63,26 @@ class Todo {
               runtimeType == other.runtimeType &&
               complete == other.complete &&
               task == other.task &&
-              note == other.note &&
+              type == other.type &&
               id == other.id;
 
   @override
   String toString() {
-    return 'Todo{complete: $complete, task: $task, note: $note, id: $id}';
+    return 'Todo { id: $id, complete: $complete, type: $type, task: $task, Answer: '+ userInput.toString() +'}';
   }
 
   TodoEntity toEntity() {
-    return TodoEntity(task, id, note, complete);
+    return TodoEntity(this.id, this.type, this.complete, this.task, this.userInput);
   }
 
   static Todo fromEntity(TodoEntity entity) {
     return Todo(
+      entity.id,
+      entity.type,
+      entity.complete,
       entity.task,
-      complete: entity.complete ?? false,
-      note: entity.note,
-      id: entity.id,
+      entity.userInput,
     );
   }
 }
+*/

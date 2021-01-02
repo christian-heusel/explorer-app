@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:explorer_app/externalFiles/todo_entity.dart';
+import 'package:explorer_app/models/answer.dart';
 
 /// A class that is meant to represent a Client that would be used to call a Web
 /// Service. It is responsible for fetching and persisting Todos to and from the
@@ -23,35 +24,37 @@ class WebClient {
         delay,
         () => [
               TodoEntity(
-                'Buy food for da kitty',
-                '1',
-                'With the chickeny bits!',
-                false,
+                  1,
+                  AnswerTypes.text,
+                  false,
+                  'eins',
+                  Answer(AnswerTypes.text, note:"antwort 1")
               ),
               TodoEntity(
-                'Find a Red Sea dive trip',
-                '2',
-                'Echo vs MY Dream',
-                false,
+                  2,
+                  AnswerTypes.text,
+                  false,
+                  'zwei',
+                  Answer(AnswerTypes.text)
+              ),
+             /*TodoEntity(
+                  3,
+                  AnswerTypes.text,
+                  false,'',
+                  Answer(AnswerTypes.text)
               ),
               TodoEntity(
-                'Book flights to Egypt',
-                '3',
-                '',
-                true,
+                  4,
+                  AnswerTypes.text,
+                  false,'',
+                  Answer(AnswerTypes.text)
               ),
               TodoEntity(
-                'Decide on accommodation',
-                '4',
-                '',
-                false,
-              ),
-              TodoEntity(
-                'Sip Margaritas',
-                '5',
-                'on the beach',
-                true,
-              ),
+                  5,
+                  AnswerTypes.text,
+                  false,'',
+                  Answer(AnswerTypes.text)
+              ),*/
             ]);
   }
 

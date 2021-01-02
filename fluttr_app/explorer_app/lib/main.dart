@@ -66,17 +66,17 @@ class TodosApp extends StatelessWidget {
             child: HomeScreen(),
           );
         },
-        '/addTodo': (context) {   //ArchsampleRoutes TODO siehe oben
+       /* '/addTodo': (context) {   //ArchsampleRoutes TODO siehe oben
           return AddEditScreen(
             key: ArchSampleKeys.addTodoScreen,
-            onSave: (task, note) {
+            onSave: (userInput) {
               BlocProvider.of<TodosBloc>(context).add(
                 TodoAdded(Todo(task, note: note)),
               );
             },
             isEditing: false,
           );
-        },
+        },*/
       },
     );
   }

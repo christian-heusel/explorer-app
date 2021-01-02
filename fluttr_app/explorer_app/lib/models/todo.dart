@@ -1,48 +1,66 @@
 import 'package:explorer_app/externalFiles/uuid.dart';
 import 'package:equatable/equatable.dart';
 import 'package:explorer_app/externalFiles/todo_entity.dart';
+import 'answer.dart';
+
 
 class Todo extends Equatable {
+  //ID from Quest
+  final int id;
+  final int type; //which type of quest?
+
   final bool complete;
-  final String id;
-  final String note;
-  final String task;
+  //we neede date and time(in the future)
 
-  Todo(
-    this.task, {
-    this.complete = false,
-    String note = '',
-    String id,
-  })  : this.note = note ?? '',
-        this.id = id ?? Uuid().generateV4();
+  final String task; //um die aufgabe zu beschreiben
+  final Answer userInput;
 
-  Todo copyWith({bool complete, String id, String note, String task}) {
+
+
+  Todo.fromScratch(
+    this.id,
+    this.type, {
+      this.complete = false,
+      this.task = '',
+  }): userInput = Answer(type);
+
+  Todo(this.id,
+      this.type,
+      this.complete,
+      this.task,
+      this.userInput
+      );
+
+
+  Todo copyWith({int id, AnswerTypes type, bool complete,String task, Answer userInput}) {
     return Todo(
+      id ?? this.id,
+      type ?? this.type,
+      complete ?? this.complete,
       task ?? this.task,
-      complete: complete ?? this.complete,
-      id: id ?? this.id,
-      note: note ?? this.note,
+      userInput ?? this.userInput,
     );
   }
 
   @override
-  List<Object> get props => [complete, id, note, task];
+  List<Object> get props => [id, type, complete, task, userInput];
 
   @override
   String toString() {
-    return 'Todo { complete: $complete, task: $task, note: $note, id: $id }';
+    return 'Todo { id: $id, complete: $complete, type: $type, task: $task, Answer: '+ userInput.toString() +'}';
   }
 
   TodoEntity toEntity() {
-    return TodoEntity(task, id, note, complete);
+    return TodoEntity(this.id, this.type, this.complete, this.task, this.userInput);
   }
 
   static Todo fromEntity(TodoEntity entity) {
     return Todo(
+      entity.id,
+      entity.type,
+      entity.complete,
       entity.task,
-      complete: entity.complete ?? false,
-      note: entity.note,
-      id: entity.id ?? Uuid().generateV4(),
+      entity.userInput,
     );
   }
 }

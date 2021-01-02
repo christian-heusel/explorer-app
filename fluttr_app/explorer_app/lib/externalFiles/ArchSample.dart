@@ -218,16 +218,16 @@ class ArchSampleKeys {
   static const homeScreen = Key('__homeScreen__');
   static const addTodoFab = Key('__addTodoFab__');
   static const snackbar = Key('__snackbar__');
-  static Key snackbarAction(String id) => Key('__snackbar_action_${id}__');
+  static Key snackbarAction(int id) => Key('__snackbar_action_${id}__');
 
   // Todos
   static const todoList = Key('__todoList__');
   static const todosLoading = Key('__todosLoading__');
-  static final todoItem = (String id) => Key('TodoItem__${id}');
+  static final todoItem = (int id) => Key('TodoItem__${id}');
   static final todoItemCheckbox =
-      (String id) => Key('TodoItem__${id}__Checkbox');
-  static final todoItemTask = (String id) => Key('TodoItem__${id}__Task');
-  static final todoItemNote = (String id) => Key('TodoItem__${id}__Note');
+      (int id) => Key('TodoItem__${id}__Checkbox');
+  static final todoItemTask = (int id) => Key('TodoItem__${id}__Task');
+  static final todoItemNote = (int id) => Key('TodoItem__${id}__Note');
 
   // Tabs
   static const tabs = Key('__tabs__');

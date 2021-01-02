@@ -7,7 +7,7 @@ import 'package:explorer_app/screens/screens.dart';
 import 'package:explorer_app/flutter_todos_keys.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final String id;
+  final int id;
 
   DetailsScreen({Key key, @required this.id})
       : super(key: key ?? ArchSampleKeys.todoDetailsScreen);
@@ -70,7 +70,7 @@ class DetailsScreen extends StatelessWidget {
                                       bottom: 16.0,
                                     ),
                                     child: Text(
-                                      todo.task,
+                                      todo.id.toString(),
                                       key: ArchSampleKeys.detailsTodoItemTask,
                                       style:
                                           Theme.of(context).textTheme.headline5,
@@ -78,7 +78,7 @@ class DetailsScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  todo.note,
+                                  todo.userInput.toString(),
                                   key: ArchSampleKeys.detailsTodoItemNote,
                                   style: Theme.of(context).textTheme.subtitle1,
                                 ),
@@ -102,10 +102,10 @@ class DetailsScreen extends StatelessWidget {
                         builder: (context) {
                           return AddEditScreen(
                             key: ArchSampleKeys.editTodoScreen,
-                            onSave: (task, note) {
+                            onSave: (userInput) {
                               BlocProvider.of<TodosBloc>(context).add(
                                 TodoUpdated(
-                                  todo.copyWith(task: task, note: note),
+                                  todo.copyWith(userInput: userInput),
                                 ),
                               );
                             },

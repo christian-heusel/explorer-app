@@ -34,15 +34,15 @@ class TodoItem extends StatelessWidget {
           child: Container(
             width: MediaQuery.of(context).size.width,
             child: Text(
-              todo.task,
+              todo.id.toString(),
               key: ArchSampleKeys.todoItemTask(todo.id),
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
         ),
-        subtitle: todo.note.isNotEmpty
+        subtitle: todo.userInput.note.isNotEmpty
             ? Text(
-                todo.note,
+                todo.userInput.note,
                 key: ArchSampleKeys.todoItemNote(todo.id),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
