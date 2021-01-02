@@ -6,7 +6,6 @@
 
 - name: docker setup
   hosts:
-    - server
     - raspberrys
   vars:
     docker_apt_arch: armhf
