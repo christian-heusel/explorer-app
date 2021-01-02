@@ -26,6 +26,7 @@ class FileStorage {
     final file = await _getLocalFile();
     final string = await file.readAsString();
     final json = JsonDecoder().convert(string);
+    print('\n test- LOAD: ' +string);
     final todos = (json['todos'])
         .map<TodoEntity>((todo) => TodoEntity.fromJson(todo))
         .toList();
@@ -35,7 +36,9 @@ class FileStorage {
 
   Future<File> saveTodos(List<TodoEntity> todos) async {
     final file = await _getLocalFile();
-
+    print('\n TESt -Save: ' + JsonEncoder().convert({
+      'todos': todos.map((todo) => todo.toJson()).toList(),
+    }));
     return file.writeAsString(JsonEncoder().convert({
       'todos': todos.map((todo) => todo.toJson()).toList(),
     }));

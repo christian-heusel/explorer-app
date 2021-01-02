@@ -2,8 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer_app/externalFiles/ArchSample.dart';
 import 'package:explorer_app/models/models.dart';
+import 'package:explorer_app/models/answer.dart';
 
-typedef OnSaveCallback = Function(String task, String note);
+typedef OnSaveCallback = Function(Answer userInput);
 
 class AddEditScreen extends StatefulWidget {
   final bool isEditing;
@@ -47,7 +48,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
           child: ListView(
             children: [
               TextFormField(
-                initialValue: isEditing ? widget.todo.task : '',
+                initialValue: isEditing ? widget.todo.id.toString() : '',
                 key: ArchSampleKeys.taskField,
                 autofocus: !isEditing,
                 style: textTheme.headline5,
@@ -62,7 +63,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 onSaved: (value) => _task = value,
               ),
               TextFormField(
-                initialValue: isEditing ? widget.todo.note : '',
+                initialValue: isEditing ? widget.todo.userInput.note : '',
                 key: ArchSampleKeys.noteField,
                 maxLines: 10,
                 style: textTheme.subtitle1,
@@ -83,7 +84,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            widget.onSave(_task, _note);
+            //widget.onSave(_task, _note);
+            widget.onSave(Answer(widget.todo.type, note: _note));
             Navigator.pop(context);
           }
         },
