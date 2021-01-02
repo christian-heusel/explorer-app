@@ -3,6 +3,8 @@
   community.general.docker_compose:
     project_src: "{{ project_root }}{{ project_name }}"
     state: absent
+    remove_volumes: yes
+    timeout: 120
   listen: apply the new initial data
 
 - name: set the initialize env var for the container
@@ -16,12 +18,19 @@
   community.general.docker_compose:
     project_src: "{{ project_root }}{{ project_name }}"
     state: present
+    timeout: 600
+  listen: apply the new initial data
+
+- name: wait until the db is initialzed
+  wait_for:
+    path: "{{ project_root }}{{ project_name }}/server/initial_data/ansible_initialized"
   listen: apply the new initial data
 
 - name: stop the docker containers
   community.general.docker_compose:
     project_src: "{{ project_root }}{{ project_name }}"
     stopped: yes
+    timeout: 120
   listen: apply the new initial data
 
 - name: unset the initialize env var for the container
@@ -34,4 +43,5 @@
   community.general.docker_compose:
     project_src: "{{ project_root }}{{ project_name }}"
     state: present
+    timeout: 120
   listen: apply the new initial data
