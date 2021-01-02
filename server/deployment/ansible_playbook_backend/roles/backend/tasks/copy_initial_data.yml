@@ -1,0 +1,13 @@
+---
+- name: copy the CSV files with the intial data
+  copy:
+    src: "{{ item }}"
+    dest: "{{ project_root }}{{ project_name }}/server/initial_data/{{ item }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_items:
+    - stations.csv
+    - teams_with_pw.csv
+  notify:
+    - apply the new initial data
