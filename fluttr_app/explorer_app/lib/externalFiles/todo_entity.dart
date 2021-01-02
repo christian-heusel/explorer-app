@@ -1,7 +1,6 @@
 // Copyright 2018 The Flutter Architecture Sample Authors. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found
 // in the LICENSE file.
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:explorer_app/models/answer.dart';
 
@@ -42,26 +41,5 @@ class TodoEntity extends Equatable {
       json['task'] as String,
       Answer.fromJson(json['userInput']),
     );
-  }
-
-
-  static TodoEntity fromSnapshot(DocumentSnapshot snap) {
-    return TodoEntity(
-      snap.data()['id'],
-      snap.data()['type'],
-      snap.data()['complete'],
-      snap.data()['task'],
-      snap.data()['userInput'],
-    );
-  }
-
-  Map<String, Object> toDocument() {
-    return {
-      'id': id,
-      'type': type,
-      'complete': complete,
-      'task': task,
-      'userInput': userInput,
-    };
   }
 }
