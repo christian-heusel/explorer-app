@@ -1,11 +1,13 @@
 ---
 - name: general setup
-  hosts: server
+  hosts: raspberrys
   roles:
     - usersetup
 
 - name: docker setup
-  hosts: server
+  hosts:
+    - server
+    - raspberrys
   vars:
     docker_apt_arch: armhf
     docker_install_compose: false
@@ -21,16 +23,20 @@
       oh_my_zsh_theme: geoffgarside
 
 - name: project setup
-  hosts: server
+  hosts:
+    - server
+    - raspberrys
   roles:
     - backend
 
-- hosts: server
+- hosts:
+    - raspberrys
   vars_files:
     - vars/apache.yml
   roles:
     - { role: geerlingguy.apache }
 
-- hosts: server
+- hosts:
+   - raspberrys
   roles:
    - ansible-wifi-router
