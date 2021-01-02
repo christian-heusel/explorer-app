@@ -1,7 +1,7 @@
 ---
 - name: Check that the config files exist
   stat:
-    path: "{{ item }}"
+    path: "{{ project_root }}{{ project_name }}/server/{{ item }}"
   register: stat_result
   with_items:
     - "explorer_app-server_db.env"
@@ -27,3 +27,4 @@
   community.general.docker_compose:
     project_src: "{{ project_root }}{{ project_name }}"
     state: present
+    build: yes
