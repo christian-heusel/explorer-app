@@ -7,6 +7,12 @@
     timeout: 120
   listen: apply the new initial data
 
+- name: Remove file (delete file)
+  file:
+    path: "{{ project_root }}{{ project_name }}/server/initial_data/ansible_initialized"
+    state: absent
+  listen: apply the new initial data
+
 - name: set the initialize env var for the container
   lineinfile:
     path: "{{ project_root }}{{ project_name }}/server/explorer_app-server.env"
