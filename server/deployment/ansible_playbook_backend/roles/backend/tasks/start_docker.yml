@@ -9,14 +9,13 @@
 
 - name: create the .env files, if they dont exist already
   copy:
-    src: "{{ project_root }}{{ project_name }}/server/{{ item }}"
-    dest: "{{ project_root }}{{ project_name }}/server/{{ item.split('.')[0] + '.' + item.split('.')[1] }}"
+    src: "{{ project_root }}{{ project_name }}/server/{{ item.name }}"
+    dest: "{{ project_root }}{{ project_name }}/server/{{ item..name.split('.')[0] + '.' + item.name.split('.')[1] }}"
     remote_src: yes
     mode: 0600
   with_items:
-    - "explorer_app-server_db.env.example"
-    - "explorer_app-server.env.example"
-  when: not stat_result.stat.exists
+    - "{{ stat_result.results }}"
+  when: not item.stat.exists
 
 - name: install docker-compose
   apt:

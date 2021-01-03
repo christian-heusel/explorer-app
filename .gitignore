@@ -27,3 +27,4 @@ server/testdb.sqlite3
 
 **/*.ast.g.dart
 **/*.csv
+server/initial_data/ansible_initialized
