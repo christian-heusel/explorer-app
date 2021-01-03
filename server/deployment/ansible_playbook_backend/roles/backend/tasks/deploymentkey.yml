@@ -5,7 +5,7 @@
     state: directory
     mode: 0755
 
-- name: Copy file with owner and permissions
+- name: copy the ssh deployment key to the host
   copy:
     src: explorer_app-server-key
     dest: /root/.ssh/explorer_app-server-key

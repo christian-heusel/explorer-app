@@ -1,0 +1,58 @@
+---
+
+- name: dump the database before deletion
+  shell: docker-compose -f {{ project_root }}{{ project_name }}/docker-compose.yml exec explorer_app-server_db pg_dump -U explorer database | gzip -9 > /root/$(date +%Y-%m-%d-%H:%M).sql.gz
+  listen: apply the new initial data
+
+- name: remove the old container including its data
+  community.general.docker_compose:
+    project_src: "{{ project_root }}{{ project_name }}"
+    state: absent
+    remove_volumes: yes
+    timeout: 120
+  listen: apply the new initial data
+
+- name: Remove file (delete file)
+  file:
+    path: "{{ project_root }}{{ project_name }}/server/initial_data/ansible_initialized"
+    state: absent
+  listen: apply the new initial data
+
+- name: set the initialize env var for the container
+  lineinfile:
+    path: "{{ project_root }}{{ project_name }}/server/explorer_app-server.env"
+    state: absent
+    regexp: '^FORCE_INITIALIZATION='
+  listen: apply the new initial data
+
+- name: start the docker containers with init env
+  community.general.docker_compose:
+    project_src: "{{ project_root }}{{ project_name }}"
+    state: present
+    timeout: 600
+  listen: apply the new initial data
+
+- name: wait until the db is initialzed
+  wait_for:
+    path: "{{ project_root }}{{ project_name }}/server/initial_data/ansible_initialized"
+  listen: apply the new initial data
+
+- name: stop the docker containers
+  community.general.docker_compose:
+    project_src: "{{ project_root }}{{ project_name }}"
+    stopped: yes
+    timeout: 120
+  listen: apply the new initial data
+
+- name: unset the initialize env var for the container
+  lineinfile:
+    path: "{{ project_root }}{{ project_name }}/server/explorer_app-server.env"
+    line: "FORCE_INITIALIZATION=false"
+  listen: apply the new initial data
+
+- name: restart the docker container
+  community.general.docker_compose:
+    project_src: "{{ project_root }}{{ project_name }}"
+    state: present
+    timeout: 120
+  listen: apply the new initial data

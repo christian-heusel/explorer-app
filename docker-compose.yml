@@ -26,7 +26,6 @@ services:
       - type: bind
         source: ./server/initial_data/
         target: /go/src/initial_data/
-        read_only: true
     depends_on:
       - explorer_app-server_db
 
