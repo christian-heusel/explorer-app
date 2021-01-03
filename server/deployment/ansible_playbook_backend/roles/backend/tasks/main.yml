@@ -1,5 +1,6 @@
 ---
-- include_tasks: deploymentkey.yml
+- name: includes to setup the deploymentkey
+  include_tasks: deploymentkey.yml
 
 - name: Creates Project directory
   file:
@@ -16,9 +17,12 @@
     version: master
   register: git__project_checkout
 
-- include_tasks: copy_initial_data.yml
+- name: includes copy the intial data for the db
+  include_tasks: copy_initial_data.yml
 
-- include_tasks: start_docker.yml
+- name: setup and build the container environment
+  include_tasks: start_docker.yml
   when: git__project_checkout.changed
 
-- include_tasks: setup_apache.yml
+- name: install apache2
+  include_tasks: setup_apache.yml
