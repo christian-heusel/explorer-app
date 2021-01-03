@@ -1,4 +1,9 @@
 ---
+
+- name: dump the database before deletion
+  shell: docker-compose -f {{ project_root }}{{ project_name }}/docker-compose.yml exec explorer_app-server_db pg_dump -U explorer database | gzip -9 > /root/$(date +%Y-%m-%d-%H:%M).sql.gz
+  listen: apply the new initial data
+
 - name: remove the old container including its data
   community.general.docker_compose:
     project_src: "{{ project_root }}{{ project_name }}"
