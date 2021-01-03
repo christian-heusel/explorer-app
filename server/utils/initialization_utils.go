@@ -121,9 +121,9 @@ func FinishInitialization() {
 	if err != nil {
 		log.Printf("Unable to write file: %v", err)
 	}
-	err := ioutil.WriteFile("initial_data/ansible_initialized", []byte("intialized"), 0755)
-	if err != nil {
-		log.Printf("Unable to write file: %v", err)
+	ansibleErr := ioutil.WriteFile("initial_data/ansible_initialized", []byte("intialized"), 0755)
+	if ansibleErr != nil {
+		log.Printf("Unable to write file: %v", ansibleErr)
 	}
 	log.Println("--> Finished the initialization! <--")
 }
