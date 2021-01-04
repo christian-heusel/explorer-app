@@ -29,6 +29,14 @@ func checkForColHeaders(indexMap map[string]int, necessary []string, optional []
 	}
 }
 
+func getOptionalString(input []string, indexMap map[string]int, key string) *string {
+	if index, ok := indexMap[key]; ok {
+		return &input[index]
+	} else {
+		return nil
+	}
+}
+
 func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
 	necessaryHeaders := []string{"id", "points", "station_type"}
 	optionalHeaders := []string{"coordinates", "grid_square", "title"}
@@ -39,9 +47,9 @@ func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]in
 		ID:          getInt(input[indexMap["id"]]),
 		Points:      getInt(input[indexMap["points"]]),
 		StationType: getInt(input[indexMap["station_type"]]),
-		Coordinates: &input[indexMap["coordinates"]],
-		GridSquare:  &input[indexMap["grid_square"]],
-		Title:       &input[indexMap["title"]],
+		Coordinates: getOptionalString(input, indexMap, "coordinates"),
+		GridSquare:  getOptionalString(input, indexMap, "grid_square"),
+		Title:       getOptionalString(input, indexMap, "title"),
 	})
 }
 
@@ -59,7 +67,8 @@ func CreateTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) 
 	}
 
 	return db.Create(&model.Team{
-		Name:     &input[indexMap["name"]],
+		Name:     getOptionalString(input, indexMap, "name"),
+		Hometown: getOptionalString(input, indexMap, "hometown"),
 		Members:  members,
 		Authcode: input[indexMap["authcode"]],
 	})
