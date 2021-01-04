@@ -14,10 +14,17 @@ import (
 )
 
 func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
-	// check that all the keys exist in the indexMap
-	for _, key := range [...]string{"id", "points", "station_type", "coordinates", "grid_square", "title"} {
+	// check that all the necessary keys exist in the indexMap
+	for _, key := range [...]string{"id", "points", "station_type"} {
 		if _, inserted := indexMap[key]; !inserted {
 			log.Fatalln("You are missing the", key, "column in the Stations CSV!")
+		}
+	}
+
+	// check for all the optional keys in the indexMap
+	for _, key := range [...]string{"coordinates", "grid_square", "title"} {
+		if _, inserted := indexMap[key]; !inserted {
+			log.Println("You are missing the optional", key, "column in the Stations CSV!")
 		}
 	}
 
@@ -32,10 +39,17 @@ func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]in
 }
 
 func CreateTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
-	// check that all the keys exist in the indexMap
-	for _, key := range [...]string{"name", "authcode", "members"} {
+	// check that all the necessary keys exist in the indexMap
+	for _, key := range [...]string{"authcode"} {
 		if _, inserted := indexMap[key]; !inserted {
 			log.Fatalln("You are missing the", key, "column in the Teams CSV!")
+		}
+	}
+
+	// check for all the optional keys in the indexMap
+	for _, key := range [...]string{"name", "members"} {
+		if _, inserted := indexMap[key]; !inserted {
+			log.Println("You are missing the optional", key, "column in the Stations CSV!")
 		}
 	}
 
