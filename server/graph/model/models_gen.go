@@ -38,5 +38,6 @@ type Team struct {
 	ID       int     `json:"ID"`
 	Authcode string  `json:"authcode"`
 	Name     *string `json:"name"`
+	Hometown *string `json:"hometown"`
 	Members  *int    `json:"members"`
 }

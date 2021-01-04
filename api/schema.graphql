@@ -6,6 +6,7 @@ type Team {
   ID: Int!
   authcode: String!
   name: String
+  hometown: String
   members: Int
 }
 

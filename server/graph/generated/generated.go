@@ -83,6 +83,7 @@ type ComplexityRoot struct {
 
 	Team struct {
 		Authcode func(childComplexity int) int
+		Hometown func(childComplexity int) int
 		ID       func(childComplexity int) int
 		Members  func(childComplexity int) int
 		Name     func(childComplexity int) int
@@ -296,6 +297,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Team.Authcode(childComplexity), true
 
+	case "Team.hometown":
+		if e.complexity.Team.Hometown == nil {
+			break
+		}
+
+		return e.complexity.Team.Hometown(childComplexity), true
+
 	case "Team.ID":
 		if e.complexity.Team.ID == nil {
 			break
@@ -410,6 +418,7 @@ type Team {
   ID: Int!
   authcode: String!
   name: String
+  hometown: String
   members: Int
 }
 
@@ -1591,6 +1600,38 @@ func (ec *executionContext) _Team_name(ctx context.Context, field graphql.Collec
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Team_hometown(ctx context.Context, field graphql.CollectedField, obj *model.Team) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Team",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hometown, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2964,6 +3005,8 @@ func (ec *executionContext) _Team(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "name":
 			out.Values[i] = ec._Team_name(ctx, field, obj)
+		case "hometown":
+			out.Values[i] = ec._Team_hometown(ctx, field, obj)
 		case "members":
 			out.Values[i] = ec._Team_members(ctx, field, obj)
 		default:
