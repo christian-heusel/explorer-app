@@ -4,12 +4,14 @@ Diese App soll für den [Explorer 2021](https://www.ejwue.de/arbeitsbereiche/jun
 
 Problem bei der Auswertung ist, dass die alle Teams zum Ende der 33 Stunden gleichzeitig ihre Tourbücher abgeben und die Ergebnisse dann von den Aufschrieben digitalisiert werden müssen, was sehr viel Arbeit und Stress für das Auswertungsteam bedeutet.
 
+
 ## Teilprojekte
 
 ### App
 
 Die Dateneingabe und Synchronisation der Ergebnisse an den einzelnen Stationen soll über eine App funktionieren:  
 [`fluttr_app/explorer_app/`](./fluttr_app/explorer_app/)
+
 
 ### Backend
 
@@ -18,13 +20,18 @@ Die Speicherung der Eingaben funktioniert über ein in Go geschriebenes Backend 
 
 Dieses Backend soll dann später auch für die Auswertung die Daten bereit stellen, indem ein CSV-File erstellt wird.
 
+
 ### GraphQL-API
-Die Datentypen zur Kommunikation werden in einer GraphQL Schittstelle spezifiziert, die dann die Grundlage für die Codegenerierung in App und Backend liefert:  
+
+Die Datentypen zur Kommunikation werden in einer GraphQL Schittstelle spezifiziert, die dann die Grundlage für die Codegenerierung in App und Backend liefert.
+Weiterhin sind hier auch die ER-Diagramme für die einzelnen Teilprojekte hinterlegt.  
 [`api/`](./api/)
+
 
 ## Lizenz
 
 Das Projekt ist unter der [GPLv3-Lizenz](https://choosealicense.com/licenses/gpl-3.0/) verlinkt, für mehr Informationen schaut einfach in das [`LICENSE`-File](./LICENSE).
+
 
 ## Mitmachen
 
