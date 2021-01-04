@@ -129,7 +129,7 @@ func HasToInitialize() bool {
 }
 
 func FinishInitialization() {
-	err := ioutil.WriteFile("/initialized", []byte("intialized"), 0755)
+	err := ioutil.WriteFile("/initialized", []byte("intialized"), 0644)
 	if err != nil {
 		log.Printf("Unable to write file: %v", err)
 	}
