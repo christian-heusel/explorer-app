@@ -13,20 +13,27 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
+func checkForColHeaders(indexMap map[string]int, necessary []string, optional []string) {
 	// check that all the necessary keys exist in the indexMap
-	for _, key := range [...]string{"id", "points", "station_type"} {
+	for _, key := range necessary {
 		if _, inserted := indexMap[key]; !inserted {
 			log.Fatalln("You are missing the", key, "column in the Stations CSV!")
 		}
 	}
 
 	// check for all the optional keys in the indexMap
-	for _, key := range [...]string{"coordinates", "grid_square", "title"} {
+	for _, key := range optional {
 		if _, inserted := indexMap[key]; !inserted {
 			log.Println("You are missing the optional", key, "column in the Stations CSV!")
 		}
 	}
+}
+
+func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
+	necessaryHeaders := []string{"id", "points", "station_type"}
+	optionalHeaders := []string{"coordinates", "grid_square", "title"}
+
+	checkForColHeaders(indexMap, necessaryHeaders, optionalHeaders)
 
 	return db.Create(&model.Station{
 		ID:          getInt(input[indexMap["id"]]),
@@ -39,19 +46,10 @@ func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]in
 }
 
 func CreateTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
-	// check that all the necessary keys exist in the indexMap
-	for _, key := range [...]string{"authcode"} {
-		if _, inserted := indexMap[key]; !inserted {
-			log.Fatalln("You are missing the", key, "column in the Teams CSV!")
-		}
-	}
+	necessaryHeaders := []string{"authcode"}
+	optionalHeaders := []string{"name", "members", "hometown"}
 
-	// check for all the optional keys in the indexMap
-	for _, key := range [...]string{"name", "members"} {
-		if _, inserted := indexMap[key]; !inserted {
-			log.Println("You are missing the optional", key, "column in the Stations CSV!")
-		}
-	}
+	checkForColHeaders(indexMap, necessaryHeaders, optionalHeaders)
 
 	var members *int
 	if result, err := strconv.Atoi(input[indexMap["members"]]); err == nil {
