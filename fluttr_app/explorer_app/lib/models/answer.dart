@@ -17,6 +17,11 @@ class Answer
   Answer(this.type, {this.note = '', this.number = -1, this.option = -1});
   Answer.FromScratch(this.type, this.note , this.number , this.option);
 
+  bool hasValue()
+  {
+    return note.isNotEmpty;
+  }
+
   String toString(){
     switch(type)
     {

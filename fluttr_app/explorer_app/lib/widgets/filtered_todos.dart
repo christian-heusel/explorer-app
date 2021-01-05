@@ -55,9 +55,9 @@ class FilteredTodos extends StatelessWidget {
                   }
                 },
                 onCheckboxChanged: (_) {
-                  BlocProvider.of<TodosBloc>(context).add(
+                  /*BlocProvider.of<TodosBloc>(context).add(
                     TodoUpdated(todo.copyWith(complete: !todo.complete)),
-                  );
+                  );*/
                 },
               );
             },

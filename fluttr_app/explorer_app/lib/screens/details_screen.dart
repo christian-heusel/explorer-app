@@ -50,11 +50,11 @@ class DetailsScreen extends StatelessWidget {
                                 key: FlutterTodosKeys.detailsScreenCheckBox,
                                 value: todo.complete,
                                 onChanged: (_) {
-                                  BlocProvider.of<TodosBloc>(context).add(
+                                 /* BlocProvider.of<TodosBloc>(context).add(
                                     TodoUpdated(
                                       todo.copyWith(complete: !todo.complete),
                                     ),
-                                  );
+                                  );*/
                                 }),
                           ),
                           Expanded(
@@ -102,10 +102,10 @@ class DetailsScreen extends StatelessWidget {
                         builder: (context) {
                           return AddEditScreen(
                             key: ArchSampleKeys.editTodoScreen,
-                            onSave: (userInput) {
+                            onSave: (complete, userInput) {
                               BlocProvider.of<TodosBloc>(context).add(
                                 TodoUpdated(
-                                  todo.copyWith(userInput: userInput),
+                                  todo.copyWith(complete: complete, userInput: userInput),
                                 ),
                               );
                             },
