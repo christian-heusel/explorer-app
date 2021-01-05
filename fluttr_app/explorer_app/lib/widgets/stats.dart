@@ -1,3 +1,4 @@
+import 'package:explorer_app/widgets/sampleQuery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -52,7 +53,12 @@ class Stats extends StatelessWidget {
                     key: ArchSampleKeys.statsNumActive,
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
-                )
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 24.0),
+                  child: sampleQuery(
+                  ),
+                ),
               ],
             ),
           );
