@@ -26,7 +26,7 @@ class WebClient {
               TodoEntity(
                   1,
                   AnswerTypes.text,
-                  false,
+                  true,
                   'eins',
                   Answer(AnswerTypes.text, note:"antwort 1")
               ),
@@ -37,7 +37,7 @@ class WebClient {
                   'zwei',
                   Answer(AnswerTypes.text)
               ),
-             /*TodoEntity(
+             TodoEntity(
                   3,
                   AnswerTypes.text,
                   false,'',
@@ -54,7 +54,7 @@ class WebClient {
                   AnswerTypes.text,
                   false,'',
                   Answer(AnswerTypes.text)
-              ),*/
+              ),
             ]);
   }
 

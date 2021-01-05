@@ -4,7 +4,7 @@ import 'package:explorer_app/externalFiles/ArchSample.dart';
 import 'package:explorer_app/models/models.dart';
 import 'package:explorer_app/models/answer.dart';
 
-typedef OnSaveCallback = Function(Answer userInput);
+typedef OnSaveCallback = Function(bool complete, Answer userInput);
 
 class AddEditScreen extends StatefulWidget {
   final bool isEditing;
@@ -84,8 +84,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            //widget.onSave(_task, _note);
-            widget.onSave(Answer(widget.todo.type, note: _note));
+            widget.onSave(_note.isNotEmpty, Answer(widget.todo.type, note: _note));
             Navigator.pop(context);
           }
         },
