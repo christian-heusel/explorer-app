@@ -51,21 +51,6 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 widget.todo.id.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
               ),
-              /*TextFormField(
-                initialValue: isEditing ? widget.todo.id.toString() : '',
-                key: ArchSampleKeys.taskField,
-                autofocus: !isEditing,
-                style: textTheme.headline5,
-                decoration: InputDecoration(
-                  hintText: localizations.newTodoHint,
-                ),
-                validator: (val) {
-                  return val.trim().isEmpty
-                      ? localizations.emptyTodoError
-                      : null;
-                },
-                onSaved: (value) => _task = value,
-              ),*/
               TextFormField(
                 initialValue: isEditing ? widget.todo.userInput.note : '',
                 key: ArchSampleKeys.noteField,
