@@ -47,7 +47,11 @@ class _AddEditScreenState extends State<AddEditScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
+              Text(
+                widget.todo.id.toString(),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
+              ),
+              /*TextFormField(
                 initialValue: isEditing ? widget.todo.id.toString() : '',
                 key: ArchSampleKeys.taskField,
                 autofocus: !isEditing,
@@ -61,7 +65,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                       : null;
                 },
                 onSaved: (value) => _task = value,
-              ),
+              ),*/
               TextFormField(
                 initialValue: isEditing ? widget.todo.userInput.note : '',
                 key: ArchSampleKeys.noteField,
