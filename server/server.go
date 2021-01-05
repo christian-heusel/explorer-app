@@ -10,6 +10,7 @@ import (
 	"github.com/christian-heusel/explorer-app/server/graph"
 	"github.com/christian-heusel/explorer-app/server/graph/generated"
 	"github.com/christian-heusel/explorer-app/server/utils"
+	"github.com/go-chi/chi"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
@@ -22,13 +23,21 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: utils.InitDB()}}))
+	router := chi.NewRouter()
+
+	srv := handler.NewDefaultServer(
+		generated.NewExecutableSchema(
+			generated.Config{
+				Resolvers: &graph.Resolver{DB: utils.InitDB()},
+			},
+		),
+	)
 
 	if deploymentEnv == "testing" {
-		http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+		router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 		log.Printf("connect to http://127.0.0.1:%s/ for GraphQL playground", port)
 	}
-	http.Handle("/query", srv)
+	router.Handle("/query", srv)
 
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
