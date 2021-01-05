@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:meta/meta.dart';
-import 'package:explorer_app/externalFiles/todo_entity.dart';
+import 'package:explorer_app/FileStorage/todo_entity.dart';
 import 'file_storage.dart';
 import 'web_client.dart';
 

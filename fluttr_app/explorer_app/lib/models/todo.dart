@@ -1,6 +1,6 @@
 
 import 'package:equatable/equatable.dart';
-import 'package:explorer_app/externalFiles/todo_entity.dart';
+import 'package:explorer_app/FileStorage/todo_entity.dart';
 import 'answer.dart';
 
 

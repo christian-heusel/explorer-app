@@ -4,7 +4,7 @@
 
 import 'dart:async';
 
-import 'package:explorer_app/externalFiles/todo_entity.dart';
+import 'package:explorer_app/FileStorage/todo_entity.dart';
 import 'package:explorer_app/models/answer.dart';
 
 /// A class that is meant to represent a Client that would be used to call a Web

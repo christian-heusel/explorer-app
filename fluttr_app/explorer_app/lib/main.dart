@@ -4,11 +4,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:explorer_app/localization.dart';
 import 'package:explorer_app/blocs/blocs.dart';
-import 'package:explorer_app/models/models.dart';
 import 'package:explorer_app/screens/screens.dart';
 
-import 'package:explorer_app/externalFiles/repository/repository.dart';
-import 'package:explorer_app/externalFiles/repository/file_storage.dart';
+import 'package:explorer_app/FileStorage/repository.dart';
+import 'package:explorer_app/FileStorage/file_storage.dart';
 import 'package:explorer_app/externalFiles/ArchSample.dart';
 
 void main() {

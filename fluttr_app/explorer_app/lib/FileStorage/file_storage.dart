@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:explorer_app/externalFiles/todo_entity.dart';
+import 'package:explorer_app/FileStorage/todo_entity.dart';
 
 /// Loads and saves a List of Todos using a text file stored on the device.
 ///
