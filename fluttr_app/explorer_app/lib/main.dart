@@ -1,3 +1,4 @@
+import 'package:explorer_app/bloc/samplequery_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -60,6 +61,10 @@ class TodosApp extends StatelessWidget {
                 create: (context) => StatsBloc(
                   todosBloc: BlocProvider.of<TodosBloc>(context),
                 ),
+              ),
+              BlocProvider<SamplequeryBloc>(
+                  create: (context) => SamplequeryBloc(
+                  )
               ),
             ],
             child: HomeScreen(),
