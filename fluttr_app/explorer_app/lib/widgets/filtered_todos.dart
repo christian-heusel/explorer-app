@@ -21,43 +21,20 @@ class FilteredTodos extends StatelessWidget {
           return LoadingIndicator(key: ArchSampleKeys.todosLoading);
         } else if (state is FilteredTodosLoadSuccess) {
           final todos = state.filteredTodos;
-          return ListView.builder(
+          return GridView.builder(
             key: ArchSampleKeys.todoList,
             itemCount: todos.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 2.5),
             itemBuilder: (BuildContext context, int index) {
               final todo = todos[index];
               return TodoItem(
                 todo: todo,
-                onDismissed: (direction) {
-                  BlocProvider.of<TodosBloc>(context).add(TodoDeleted(todo));
-                  Scaffold.of(context).showSnackBar(DeleteTodoSnackBar(
-                    key: ArchSampleKeys.snackbar,
-                    todo: todo,
-                    onUndo: () => BlocProvider.of<TodosBloc>(context)
-                        .add(TodoAdded(todo)),
-                    localizations: localizations,
-                  ));
-                },
                 onTap: () async {
                   final removedTodo = await Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) {
                       return DetailsScreen(id: todo.id);
                     }),
                   );
-                  if (removedTodo != null) {
-                    Scaffold.of(context).showSnackBar(DeleteTodoSnackBar(
-                      key: ArchSampleKeys.snackbar,
-                      todo: todo,
-                      onUndo: () => BlocProvider.of<TodosBloc>(context)
-                          .add(TodoAdded(todo)),
-                      localizations: localizations,
-                    ));
-                  }
-                },
-                onCheckboxChanged: (_) {
-                  /*BlocProvider.of<TodosBloc>(context).add(
-                    TodoUpdated(todo.copyWith(complete: !todo.complete)),
-                  );*/
                 },
               );
             },

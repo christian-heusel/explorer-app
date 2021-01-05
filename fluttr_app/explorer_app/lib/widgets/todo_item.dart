@@ -4,30 +4,25 @@ import 'package:explorer_app/externalFiles/ArchSample.dart';
 import 'package:explorer_app/models/models.dart';
 
 class TodoItem extends StatelessWidget {
-  final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
-  final ValueChanged<bool> onCheckboxChanged;
   final Todo todo;
 
   TodoItem({
     Key key,
-    @required this.onDismissed,
     @required this.onTap,
-    @required this.onCheckboxChanged,
     @required this.todo,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
+    return Container(
       key: ArchSampleKeys.todoItem(todo.id),
-      onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
         leading: Checkbox(
           key: ArchSampleKeys.todoItemCheckbox(todo.id),
           value: todo.complete,
-          onChanged: onCheckboxChanged,
+          onChanged: (bool placeholder){},
         ),
         title: Hero(
           tag: '${todo.id}__heroTag',

@@ -23,17 +23,6 @@ class DetailsScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(localizations.todoDetails),
-            actions: [
-              IconButton(
-                tooltip: localizations.deleteTodo,
-                key: ArchSampleKeys.deleteTodoButton,
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  BlocProvider.of<TodosBloc>(context).add(TodoDeleted(todo));
-                  Navigator.pop(context, todo);
-                },
-              )
-            ],
           ),
           body: todo == null
               ? Container(key: FlutterTodosKeys.emptyDetailsContainer)
