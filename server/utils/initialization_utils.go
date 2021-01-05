@@ -37,7 +37,7 @@ func getOptionalString(input []string, indexMap map[string]int, key string) *str
 	}
 }
 
-func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
+func createStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
 	necessaryHeaders := []string{"id", "points", "station_type"}
 	optionalHeaders := []string{"coordinates", "grid_square", "title"}
 
@@ -53,7 +53,7 @@ func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]in
 	})
 }
 
-func CreateTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
+func createTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
 	necessaryHeaders := []string{"authcode"}
 	optionalHeaders := []string{"name", "members", "hometown"}
 
@@ -74,7 +74,7 @@ func CreateTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) 
 	})
 }
 
-func SetupTableFromCSV(db *gorm.DB, filepath string, adapter func(*gorm.DB, []string, map[string]int) *gorm.DB) error {
+func setupTableFromCSV(db *gorm.DB, filepath string, adapter func(*gorm.DB, []string, map[string]int) *gorm.DB) error {
 	// Open the file
 	csvfile, err := os.Open(filepath)
 	if err != nil {
@@ -121,7 +121,7 @@ func SetupTableFromCSV(db *gorm.DB, filepath string, adapter func(*gorm.DB, []st
 	return nil
 }
 
-func HasToInitialize() bool {
+func hasToInitialize() bool {
 	_, fileErr := os.Stat("/initialized")
 	forceInitialization, envPresent := os.LookupEnv("FORCE_INITIALIZATION")
 
@@ -137,7 +137,7 @@ func HasToInitialize() bool {
 	return os.IsNotExist(fileErr)
 }
 
-func FinishInitialization() {
+func finishInitialization() {
 	err := ioutil.WriteFile("/initialized", []byte("intialized"), 0644)
 	if err != nil {
 		log.Printf("Unable to write file: %v", err)
