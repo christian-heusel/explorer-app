@@ -13,31 +13,51 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
-	// check that all the keys exist in the indexMap
-	for _, key := range [...]string{"id", "points", "station_type", "coordinates", "grid_square", "title"} {
+func checkForColHeaders(indexMap map[string]int, necessary []string, optional []string) {
+	// check that all the necessary keys exist in the indexMap
+	for _, key := range necessary {
 		if _, inserted := indexMap[key]; !inserted {
 			log.Fatalln("You are missing the", key, "column in the Stations CSV!")
 		}
 	}
 
+	// check for all the optional keys in the indexMap
+	for _, key := range optional {
+		if _, inserted := indexMap[key]; !inserted {
+			log.Println("You are missing the optional", key, "column in the Stations CSV!")
+		}
+	}
+}
+
+func getOptionalString(input []string, indexMap map[string]int, key string) *string {
+	if index, ok := indexMap[key]; ok {
+		return &input[index]
+	} else {
+		return nil
+	}
+}
+
+func CreateStationFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
+	necessaryHeaders := []string{"id", "points", "station_type"}
+	optionalHeaders := []string{"coordinates", "grid_square", "title"}
+
+	checkForColHeaders(indexMap, necessaryHeaders, optionalHeaders)
+
 	return db.Create(&model.Station{
 		ID:          getInt(input[indexMap["id"]]),
 		Points:      getInt(input[indexMap["points"]]),
 		StationType: getInt(input[indexMap["station_type"]]),
-		Coordinates: &input[indexMap["coordinates"]],
-		GridSquare:  &input[indexMap["grid_square"]],
-		Title:       &input[indexMap["title"]],
+		Coordinates: getOptionalString(input, indexMap, "coordinates"),
+		GridSquare:  getOptionalString(input, indexMap, "grid_square"),
+		Title:       getOptionalString(input, indexMap, "title"),
 	})
 }
 
 func CreateTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) *gorm.DB {
-	// check that all the keys exist in the indexMap
-	for _, key := range [...]string{"name", "authcode", "members"} {
-		if _, inserted := indexMap[key]; !inserted {
-			log.Fatalln("You are missing the", key, "column in the Teams CSV!")
-		}
-	}
+	necessaryHeaders := []string{"authcode"}
+	optionalHeaders := []string{"name", "members", "hometown"}
+
+	checkForColHeaders(indexMap, necessaryHeaders, optionalHeaders)
 
 	var members *int
 	if result, err := strconv.Atoi(input[indexMap["members"]]); err == nil {
@@ -47,7 +67,8 @@ func CreateTeamFromSplice(db *gorm.DB, input []string, indexMap map[string]int) 
 	}
 
 	return db.Create(&model.Team{
-		Name:     &input[indexMap["name"]],
+		Name:     getOptionalString(input, indexMap, "name"),
+		Hometown: getOptionalString(input, indexMap, "hometown"),
 		Members:  members,
 		Authcode: input[indexMap["authcode"]],
 	})
@@ -117,7 +138,7 @@ func HasToInitialize() bool {
 }
 
 func FinishInitialization() {
-	err := ioutil.WriteFile("/initialized", []byte("intialized"), 0755)
+	err := ioutil.WriteFile("/initialized", []byte("intialized"), 0644)
 	if err != nil {
 		log.Printf("Unable to write file: %v", err)
 	}
