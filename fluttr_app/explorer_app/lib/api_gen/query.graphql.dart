@@ -16,10 +16,19 @@ class GetStations$Query$Station with EquatableMixin {
 
   int ID;
 
+  int points;
+
+  int station_type;
+
+  String coordinates;
+
+  String grid_square;
+
   String title;
 
   @override
-  List<Object> get props => [ID, title];
+  List<Object> get props =>
+      [ID, points, station_type, coordinates, grid_square, title];
   Map<String, dynamic> toJson() => _$GetStations$Query$StationToJson(this);
 }
 
@@ -57,6 +66,30 @@ class GetStationsQuery
               selectionSet: SelectionSetNode(selections: [
                 FieldNode(
                     name: NameNode(value: 'ID'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'points'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'station_type'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'coordinates'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'grid_square'),
                     alias: null,
                     arguments: [],
                     directives: [],

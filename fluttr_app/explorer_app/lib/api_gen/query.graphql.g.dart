@@ -10,6 +10,10 @@ GetStations$Query$Station _$GetStations$Query$StationFromJson(
     Map<String, dynamic> json) {
   return GetStations$Query$Station()
     ..ID = json['ID'] as int
+    ..points = json['points'] as int
+    ..station_type = json['station_type'] as int
+    ..coordinates = json['coordinates'] as String
+    ..grid_square = json['grid_square'] as String
     ..title = json['title'] as String;
 }
 
@@ -17,6 +21,10 @@ Map<String, dynamic> _$GetStations$Query$StationToJson(
         GetStations$Query$Station instance) =>
     <String, dynamic>{
       'ID': instance.ID,
+      'points': instance.points,
+      'station_type': instance.station_type,
+      'coordinates': instance.coordinates,
+      'grid_square': instance.grid_square,
       'title': instance.title,
     };
 

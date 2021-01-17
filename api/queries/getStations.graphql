@@ -1,6 +1,10 @@
 query getStations {
   getStations {
     ID
+    points
+    station_type
+    coordinates
+    grid_square
     title
   }
 }
