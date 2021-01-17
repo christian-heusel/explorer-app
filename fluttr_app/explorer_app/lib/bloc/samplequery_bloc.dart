@@ -1,4 +1,8 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:explorer_app/auth/auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:artemis/client.dart';
 import 'package:artemis/schema/graphql_response.dart';
@@ -23,7 +27,10 @@ class SamplequeryBloc extends Bloc<SamplequeryEvent, SamplequeryState> {
       this.cfg = await GlobalConfiguration().loadFromAsset("api_settings");
     }
     if (this.client == null) {
-      this.client = ArtemisClient(this.cfg.getValue("graphql_api_url"));
+      final storage = new FlutterSecureStorage();
+      this.client = ArtemisClient(
+          "${this.cfg.getValue("graphql_api_url")}query",
+          httpClient: JWTClient(await storage.read(key: "jwt"), http.Client()));
     }
     if (event is SamplequeryQueryApi) {
       final simpleQuery = GetStationsQuery();

@@ -1,3 +1,4 @@
+import 'package:explorer_app/auth/auth.dart';
 import 'package:explorer_app/bloc/samplequery_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';

@@ -1,6 +1,8 @@
+import 'package:explorer_app/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer_app/bloc/samplequery_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class sampleQuery extends StatelessWidget {
   sampleQuery({Key key}) : super(key: key);
@@ -32,6 +34,11 @@ class sampleQuery extends StatelessWidget {
                           )),
                     color: Colors.red[500],
                     onPressed: () {
+                      final storage = new FlutterSecureStorage();
+
+                      storage.write(key: "login_id", value: "1");
+                      storage.write(key: "password", value: "uprootwhoever");
+                      attemptLogIn("1", "uprootwhoever");
                       if (state is SamplequeryEmpty) {
                         samplequeryBloc.add(SamplequeryQueryApi());
                       } else {
