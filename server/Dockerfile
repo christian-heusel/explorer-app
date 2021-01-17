@@ -6,6 +6,7 @@ WORKDIR /go/src
 COPY go.mod go.sum ./
 RUN go mod download
 
+COPY auth ./auth
 COPY graph ./graph
 COPY utils ./utils
 COPY server.go ./

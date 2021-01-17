@@ -3,16 +3,17 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"time"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/christian-heusel/explorer-app/server/auth"
 	"github.com/christian-heusel/explorer-app/server/graph"
 	"github.com/christian-heusel/explorer-app/server/graph/generated"
 	"github.com/christian-heusel/explorer-app/server/graph/model"
 	"github.com/christian-heusel/explorer-app/server/utils"
+	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -60,6 +61,26 @@ func initDB() *gorm.DB {
 	return db
 }
 
+// Defining the Graphql handler
+func graphqlHandler(db *gorm.DB) gin.HandlerFunc {
+	// NewExecutableSchema and Config are in the generated.go file
+	// Resolver is in the resolver.go file
+	h := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: db}}))
+
+	return func(c *gin.Context) {
+		h.ServeHTTP(c.Writer, c.Request)
+	}
+}
+
+// Defining the Playground handler
+func playgroundHandler() gin.HandlerFunc {
+	h := playground.Handler("GraphQL", "/query")
+
+	return func(c *gin.Context) {
+		h.ServeHTTP(c.Writer, c.Request)
+	}
+}
+
 func main() {
 	port := os.Getenv("PORT")
 	deploymentEnv := os.Getenv("DEPLOYMENT_ENV")
@@ -67,13 +88,20 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: initDB()}}))
-
+	db := initDB()
+	// Setting up Gin
+	r := gin.Default()
 	if deploymentEnv == "testing" {
-		http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+		r.GET("/", playgroundHandler())
 		log.Printf("connect to http://127.0.0.1:%s/ for GraphQL playground", port)
 	}
-	http.Handle("/query", srv)
+	authWare := auth.InitJWTMiddleware(db)
+	r.POST("/v1/login", authWare.LoginHandler)
+	r.GET("/v1/refresh_token", authWare.RefreshHandler)
+	r.Use(authWare.MiddlewareFunc())
+	r.Use(auth.TeamFromContextToContext())
+	r.POST("/query", graphqlHandler(db))
 
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	r.Run()
+
 }

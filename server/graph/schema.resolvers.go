@@ -5,13 +5,18 @@ package graph
 
 import (
 	"context"
+	"log"
 
+	"github.com/christian-heusel/explorer-app/server/auth"
 	"github.com/christian-heusel/explorer-app/server/graph/generated"
 	"github.com/christian-heusel/explorer-app/server/graph/model"
 )
 
 func (r *queryResolver) GetStations(ctx context.Context) ([]*model.Station, error) {
 	var stations []*model.Station
+	//TODO(henrik): Remove this example
+	team, _ := auth.TeamFromContext(ctx)
+	log.Println(*team.Name)
 	r.DB.Find(&stations)
 	if r.DB.Error != nil {
 		return nil, r.DB.Error
