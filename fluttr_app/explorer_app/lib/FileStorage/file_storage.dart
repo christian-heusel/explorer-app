@@ -18,15 +18,15 @@ class FileStorage {
   final Future<Directory> Function() getDirectory;
 
   const FileStorage(
-      this.tag,
-      this.getDirectory,
-      );
+    this.tag,
+    this.getDirectory,
+  );
 
   Future<List<TodoEntity>> loadTodos() async {
     final file = await _getLocalFile();
     final string = await file.readAsString();
     final json = JsonDecoder().convert(string);
-    print('\n test- LOAD: ' +string);
+    print('\n test- LOAD: ' + string);
     final todos = (json['todos'])
         .map<TodoEntity>((todo) => TodoEntity.fromJson(todo))
         .toList();
@@ -36,9 +36,10 @@ class FileStorage {
 
   Future<File> saveTodos(List<TodoEntity> todos) async {
     final file = await _getLocalFile();
-    print('\n TESt -Save: ' + JsonEncoder().convert({
-      'todos': todos.map((todo) => todo.toJson()).toList(),
-    }));
+    print('\n TESt -Save: ' +
+        JsonEncoder().convert({
+          'todos': todos.map((todo) => todo.toJson()).toList(),
+        }));
     return file.writeAsString(JsonEncoder().convert({
       'todos': todos.map((todo) => todo.toJson()).toList(),
     }));

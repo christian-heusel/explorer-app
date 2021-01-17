@@ -6,7 +6,6 @@ import 'package:explorer_app/models/models.dart';
 import 'package:explorer_app/FileStorage/repository.dart';
 import 'package:explorer_app/FileStorage/todo_entity.dart';
 
-
 class TodosBloc extends Bloc<TodosEvent, TodosState> {
   final TodosRepositoryFlutter todosRepository;
 

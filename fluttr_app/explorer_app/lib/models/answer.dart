@@ -1,12 +1,10 @@
-
-class AnswerTypes{
+class AnswerTypes {
   static const int text = 0;
   static const int number = 1;
   static const int option = 2;
 }
 
-class Answer
-{
+class Answer {
   final int type; //which type of quest?
 
   //Ergebnisse
@@ -15,16 +13,14 @@ class Answer
   final int option;
 
   Answer(this.type, {this.note = '', this.number = -1, this.option = -1});
-  Answer.FromScratch(this.type, this.note , this.number , this.option);
+  Answer.FromScratch(this.type, this.note, this.number, this.option);
 
-  bool hasValue()
-  {
+  bool hasValue() {
     return note.isNotEmpty;
   }
 
-  String toString(){
-    switch(type)
-    {
+  String toString() {
+    switch (type) {
       case AnswerTypes.text:
         return note;
         break;
@@ -49,11 +45,10 @@ class Answer
 
   static Answer fromJson(Map<String, dynamic> json) {
     return Answer.FromScratch(
-        json['type'] as int,
-        json['note'] as String,
-        json['number'] as double,
-        json['option'] as int,
+      json['type'] as int,
+      json['note'] as String,
+      json['number'] as double,
+      json['option'] as int,
     );
   }
-
 }

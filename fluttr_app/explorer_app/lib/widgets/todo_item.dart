@@ -22,7 +22,7 @@ class TodoItem extends StatelessWidget {
         leading: Checkbox(
           key: ArchSampleKeys.todoItemCheckbox(todo.id),
           value: todo.complete,
-          onChanged: (bool placeholder){},
+          onChanged: (bool placeholder) {},
         ),
         title: Hero(
           tag: '${todo.id}__heroTag',

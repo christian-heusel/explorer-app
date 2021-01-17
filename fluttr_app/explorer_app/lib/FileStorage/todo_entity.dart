@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:explorer_app/models/answer.dart';
 
 class TodoEntity extends Equatable {
-
   final int id;
   final int type;
   final bool complete;
@@ -13,7 +12,8 @@ class TodoEntity extends Equatable {
   final String task;
   final Answer userInput;
 
-  const TodoEntity( this.id, this.type, this.complete, this.task, this.userInput);
+  const TodoEntity(
+      this.id, this.type, this.complete, this.task, this.userInput);
 
   Map<String, Object> toJson() {
     return {
@@ -26,7 +26,7 @@ class TodoEntity extends Equatable {
   }
 
   @override
-  List<Object> get props => [ id, type, complete, task, userInput];
+  List<Object> get props => [id, type, complete, task, userInput];
 
   @override
   String toString() {

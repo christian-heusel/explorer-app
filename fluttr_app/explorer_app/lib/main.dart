@@ -46,7 +46,8 @@ class TodosApp extends StatelessWidget {
         FlutterBlocLocalizationsDelegate(),
       ],
       routes: {
-        '/': (context) {    //ArchsampleRoutes TODO anpassen oder entfernen
+        '/': (context) {
+          //ArchsampleRoutes TODO anpassen oder entfernen
           return MultiBlocProvider(
             providers: [
               BlocProvider<TabBloc>(
@@ -63,14 +64,12 @@ class TodosApp extends StatelessWidget {
                 ),
               ),
               BlocProvider<SamplequeryBloc>(
-                  create: (context) => SamplequeryBloc(
-                  )
-              ),
+                  create: (context) => SamplequeryBloc()),
             ],
             child: HomeScreen(),
           );
         },
-       /* '/addTodo': (context) {   //ArchsampleRoutes TODO siehe oben
+        /* '/addTodo': (context) {   //ArchsampleRoutes TODO siehe oben
           return AddEditScreen(
             key: ArchSampleKeys.addTodoScreen,
             onSave: (userInput) {

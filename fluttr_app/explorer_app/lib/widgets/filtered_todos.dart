@@ -24,7 +24,10 @@ class FilteredTodos extends StatelessWidget {
           return GridView.builder(
             key: ArchSampleKeys.todoList,
             itemCount: todos.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 2.5), //TODO better rotatio (problem with high resolution)
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio:
+                    2.5), //TODO better rotatio (problem with high resolution)
             itemBuilder: (BuildContext context, int index) {
               final todo = todos[index];
               return TodoItem(

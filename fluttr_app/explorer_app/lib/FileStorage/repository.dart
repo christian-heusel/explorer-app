@@ -10,7 +10,6 @@ import 'package:explorer_app/FileStorage/todo_entity.dart';
 import 'file_storage.dart';
 import 'web_client.dart';
 
-
 abstract class TodosRepository {
   /// Loads todos first from File storage. If they don't exist or encounter an
   /// error, it attempts to load the Todos from a Web Client.
@@ -19,6 +18,7 @@ abstract class TodosRepository {
   // Persists todos to local disk and the web
   Future saveTodos(List<TodoEntity> todos);
 }
+
 /// A class that glues together our local file storage and web client. It has a
 /// clear responsibility: Load Todos and Persist todos.
 class TodosRepositoryFlutter implements TodosRepository {

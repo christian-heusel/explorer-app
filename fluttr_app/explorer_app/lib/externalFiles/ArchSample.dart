@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 
 import 'messages_all.dart';
 
-
 class ArchSampleLocalizations {
   ArchSampleLocalizations(this.locale);
 
@@ -27,172 +26,172 @@ class ArchSampleLocalizations {
   }
 
   String get todos => Intl.message(
-    'Todos',
-    name: 'todos',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Todos',
+        name: 'todos',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get stats => Intl.message(
-    'Stats',
-    name: 'stats',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Stats',
+        name: 'stats',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get showAll => Intl.message(
-    'Show All',
-    name: 'showAll',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Show All',
+        name: 'showAll',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get showActive => Intl.message(
-    'Show Active',
-    name: 'showActive',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Show Active',
+        name: 'showActive',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get showCompleted => Intl.message(
-    'Show Completed',
-    name: 'showCompleted',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Show Completed',
+        name: 'showCompleted',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get newTodoHint => Intl.message(
-    'What needs to be done?',
-    name: 'newTodoHint',
-    args: [],
-    locale: locale.toString(),
-  );
+        'What needs to be done?',
+        name: 'newTodoHint',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get markAllComplete => Intl.message(
-    'Mark all complete',
-    name: 'markAllComplete',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Mark all complete',
+        name: 'markAllComplete',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get markAllIncomplete => Intl.message(
-    'Mark all incomplete',
-    name: 'markAllIncomplete',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Mark all incomplete',
+        name: 'markAllIncomplete',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get clearCompleted => Intl.message(
-    'Clear completed',
-    name: 'clearCompleted',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Clear completed',
+        name: 'clearCompleted',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get addTodo => Intl.message(
-    'Add Todo',
-    name: 'addTodo',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Add Todo',
+        name: 'addTodo',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get editTodo => Intl.message(
-    'Edit Todo',
-    name: 'editTodo',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Edit Todo',
+        name: 'editTodo',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get saveChanges => Intl.message(
-    'Save changes',
-    name: 'saveChanges',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Save changes',
+        name: 'saveChanges',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get filterTodos => Intl.message(
-    'Filter Todos',
-    name: 'filterTodos',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Filter Todos',
+        name: 'filterTodos',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get deleteTodo => Intl.message(
-    'Delete Todo',
-    name: 'deleteTodo',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Delete Todo',
+        name: 'deleteTodo',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get todoDetails => Intl.message(
-    'Todo Details',
-    name: 'todoDetails',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Todo Details',
+        name: 'todoDetails',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get emptyTodoError => Intl.message(
-    'Please enter some text',
-    name: 'emptyTodoError',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Please enter some text',
+        name: 'emptyTodoError',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get notesHint => Intl.message(
-    'Additional Notes...',
-    name: 'notesHint',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Additional Notes...',
+        name: 'notesHint',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get completedTodos => Intl.message(
-    'Completed Todos',
-    name: 'completedTodos',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Completed Todos',
+        name: 'completedTodos',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get activeTodos => Intl.message(
-    'Active Todos',
-    name: 'activeTodos',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Active Todos',
+        name: 'activeTodos',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String todoDeleted(String task) => Intl.message(
-    'Deleted "$task"',
-    name: 'todoDeleted',
-    args: [task],
-    locale: locale.toString(),
-  );
+        'Deleted "$task"',
+        name: 'todoDeleted',
+        args: [task],
+        locale: locale.toString(),
+      );
 
   String get undo => Intl.message(
-    'Undo',
-    name: 'undo',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Undo',
+        name: 'undo',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get deleteTodoConfirmation => Intl.message(
-    'Delete this todo?',
-    name: 'deleteTodoConfirmation',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Delete this todo?',
+        name: 'deleteTodoConfirmation',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get delete => Intl.message(
-    'Delete',
-    name: 'delete',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Delete',
+        name: 'delete',
+        args: [],
+        locale: locale.toString(),
+      );
 
   String get cancel => Intl.message(
-    'Cancel',
-    name: 'cancel',
-    args: [],
-    locale: locale.toString(),
-  );
+        'Cancel',
+        name: 'cancel',
+        args: [],
+        locale: locale.toString(),
+      );
 }
 
 class ArchSampleLocalizationsDelegate
@@ -209,10 +208,6 @@ class ArchSampleLocalizationsDelegate
       locale.languageCode.toLowerCase().contains('en');
 }
 
-
-
-
-
 class ArchSampleKeys {
   // Home Screens
   static const homeScreen = Key('__homeScreen__');
@@ -224,8 +219,7 @@ class ArchSampleKeys {
   static const todoList = Key('__todoList__');
   static const todosLoading = Key('__todosLoading__');
   static final todoItem = (int id) => Key('TodoItem__${id}');
-  static final todoItemCheckbox =
-      (int id) => Key('TodoItem__${id}__Checkbox');
+  static final todoItemCheckbox = (int id) => Key('TodoItem__${id}__Checkbox');
   static final todoItemTask = (int id) => Key('TodoItem__${id}__Task');
   static final todoItemNote = (int id) => Key('TodoItem__${id}__Note');
 

@@ -56,8 +56,7 @@ class Stats extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 24.0),
-                  child: sampleQuery(
-                  ),
+                  child: sampleQuery(),
                 ),
               ],
             ),

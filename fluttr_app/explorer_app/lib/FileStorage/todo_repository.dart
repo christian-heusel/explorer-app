@@ -5,7 +5,6 @@
 import 'dart:async';
 import 'package:explorer_app/models/todo.dart';
 
-
 abstract class TodosRepository {
   Future<void> addNewTodo(Todo todo);
 

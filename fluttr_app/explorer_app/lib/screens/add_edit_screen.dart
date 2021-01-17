@@ -73,7 +73,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            widget.onSave(_note.isNotEmpty, Answer(widget.todo.type, note: _note));
+            widget.onSave(
+                _note.isNotEmpty, Answer(widget.todo.type, note: _note));
             Navigator.pop(context);
           }
         },

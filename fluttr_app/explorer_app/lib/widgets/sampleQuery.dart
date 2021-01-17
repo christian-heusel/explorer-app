@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:explorer_app/bloc/samplequery_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class sampleQuery extends StatelessWidget
-{
-  sampleQuery({Key key}): super (key:key);
+class sampleQuery extends StatelessWidget {
+  sampleQuery({Key key}) : super(key: key);
   Widget build(BuildContext context) {
-
     final SamplequeryBloc samplequeryBloc =
-    BlocProvider.of<SamplequeryBloc>(context);
+        BlocProvider.of<SamplequeryBloc>(context);
 
     return Container(
       child: BlocBuilder<SamplequeryBloc, SamplequeryState>(
@@ -23,15 +21,15 @@ class sampleQuery extends StatelessWidget
                     alignment: Alignment.centerRight,
                     icon: ((state is SamplequeryEmpty)
                         ? Icon(
-                      Icons.favorite,
-                      color: Colors.pink,
-                      size: 24.0,
-                    )
+                            Icons.favorite,
+                            color: Colors.pink,
+                            size: 24.0,
+                          )
                         : Icon(
-                      Icons.favorite,
-                      color: Colors.blue,
-                      size: 24.0,
-                    )),
+                            Icons.favorite,
+                            color: Colors.blue,
+                            size: 24.0,
+                          )),
                     color: Colors.red[500],
                     onPressed: () {
                       if (state is SamplequeryEmpty) {
@@ -45,7 +43,7 @@ class sampleQuery extends StatelessWidget
                 child: ((state is SamplequeryEmpty)
                     ? Text("")
                     : Text("Titel der Station: " +
-                    state.response.data.getStations[0].title.toString())),
+                        state.response.data.getStations[0].title.toString())),
               ),
             ],
           );

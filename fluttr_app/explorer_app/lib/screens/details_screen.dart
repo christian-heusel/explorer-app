@@ -39,7 +39,7 @@ class DetailsScreen extends StatelessWidget {
                                 key: FlutterTodosKeys.detailsScreenCheckBox,
                                 value: todo.complete,
                                 onChanged: (_) {
-                                 /* BlocProvider.of<TodosBloc>(context).add(
+                                  /* BlocProvider.of<TodosBloc>(context).add(
                                     TodoUpdated(
                                       todo.copyWith(complete: !todo.complete),
                                     ),
@@ -94,7 +94,8 @@ class DetailsScreen extends StatelessWidget {
                             onSave: (complete, userInput) {
                               BlocProvider.of<TodosBloc>(context).add(
                                 TodoUpdated(
-                                  todo.copyWith(complete: complete, userInput: userInput),
+                                  todo.copyWith(
+                                      complete: complete, userInput: userInput),
                                 ),
                               );
                             },
