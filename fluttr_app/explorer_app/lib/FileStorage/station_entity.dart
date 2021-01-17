@@ -4,7 +4,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:explorer_app/models/answer.dart';
 
-class TodoEntity extends Equatable {
+class StationEntity extends Equatable {
   final int id;
   final int type;
   final bool complete;
@@ -12,7 +12,7 @@ class TodoEntity extends Equatable {
   final String task;
   final Answer userInput;
 
-  const TodoEntity(
+  const StationEntity(
       this.id, this.type, this.complete, this.task, this.userInput);
 
   Map<String, Object> toJson() {
@@ -30,11 +30,11 @@ class TodoEntity extends Equatable {
 
   @override
   String toString() {
-    return 'TodoEntity {  id: $id, type:$type, complete: $complete, task: $task, }';
+    return 'StationEntity {  id: $id, type:$type, complete: $complete, task: $task, }';
   }
 
-  static TodoEntity fromJson(Map<String, dynamic> json) {
-    return TodoEntity(
+  static StationEntity fromJson(Map<String, dynamic> json) {
+    return StationEntity(
       json['id'] as int,
       json['type'] as int,
       json['complete'] as bool,

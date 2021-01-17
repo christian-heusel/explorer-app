@@ -6,9 +6,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:explorer_app/FileStorage/todo_entity.dart';
+import 'package:explorer_app/FileStorage/station_entity.dart';
 
-/// Loads and saves a List of Todos using a text file stored on the device.
+/// Loads and saves a List of Stations using a text file stored on the device.
 ///
 /// Note: This class has no direct dependencies on any Flutter dependencies.
 /// Instead, the `getDirectory` method should be injected. This allows for
@@ -22,26 +22,26 @@ class FileStorage {
     this.getDirectory,
   );
 
-  Future<List<TodoEntity>> loadTodos() async {
+  Future<List<StationEntity>> loadStations() async {
     final file = await _getLocalFile();
     final string = await file.readAsString();
     final json = JsonDecoder().convert(string);
     print('\n test- LOAD: ' + string);
-    final todos = (json['todos'])
-        .map<TodoEntity>((todo) => TodoEntity.fromJson(todo))
+    final stations = (json['stations'])
+        .map<StationEntity>((station) => StationEntity.fromJson(station))
         .toList();
 
-    return todos;
+    return stations;
   }
 
-  Future<File> saveTodos(List<TodoEntity> todos) async {
+  Future<File> saveStations(List<StationEntity> stations) async {
     final file = await _getLocalFile();
     print('\n TESt -Save: ' +
         JsonEncoder().convert({
-          'todos': todos.map((todo) => todo.toJson()).toList(),
+          'stations': stations.map((station) => station.toJson()).toList(),
         }));
     return file.writeAsString(JsonEncoder().convert({
-      'todos': todos.map((todo) => todo.toJson()).toList(),
+      'stations': stations.map((station) => station.toJson()).toList(),
     }));
   }
 

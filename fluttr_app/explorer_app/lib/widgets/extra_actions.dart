@@ -3,31 +3,31 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:explorer_app/externalFiles/ArchSample.dart';
-import 'package:explorer_app/blocs/todos/todos.dart';
+import 'package:explorer_app/blocs/stations/stations.dart';
 import 'package:explorer_app/models/models.dart';
-import 'package:explorer_app/flutter_todos_keys.dart';
+import 'package:explorer_app/flutter_stations_keys.dart';
 
 class ExtraActions extends StatelessWidget {
   ExtraActions({Key key}) : super(key: ArchSampleKeys.extraActionsButton);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodosBloc, TodosState>(
+    return BlocBuilder<StationsBloc, StationsState>(
       builder: (context, state) {
-        if (state is TodosLoadSuccess) {
+        if (state is StationsLoadSuccess) {
           bool allComplete =
-              (BlocProvider.of<TodosBloc>(context).state as TodosLoadSuccess)
-                  .todos
-                  .every((todo) => todo.complete);
+              (BlocProvider.of<StationsBloc>(context).state as StationsLoadSuccess)
+                  .stations
+                  .every((station) => station.complete);
           return PopupMenuButton<ExtraAction>(
-            key: FlutterTodosKeys.extraActionsPopupMenuButton,
+            key: FlutterStationsKeys.extraActionsPopupMenuButton,
             onSelected: (action) {
               switch (action) {
                 case ExtraAction.clearCompleted:
-                  BlocProvider.of<TodosBloc>(context).add(ClearCompleted());
+                  BlocProvider.of<StationsBloc>(context).add(ClearCompleted());
                   break;
                 case ExtraAction.toggleAllComplete:
-                  BlocProvider.of<TodosBloc>(context).add(ToggleAll());
+                  BlocProvider.of<StationsBloc>(context).add(ToggleAll());
                   break;
               }
             },
@@ -51,7 +51,7 @@ class ExtraActions extends StatelessWidget {
             ],
           );
         }
-        return Container(key: FlutterTodosKeys.extraActionsEmptyContainer);
+        return Container(key: FlutterStationsKeys.extraActionsEmptyContainer);
       },
     );
   }

@@ -6,36 +6,36 @@ import 'package:explorer_app/externalFiles/ArchSample.dart';
 import 'package:explorer_app/blocs/blocs.dart';
 import 'package:explorer_app/widgets/widgets.dart';
 import 'package:explorer_app/screens/screens.dart';
-import 'package:explorer_app/flutter_todos_keys.dart';
+import 'package:explorer_app/flutter_stations_keys.dart';
 
-class FilteredTodos extends StatelessWidget {
-  FilteredTodos({Key key}) : super(key: key);
+class FilteredStations extends StatelessWidget {
+  FilteredStations({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final localizations = ArchSampleLocalizations.of(context);
 
-    return BlocBuilder<FilteredTodosBloc, FilteredTodosState>(
+    return BlocBuilder<FilteredStationsBloc, FilteredStationsState>(
       builder: (context, state) {
-        if (state is FilteredTodosLoadInProgress) {
-          return LoadingIndicator(key: ArchSampleKeys.todosLoading);
-        } else if (state is FilteredTodosLoadSuccess) {
-          final todos = state.filteredTodos;
+        if (state is FilteredStationsLoadInProgress) {
+          return LoadingIndicator(key: ArchSampleKeys.stationsLoading);
+        } else if (state is FilteredStationsLoadSuccess) {
+          final stations = state.filteredStations;
           return GridView.builder(
-            key: ArchSampleKeys.todoList,
-            itemCount: todos.length,
+            key: ArchSampleKeys.stationList,
+            itemCount: stations.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio:
                     2.5), //TODO better rotatio (problem with high resolution)
             itemBuilder: (BuildContext context, int index) {
-              final todo = todos[index];
-              return TodoItem(
-                todo: todo,
+              final station = stations[index];
+              return StationItem(
+                station: station,
                 onTap: () async {
-                  final removedTodo = await Navigator.of(context).push(
+                  final removedStation = await Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) {
-                      return DetailsScreen(id: todo.id);
+                      return DetailsScreen(id: station.id);
                     }),
                   );
                 },
@@ -43,7 +43,7 @@ class FilteredTodos extends StatelessWidget {
             },
           );
         } else {
-          return Container(key: FlutterTodosKeys.filteredTodosEmptyContainer);
+          return Container(key: FlutterStationsKeys.filteredStationsEmptyContainer);
         }
       },
     );

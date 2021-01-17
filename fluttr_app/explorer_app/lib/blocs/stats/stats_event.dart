@@ -6,13 +6,13 @@ abstract class StatsEvent extends Equatable {
 }
 
 class StatsUpdated extends StatsEvent {
-  final List<Todo> todos;
+  final List<Station> stations;
 
-  const StatsUpdated(this.todos);
-
-  @override
-  List<Object> get props => [todos];
+  const StatsUpdated(this.stations);
 
   @override
-  String toString() => 'UpdateStats { todos: $todos }';
+  List<Object> get props => [stations];
+
+  @override
+  String toString() => 'UpdateStats { stations: $stations }';
 }

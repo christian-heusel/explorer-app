@@ -25,9 +25,9 @@ class ArchSampleLocalizations {
         context, ArchSampleLocalizations);
   }
 
-  String get todos => Intl.message(
-        'Todos',
-        name: 'todos',
+  String get stations => Intl.message(
+        'Stations',
+        name: 'stations',
         args: [],
         locale: locale.toString(),
       );
@@ -60,9 +60,9 @@ class ArchSampleLocalizations {
         locale: locale.toString(),
       );
 
-  String get newTodoHint => Intl.message(
+  String get newStationHint => Intl.message(
         'What needs to be done?',
-        name: 'newTodoHint',
+        name: 'newStationHint',
         args: [],
         locale: locale.toString(),
       );
@@ -88,16 +88,16 @@ class ArchSampleLocalizations {
         locale: locale.toString(),
       );
 
-  String get addTodo => Intl.message(
-        'Add Todo',
-        name: 'addTodo',
+  String get addStation => Intl.message(
+        'Add Station',
+        name: 'addStation',
         args: [],
         locale: locale.toString(),
       );
 
-  String get editTodo => Intl.message(
-        'Edit Todo',
-        name: 'editTodo',
+  String get editStation => Intl.message(
+        'Edit Station',
+        name: 'editStation',
         args: [],
         locale: locale.toString(),
       );
@@ -109,30 +109,30 @@ class ArchSampleLocalizations {
         locale: locale.toString(),
       );
 
-  String get filterTodos => Intl.message(
-        'Filter Todos',
-        name: 'filterTodos',
+  String get filterStations => Intl.message(
+        'Filter Stations',
+        name: 'filterStations',
         args: [],
         locale: locale.toString(),
       );
 
-  String get deleteTodo => Intl.message(
-        'Delete Todo',
-        name: 'deleteTodo',
+  String get deleteStation => Intl.message(
+        'Delete Station',
+        name: 'deleteStation',
         args: [],
         locale: locale.toString(),
       );
 
-  String get todoDetails => Intl.message(
-        'Todo Details',
-        name: 'todoDetails',
+  String get stationDetails => Intl.message(
+        'Station Details',
+        name: 'stationDetails',
         args: [],
         locale: locale.toString(),
       );
 
-  String get emptyTodoError => Intl.message(
+  String get emptyStationError => Intl.message(
         'Please enter some text',
-        name: 'emptyTodoError',
+        name: 'emptyStationError',
         args: [],
         locale: locale.toString(),
       );
@@ -144,23 +144,23 @@ class ArchSampleLocalizations {
         locale: locale.toString(),
       );
 
-  String get completedTodos => Intl.message(
-        'Completed Todos',
-        name: 'completedTodos',
+  String get completedStations => Intl.message(
+        'Completed Stations',
+        name: 'completedStations',
         args: [],
         locale: locale.toString(),
       );
 
-  String get activeTodos => Intl.message(
-        'Active Todos',
-        name: 'activeTodos',
+  String get activeStations => Intl.message(
+        'Active Stations',
+        name: 'activeStations',
         args: [],
         locale: locale.toString(),
       );
 
-  String todoDeleted(String task) => Intl.message(
+  String stationDeleted(String task) => Intl.message(
         'Deleted "$task"',
-        name: 'todoDeleted',
+        name: 'stationDeleted',
         args: [task],
         locale: locale.toString(),
       );
@@ -172,9 +172,9 @@ class ArchSampleLocalizations {
         locale: locale.toString(),
       );
 
-  String get deleteTodoConfirmation => Intl.message(
-        'Delete this todo?',
-        name: 'deleteTodoConfirmation',
+  String get deleteStationConfirmation => Intl.message(
+        'Delete this station?',
+        name: 'deleteStationConfirmation',
         args: [],
         locale: locale.toString(),
       );
@@ -211,21 +211,21 @@ class ArchSampleLocalizationsDelegate
 class ArchSampleKeys {
   // Home Screens
   static const homeScreen = Key('__homeScreen__');
-  static const addTodoFab = Key('__addTodoFab__');
+  static const addStationFab = Key('__addStationFab__');
   static const snackbar = Key('__snackbar__');
   static Key snackbarAction(int id) => Key('__snackbar_action_${id}__');
 
-  // Todos
-  static const todoList = Key('__todoList__');
-  static const todosLoading = Key('__todosLoading__');
-  static final todoItem = (int id) => Key('TodoItem__${id}');
-  static final todoItemCheckbox = (int id) => Key('TodoItem__${id}__Checkbox');
-  static final todoItemTask = (int id) => Key('TodoItem__${id}__Task');
-  static final todoItemNote = (int id) => Key('TodoItem__${id}__Note');
+  // Stations
+  static const stationList = Key('__stationList__');
+  static const stationsLoading = Key('__stationsLoading__');
+  static final stationItem = (int id) => Key('StationItem__${id}');
+  static final stationItemCheckbox = (int id) => Key('StationItem__${id}__Checkbox');
+  static final stationItemTask = (int id) => Key('StationItem__${id}__Task');
+  static final stationItemNote = (int id) => Key('StationItem__${id}__Note');
 
   // Tabs
   static const tabs = Key('__tabs__');
-  static const todoTab = Key('__todoTab__');
+  static const stationTab = Key('__stationTab__');
   static const statsTab = Key('__statsTab__');
 
   // Extra Actions
@@ -246,20 +246,20 @@ class ArchSampleKeys {
   static const statsNumCompleted = Key('__statsCompletedItems__');
 
   // Details Screen
-  static const editTodoFab = Key('__editTodoFab__');
-  static const deleteTodoButton = Key('__deleteTodoFab__');
-  static const todoDetailsScreen = Key('__todoDetailsScreen__');
-  static final detailsTodoItemCheckbox = Key('DetailsTodo__Checkbox');
-  static final detailsTodoItemTask = Key('DetailsTodo__Task');
-  static final detailsTodoItemNote = Key('DetailsTodo__Note');
+  static const editStationFab = Key('__editStationFab__');
+  static const deleteStationButton = Key('__deleteStationFab__');
+  static const stationDetailsScreen = Key('__stationDetailsScreen__');
+  static final detailsStationItemCheckbox = Key('DetailsStation__Checkbox');
+  static final detailsStationItemTask = Key('DetailsStation__Task');
+  static final detailsStationItemNote = Key('DetailsStation__Note');
 
   // Add Screen
-  static const addTodoScreen = Key('__addTodoScreen__');
-  static const saveNewTodo = Key('__saveNewTodo__');
+  static const addStationScreen = Key('__addStationScreen__');
+  static const saveNewStation = Key('__saveNewStation__');
   static const taskField = Key('__taskField__');
   static const noteField = Key('__noteField__');
 
   // Edit Screen
-  static const editTodoScreen = Key('__editTodoScreen__');
-  static const saveTodoFab = Key('__saveTodoFab__');
+  static const editStationScreen = Key('__editStationScreen__');
+  static const saveStationFab = Key('__saveStationFab__');
 }

@@ -9,14 +9,14 @@ typedef OnSaveCallback = Function(bool complete, Answer userInput);
 class AddEditScreen extends StatefulWidget {
   final bool isEditing;
   final OnSaveCallback onSave;
-  final Todo todo;
+  final Station station;
 
   AddEditScreen({
     Key key,
     @required this.onSave,
     @required this.isEditing,
-    this.todo,
-  }) : super(key: key ?? ArchSampleKeys.addTodoScreen);
+    this.station,
+  }) : super(key: key ?? ArchSampleKeys.addStationScreen);
 
   @override
   _AddEditScreenState createState() => _AddEditScreenState();
@@ -38,7 +38,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isEditing ? localizations.editTodo : localizations.addTodo,
+          isEditing ? localizations.editStation : localizations.addStation,
         ),
       ),
       body: Padding(
@@ -48,11 +48,11 @@ class _AddEditScreenState extends State<AddEditScreen> {
           child: ListView(
             children: [
               Text(
-                widget.todo.id.toString(),
+                widget.station.id.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
               ),
               TextFormField(
-                initialValue: isEditing ? widget.todo.userInput.note : '',
+                initialValue: isEditing ? widget.station.userInput.note : '',
                 key: ArchSampleKeys.noteField,
                 maxLines: 10,
                 style: textTheme.subtitle1,
@@ -67,14 +67,14 @@ class _AddEditScreenState extends State<AddEditScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         key:
-            isEditing ? ArchSampleKeys.saveTodoFab : ArchSampleKeys.saveNewTodo,
-        tooltip: isEditing ? localizations.saveChanges : localizations.addTodo,
+            isEditing ? ArchSampleKeys.saveStationFab : ArchSampleKeys.saveNewStation,
+        tooltip: isEditing ? localizations.saveChanges : localizations.addStation,
         child: Icon(isEditing ? Icons.check : Icons.add),
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
             widget.onSave(
-                _note.isNotEmpty, Answer(widget.todo.type, note: _note));
+                _note.isNotEmpty, Answer(widget.station.type, note: _note));
             Navigator.pop(context);
           }
         },

@@ -17,20 +17,20 @@ class HomeScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text(FlutterBlocLocalizations.of(context).appTitle),
             actions: [
-              FilterButton(visible: activeTab == AppTab.todos),
+              FilterButton(visible: activeTab == AppTab.stations),
               ExtraActions(),
             ],
           ),
-          body: activeTab == AppTab.todos ? FilteredTodos() : Stats(),
+          body: activeTab == AppTab.stations ? FilteredStations() : Stats(),
           floatingActionButton: FloatingActionButton(
-            key: ArchSampleKeys.addTodoFab,
+            key: ArchSampleKeys.addStationFab,
             onPressed: () {
-              Navigator.pushNamed(context, '/addTodo');
+              Navigator.pushNamed(context, '/addStation');
 
               ///Archsample Routes?????????
             },
             child: Icon(Icons.add),
-            tooltip: ArchSampleLocalizations.of(context).addTodo,
+            tooltip: ArchSampleLocalizations.of(context).addStation,
           ),
           bottomNavigationBar: TabSelector(
             activeTab: activeTab,

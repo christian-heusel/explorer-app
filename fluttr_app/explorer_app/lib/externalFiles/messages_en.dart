@@ -28,26 +28,26 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
-        'activeTodos': MessageLookupByLibrary.simpleMessage('Active Todos'),
-        'addTodo': MessageLookupByLibrary.simpleMessage('Add Todo'),
+        'activeStations': MessageLookupByLibrary.simpleMessage('Active Stations'),
+        'addStation': MessageLookupByLibrary.simpleMessage('Add Station'),
         'cancel': MessageLookupByLibrary.simpleMessage('Cancel'),
         'clearCompleted':
             MessageLookupByLibrary.simpleMessage('Clear completed'),
-        'completedTodos':
-            MessageLookupByLibrary.simpleMessage('Completed Todos'),
+        'completedStations':
+            MessageLookupByLibrary.simpleMessage('Completed Stations'),
         'delete': MessageLookupByLibrary.simpleMessage('Delete'),
-        'deleteTodo': MessageLookupByLibrary.simpleMessage('Delete Todo'),
-        'deleteTodoConfirmation':
-            MessageLookupByLibrary.simpleMessage('Delete this todo?'),
-        'editTodo': MessageLookupByLibrary.simpleMessage('Edit Todo'),
-        'emptyTodoError':
+        'deleteStation': MessageLookupByLibrary.simpleMessage('Delete Station'),
+        'deleteStationConfirmation':
+            MessageLookupByLibrary.simpleMessage('Delete this station?'),
+        'editStation': MessageLookupByLibrary.simpleMessage('Edit Station'),
+        'emptyStationError':
             MessageLookupByLibrary.simpleMessage('Please enter some text'),
-        'filterTodos': MessageLookupByLibrary.simpleMessage('Filter Todos'),
+        'filterStations': MessageLookupByLibrary.simpleMessage('Filter Stations'),
         'markAllComplete':
             MessageLookupByLibrary.simpleMessage('Mark all complete'),
         'markAllIncomplete':
             MessageLookupByLibrary.simpleMessage('Mark all incomplete'),
-        'newTodoHint':
+        'newStationHint':
             MessageLookupByLibrary.simpleMessage('What needs to be done?'),
         'notesHint':
             MessageLookupByLibrary.simpleMessage('Additional Notes...'),
@@ -56,9 +56,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'showAll': MessageLookupByLibrary.simpleMessage('Show All'),
         'showCompleted': MessageLookupByLibrary.simpleMessage('Show Completed'),
         'stats': MessageLookupByLibrary.simpleMessage('Stats'),
-        'todoDeleted': m0,
-        'todoDetails': MessageLookupByLibrary.simpleMessage('Todo Details'),
-        'todos': MessageLookupByLibrary.simpleMessage('Todos'),
+        'stationDeleted': m0,
+        'stationDetails': MessageLookupByLibrary.simpleMessage('Station Details'),
+        'stations': MessageLookupByLibrary.simpleMessage('Stations'),
         'undo': MessageLookupByLibrary.simpleMessage('Undo')
       };
 }

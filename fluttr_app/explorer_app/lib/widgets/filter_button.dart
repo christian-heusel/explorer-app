@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:explorer_app/externalFiles/ArchSample.dart';
-import 'package:explorer_app/blocs/filtered_todos/filtered_todos.dart';
+import 'package:explorer_app/blocs/filtered_stations/filtered_stations.dart';
 import 'package:explorer_app/models/models.dart';
 
 class FilterButton extends StatelessWidget {
@@ -16,14 +16,14 @@ class FilterButton extends StatelessWidget {
         .textTheme
         .bodyText2
         .copyWith(color: Theme.of(context).accentColor);
-    return BlocBuilder<FilteredTodosBloc, FilteredTodosState>(
+    return BlocBuilder<FilteredStationsBloc, FilteredStationsState>(
         builder: (context, state) {
       final button = _Button(
         onSelected: (filter) {
-          BlocProvider.of<FilteredTodosBloc>(context)
+          BlocProvider.of<FilteredStationsBloc>(context)
               .add(FilterUpdated(filter));
         },
-        activeFilter: state is FilteredTodosLoadSuccess
+        activeFilter: state is FilteredStationsLoadSuccess
             ? state.activeFilter
             : VisibilityFilter.all,
         activeStyle: activeStyle,
@@ -56,7 +56,7 @@ class _Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<VisibilityFilter>(
       key: ArchSampleKeys.filterButton,
-      tooltip: ArchSampleLocalizations.of(context).filterTodos,
+      tooltip: ArchSampleLocalizations.of(context).filterStations,
       onSelected: onSelected,
       itemBuilder: (BuildContext context) => <PopupMenuItem<VisibilityFilter>>[
         PopupMenuItem<VisibilityFilter>(

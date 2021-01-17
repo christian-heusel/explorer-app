@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:explorer_app/externalFiles/ArchSample.dart';
 import 'package:explorer_app/blocs/stats/stats.dart';
 import 'package:explorer_app/widgets/widgets.dart';
-import 'package:explorer_app/flutter_todos_keys.dart';
+import 'package:explorer_app/flutter_stations_keys.dart';
 
 class Stats extends StatelessWidget {
   Stats({Key key}) : super(key: key);
@@ -17,7 +17,7 @@ class Stats extends StatelessWidget {
       builder: (context, state) {
         if (state is StatsLoadInProgress) {
           return LoadingIndicator(
-            key: FlutterTodosKeys.statsLoadInProgressIndicator,
+            key: FlutterStationsKeys.statsLoadInProgressIndicator,
           );
         } else if (state is StatsLoadSuccess) {
           return Center(
@@ -27,7 +27,7 @@ class Stats extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    ArchSampleLocalizations.of(context).completedTodos,
+                    ArchSampleLocalizations.of(context).completedStations,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
@@ -42,7 +42,7 @@ class Stats extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    ArchSampleLocalizations.of(context).activeTodos,
+                    ArchSampleLocalizations.of(context).activeStations,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
@@ -62,7 +62,7 @@ class Stats extends StatelessWidget {
             ),
           );
         } else {
-          return Container(key: FlutterTodosKeys.emptyStatsContainer);
+          return Container(key: FlutterStationsKeys.emptyStatsContainer);
         }
       },
     );

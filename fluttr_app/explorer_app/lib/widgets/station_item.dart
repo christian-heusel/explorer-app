@@ -3,42 +3,42 @@ import 'package:flutter/material.dart';
 import 'package:explorer_app/externalFiles/ArchSample.dart';
 import 'package:explorer_app/models/models.dart';
 
-class TodoItem extends StatelessWidget {
+class StationItem extends StatelessWidget {
   final GestureTapCallback onTap;
-  final Todo todo;
+  final Station station;
 
-  TodoItem({
+  StationItem({
     Key key,
     @required this.onTap,
-    @required this.todo,
+    @required this.station,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      key: ArchSampleKeys.todoItem(todo.id),
+      key: ArchSampleKeys.stationItem(station.id),
       child: ListTile(
         onTap: onTap,
         leading: Checkbox(
-          key: ArchSampleKeys.todoItemCheckbox(todo.id),
-          value: todo.complete,
+          key: ArchSampleKeys.stationItemCheckbox(station.id),
+          value: station.complete,
           onChanged: (bool placeholder) {},
         ),
         title: Hero(
-          tag: '${todo.id}__heroTag',
+          tag: '${station.id}__heroTag',
           child: Container(
             width: MediaQuery.of(context).size.width,
             child: Text(
-              todo.id.toString(),
-              key: ArchSampleKeys.todoItemTask(todo.id),
+              station.id.toString(),
+              key: ArchSampleKeys.stationItemTask(station.id),
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
         ),
-        subtitle: todo.userInput.note.isNotEmpty
+        subtitle: station.userInput.note.isNotEmpty
             ? Text(
-                todo.userInput.note,
-                key: ArchSampleKeys.todoItemNote(todo.id),
+                station.userInput.note,
+                key: ArchSampleKeys.stationItemNote(station.id),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.subtitle1,

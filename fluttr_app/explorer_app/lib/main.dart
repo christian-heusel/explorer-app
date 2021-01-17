@@ -18,21 +18,21 @@ void main() {
   runApp(
     BlocProvider(
       create: (context) {
-        return TodosBloc(
-          todosRepository: const TodosRepositoryFlutter(
+        return StationsBloc(
+          stationsRepository: const StationsRepositoryFlutter(
             fileStorage: const FileStorage(
               '__flutter_bloc_app__',
               getApplicationDocumentsDirectory,
             ),
           ),
-        )..add(TodosLoaded());
+        )..add(StationsLoaded());
       },
-      child: TodosApp(),
+      child: StationsApp(),
     ),
   );
 }
 
-class TodosApp extends StatelessWidget {
+class StationsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,14 +53,14 @@ class TodosApp extends StatelessWidget {
               BlocProvider<TabBloc>(
                 create: (context) => TabBloc(),
               ),
-              BlocProvider<FilteredTodosBloc>(
-                create: (context) => FilteredTodosBloc(
-                  todosBloc: BlocProvider.of<TodosBloc>(context),
+              BlocProvider<FilteredStationsBloc>(
+                create: (context) => FilteredStationsBloc(
+                  stationsBloc: BlocProvider.of<StationsBloc>(context),
                 ),
               ),
               BlocProvider<StatsBloc>(
                 create: (context) => StatsBloc(
-                  todosBloc: BlocProvider.of<TodosBloc>(context),
+                  stationsBloc: BlocProvider.of<StationsBloc>(context),
                 ),
               ),
               BlocProvider<SamplequeryBloc>(
@@ -69,12 +69,12 @@ class TodosApp extends StatelessWidget {
             child: HomeScreen(),
           );
         },
-        /* '/addTodo': (context) {   //ArchsampleRoutes TODO siehe oben
+        /* '/addStation': (context) {   //ArchsampleRoutes TODO siehe oben
           return AddEditScreen(
-            key: ArchSampleKeys.addTodoScreen,
+            key: ArchSampleKeys.addStationScreen,
             onSave: (userInput) {
-              BlocProvider.of<TodosBloc>(context).add(
-                TodoAdded(Todo(task, note: note)),
+              BlocProvider.of<StationsBloc>(context).add(
+                StationAdded(Station(task, note: note)),
               );
             },
             isEditing: false,

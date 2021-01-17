@@ -4,34 +4,34 @@ import 'package:bloc/bloc.dart';
 import 'package:explorer_app/blocs/blocs.dart';
 
 class StatsBloc extends Bloc<StatsEvent, StatsState> {
-  final TodosBloc todosBloc;
-  StreamSubscription todosSubscription;
+  final StationsBloc stationsBloc;
+  StreamSubscription stationsSubscription;
 
-  StatsBloc({@required this.todosBloc}) : super(StatsLoadInProgress()) {
-    void onTodosStateChanged(state) {
-      if (state is TodosLoadSuccess) {
-        add(StatsUpdated(state.todos));
+  StatsBloc({@required this.stationsBloc}) : super(StatsLoadInProgress()) {
+    void onStationsStateChanged(state) {
+      if (state is StationsLoadSuccess) {
+        add(StatsUpdated(state.stations));
       }
     }
 
-    onTodosStateChanged(todosBloc.state);
-    todosSubscription = todosBloc.listen(onTodosStateChanged);
+    onStationsStateChanged(stationsBloc.state);
+    stationsSubscription = stationsBloc.listen(onStationsStateChanged);
   }
 
   @override
   Stream<StatsState> mapEventToState(StatsEvent event) async* {
     if (event is StatsUpdated) {
       final numActive =
-          event.todos.where((todo) => !todo.complete).toList().length;
+          event.stations.where((station) => !station.complete).toList().length;
       final numCompleted =
-          event.todos.where((todo) => todo.complete).toList().length;
+          event.stations.where((station) => station.complete).toList().length;
       yield StatsLoadSuccess(numActive, numCompleted);
     }
   }
 
   @override
   Future<void> close() {
-    todosSubscription.cancel();
+    stationsSubscription.cancel();
     return super.close();
   }
 }

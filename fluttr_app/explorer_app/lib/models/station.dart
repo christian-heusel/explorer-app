@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:explorer_app/FileStorage/todo_entity.dart';
+import 'package:explorer_app/FileStorage/station_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'answer.dart';
 
-class Todo extends Equatable {
+class Station extends Equatable {
   //ID from Quest
   final int id;
   final int type; //which type of quest?
@@ -14,22 +14,22 @@ class Todo extends Equatable {
   final String task; //um die aufgabe zu beschreiben
   final Answer userInput;
 
-  Todo.fromScratch(
+  Station.fromScratch(
     this.id,
     this.type, {
     this.complete = false,
     this.task = '',
   }) : userInput = Answer(type);
 
-  Todo(this.id, this.type, this.complete, this.task, this.userInput);
+  Station(this.id, this.type, this.complete, this.task, this.userInput);
 
-  Todo copyWith(
+  Station copyWith(
       {int id,
       AnswerTypes type,
       bool complete,
       String task,
       Answer userInput}) {
-    return Todo(
+    return Station(
       id ?? this.id,
       type ?? this.type,
       complete ?? this.complete,
@@ -43,18 +43,18 @@ class Todo extends Equatable {
 
   @override
   String toString() {
-    return 'Todo { id: $id, complete: $complete, type: $type, task: $task, Answer: ' +
+    return 'Station { id: $id, complete: $complete, type: $type, task: $task, Answer: ' +
         userInput.toString() +
         '}';
   }
 
-  TodoEntity toEntity() {
-    return TodoEntity(
+  StationEntity toEntity() {
+    return StationEntity(
         this.id, this.type, this.complete, this.task, this.userInput);
   }
 
-  static Todo fromEntity(TodoEntity entity) {
-    return Todo(
+  static Station fromEntity(StationEntity entity) {
+    return Station(
       entity.id,
       entity.type,
       entity.complete,

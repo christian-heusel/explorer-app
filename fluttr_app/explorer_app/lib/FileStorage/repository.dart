@@ -6,51 +6,51 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:meta/meta.dart';
-import 'package:explorer_app/FileStorage/todo_entity.dart';
+import 'package:explorer_app/FileStorage/station_entity.dart';
 import 'file_storage.dart';
 import 'web_client.dart';
 
-abstract class TodosRepository {
-  /// Loads todos first from File storage. If they don't exist or encounter an
-  /// error, it attempts to load the Todos from a Web Client.
-  Future<List<TodoEntity>> loadTodos();
+abstract class StationsRepository {
+  /// Loads stations first from File storage. If they don't exist or encounter an
+  /// error, it attempts to load the Stations from a Web Client.
+  Future<List<StationEntity>> loadStations();
 
-  // Persists todos to local disk and the web
-  Future saveTodos(List<TodoEntity> todos);
+  // Persists stations to local disk and the web
+  Future saveStations(List<StationEntity> stations);
 }
 
 /// A class that glues together our local file storage and web client. It has a
-/// clear responsibility: Load Todos and Persist todos.
-class TodosRepositoryFlutter implements TodosRepository {
+/// clear responsibility: Load Stations and Persist stations.
+class StationsRepositoryFlutter implements StationsRepository {
   final FileStorage fileStorage;
   final WebClient webClient;
 
-  const TodosRepositoryFlutter({
+  const StationsRepositoryFlutter({
     @required this.fileStorage,
     this.webClient = const WebClient(),
   });
 
-  /// Loads todos first from File storage. If they don't exist or encounter an
-  /// error, it attempts to load the Todos from a Web Client.
+  /// Loads stations first from File storage. If they don't exist or encounter an
+  /// error, it attempts to load the Stations from a Web Client.
   @override
-  Future<List<TodoEntity>> loadTodos() async {
+  Future<List<StationEntity>> loadStations() async {
     try {
-      return await fileStorage.loadTodos();
+      return await fileStorage.loadStations();
     } catch (e) {
-      final todos = await webClient.fetchTodos();
+      final stations = await webClient.fetchStations();
 
-      fileStorage.saveTodos(todos);
+      fileStorage.saveStations(stations);
 
-      return todos;
+      return stations;
     }
   }
 
-// Persists todos to local disk and the web
+// Persists stations to local disk and the web
   @override
-  Future saveTodos(List<TodoEntity> todos) {
+  Future saveStations(List<StationEntity> stations) {
     return Future.wait<dynamic>([
-      fileStorage.saveTodos(todos),
-      webClient.postTodos(todos),
+      fileStorage.saveStations(stations),
+      webClient.postStations(stations),
     ]);
   }
 }

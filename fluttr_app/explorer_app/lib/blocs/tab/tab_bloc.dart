@@ -4,7 +4,7 @@ import 'package:explorer_app/blocs/tab/tab.dart';
 import 'package:explorer_app/models/models.dart';
 
 class TabBloc extends Bloc<TabEvent, AppTab> {
-  TabBloc() : super(AppTab.todos);
+  TabBloc() : super(AppTab.stations);
 
   @override
   Stream<AppTab> mapEventToState(TabEvent event) async* {
