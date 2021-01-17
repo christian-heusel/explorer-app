@@ -30,6 +30,8 @@ dependencies:
   json_serializable: ^3.0.0
   meta: '>=1.0.0 <2.0.0' # only if you have non nullable fields
   intl: '0.16.1'
+  path_provider: ^1.6.24    #needed for local storage
+
 
   flutter:
     sdk: flutter

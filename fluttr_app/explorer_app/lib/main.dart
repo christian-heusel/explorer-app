@@ -1,119 +1,86 @@
-import 'package:flutter/material.dart';
-import 'pages/subPageTest.dart';
-import 'pages/homePage.dart';
-import 'pages/openTaskPage.dart';
-import 'pages/closedTaskPage.dart';
-
 import 'package:explorer_app/bloc/samplequery_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:explorer_app/localization.dart';
+import 'package:explorer_app/blocs/blocs.dart';
+import 'package:explorer_app/screens/screens.dart';
 
-void main() async {
-  runApp(ExplorerApp());
+import 'package:explorer_app/FileStorage/repository.dart';
+import 'package:explorer_app/FileStorage/file_storage.dart';
+import 'package:explorer_app/externalFiles/ArchSample.dart';
+
+void main() {
+  // We can set a Bloc's observer to an instance of `SimpleBlocObserver`.
+  // This will allow us to handle all transitions and errors in SimpleBlocObserver.
+  Bloc.observer = SimpleBlocObserver();
+  runApp(
+    BlocProvider(
+      create: (context) {
+        return StationsBloc(
+          stationsRepository: const StationsRepositoryFlutter(
+            fileStorage: const FileStorage(
+              '__flutter_bloc_app__',
+              getApplicationDocumentsDirectory,
+            ),
+          ),
+        )..add(StationsLoaded());
+      },
+      child: StationsApp(),
+    ),
+  );
 }
 
-class ExplorerApp extends StatelessWidget {
-  // This widget is the root of your application.
+class StationsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Explorer 2021',
-        theme: ThemeData(
-          // This is the theme of your application.
-          primarySwatch: Colors.blue,
-          // This makes the visual density adapt to the platform that you run
-          // the app on. For desktop platforms, the controls will be smaller and
-          // closer together (more dense) than on mobile platforms.
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: statefullMainPage());
-  }
-}
-
-class statefullMainPage extends StatefulWidget {
-  statefullMainPage({Key key}) : super(key: key);
-  String title = "Explorer 2021";
-  @override
-  MainPage createState() => MainPage();
-}
-
-class MainPage extends State<statefullMainPage> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  List<Widget> pages;
-  Widget currentPage;
-
-  subPageTest testSqlPage;
-  HomePage homeView;
-  OpenTaskPage openTaskView;
-  ClosedTaskPage closedTaskview;
-
-  void initState() {
-    testSqlPage = subPageTest();
-    homeView = HomePage();
-    openTaskView = OpenTaskPage();
-    closedTaskview = ClosedTaskPage();
-
-    pages = <Widget>[testSqlPage, homeView, openTaskView, closedTaskview];
-    currentPage = testSqlPage;
-    super.initState();
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      currentPage = pages[index];
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Row(
-          children: [
-            new Image.asset(
-              'assets/images/logo_jungenschaft.png',
-              width: 25.0,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(widget.title),
-          ],
-        ),
+      title: FlutterBlocLocalizations().appTitle,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      body: currentPage,
-
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.adb),
-            label: 'Test Site',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted),
-            label: 'offen',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.playlist_add_check),
-            label: 'bearbeitet',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-      ),
+      localizationsDelegates: [
+        ArchSampleLocalizationsDelegate(),
+        FlutterBlocLocalizationsDelegate(),
+      ],
+      routes: {
+        '/': (context) {
+          //ArchsampleRoutes TODO anpassen oder entfernen
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<TabBloc>(
+                create: (context) => TabBloc(),
+              ),
+              BlocProvider<FilteredStationsBloc>(
+                create: (context) => FilteredStationsBloc(
+                  stationsBloc: BlocProvider.of<StationsBloc>(context),
+                ),
+              ),
+              BlocProvider<StatsBloc>(
+                create: (context) => StatsBloc(
+                  stationsBloc: BlocProvider.of<StationsBloc>(context),
+                ),
+              ),
+              BlocProvider<SamplequeryBloc>(
+                  create: (context) => SamplequeryBloc()),
+            ],
+            child: HomeScreen(),
+          );
+        },
+        /* '/addStation': (context) {   //ArchsampleRoutes TODO siehe oben
+          return AddEditScreen(
+            key: ArchSampleKeys.addStationScreen,
+            onSave: (userInput) {
+              BlocProvider.of<StationsBloc>(context).add(
+                StationAdded(Station(task, note: note)),
+              );
+            },
+            isEditing: false,
+          );
+        },*/
+      },
     );
   }
 }

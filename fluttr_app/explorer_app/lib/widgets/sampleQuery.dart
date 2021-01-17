@@ -2,40 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:explorer_app/bloc/samplequery_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// ignore: camel_case_types
-class subPageTest extends StatefulWidget {
-  subPageTest({Key key}) : super(key: key);
-
-  @override
-  subPageTestState createState() => subPageTestState();
-}
-
-class subPageTestState extends State<subPageTest> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: BlocProvider<SamplequeryBloc>(
-      create: (context) => SamplequeryBloc(),
-      child: TestSql(),
-    ));
-  }
-}
-
-class TestSql extends StatelessWidget {
-  @override
+class sampleQuery extends StatelessWidget {
+  sampleQuery({Key key}) : super(key: key);
   Widget build(BuildContext context) {
     final SamplequeryBloc samplequeryBloc =
         BlocProvider.of<SamplequeryBloc>(context);
 
-    return Scaffold(
-      body: BlocBuilder<SamplequeryBloc, SamplequeryState>(
+    return Container(
+      child: BlocBuilder<SamplequeryBloc, SamplequeryState>(
         builder: (context, state) {
           return Row(
             mainAxisSize: MainAxisSize.min,
