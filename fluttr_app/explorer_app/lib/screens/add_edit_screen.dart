@@ -48,7 +48,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
           child: ListView(
             children: [
               Text(
-                widget.station.id.toString(),
+                "Antwort zu Station ${widget.station.id.toString()}",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
               ),
               TextFormField(
@@ -66,9 +66,11 @@ class _AddEditScreenState extends State<AddEditScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        key:
-            isEditing ? ArchSampleKeys.saveStationFab : ArchSampleKeys.saveNewStation,
-        tooltip: isEditing ? localizations.saveChanges : localizations.addStation,
+        key: isEditing
+            ? ArchSampleKeys.saveStationFab
+            : ArchSampleKeys.saveNewStation,
+        tooltip:
+            isEditing ? localizations.saveChanges : localizations.addStation,
         child: Icon(isEditing ? Icons.check : Icons.add),
         onPressed: () {
           if (_formKey.currentState.validate()) {
