@@ -26,168 +26,168 @@ class ArchSampleLocalizations {
   }
 
   String get stations => Intl.message(
-        'Stations',
+        'Stationen',
         name: 'stations',
         args: [],
         locale: locale.toString(),
       );
 
   String get stats => Intl.message(
-        'Stats',
+        'Statistiken',
         name: 'stats',
         args: [],
         locale: locale.toString(),
       );
 
   String get showAll => Intl.message(
-        'Show All',
+        'alle anzeigen',
         name: 'showAll',
         args: [],
         locale: locale.toString(),
       );
 
   String get showActive => Intl.message(
-        'Show Active',
+        'aktive anzeigen',
         name: 'showActive',
         args: [],
         locale: locale.toString(),
       );
 
   String get showCompleted => Intl.message(
-        'Show Completed',
+        'fertige anzeigen',
         name: 'showCompleted',
         args: [],
         locale: locale.toString(),
       );
 
   String get newStationHint => Intl.message(
-        'What needs to be done?',
+        'Bitte gib deine Antwort ein',
         name: 'newStationHint',
         args: [],
         locale: locale.toString(),
       );
 
   String get markAllComplete => Intl.message(
-        'Mark all complete',
+        'alle als beantwortet markieren',
         name: 'markAllComplete',
         args: [],
         locale: locale.toString(),
       );
 
   String get markAllIncomplete => Intl.message(
-        'Mark all incomplete',
+        'alle als zu erledigen markieren',
         name: 'markAllIncomplete',
         args: [],
         locale: locale.toString(),
       );
 
   String get clearCompleted => Intl.message(
-        'Clear completed',
+        'beantwortete löschen',
         name: 'clearCompleted',
         args: [],
         locale: locale.toString(),
       );
 
   String get addStation => Intl.message(
-        'Add Station',
+        'Neue Antwort hinzufügen',
         name: 'addStation',
         args: [],
         locale: locale.toString(),
       );
 
   String get editStation => Intl.message(
-        'Edit Station',
+        'Antwort bearbeiten',
         name: 'editStation',
         args: [],
         locale: locale.toString(),
       );
 
   String get saveChanges => Intl.message(
-        'Save changes',
+        'Änderungen speichern',
         name: 'saveChanges',
         args: [],
         locale: locale.toString(),
       );
 
   String get filterStations => Intl.message(
-        'Filter Stations',
+        'Antworten filtern',
         name: 'filterStations',
         args: [],
         locale: locale.toString(),
       );
 
   String get deleteStation => Intl.message(
-        'Delete Station',
+        'Antwort löschen',
         name: 'deleteStation',
         args: [],
         locale: locale.toString(),
       );
 
   String get stationDetails => Intl.message(
-        'Station Details',
+        'Details zur Antwort',
         name: 'stationDetails',
         args: [],
         locale: locale.toString(),
       );
 
   String get emptyStationError => Intl.message(
-        'Please enter some text',
+        'Bitte gib einen Text ein ...',
         name: 'emptyStationError',
         args: [],
         locale: locale.toString(),
       );
 
   String get notesHint => Intl.message(
-        'Additional Notes...',
+        'Zusätzliche notizen',
         name: 'notesHint',
         args: [],
         locale: locale.toString(),
       );
 
   String get completedStations => Intl.message(
-        'Completed Stations',
+        'Fertige Antworten',
         name: 'completedStations',
         args: [],
         locale: locale.toString(),
       );
 
   String get activeStations => Intl.message(
-        'Active Stations',
+        'ausstehende Antworten',
         name: 'activeStations',
         args: [],
         locale: locale.toString(),
       );
 
   String stationDeleted(String task) => Intl.message(
-        'Deleted "$task"',
+        'Antwort "$task" gelöscht',
         name: 'stationDeleted',
         args: [task],
         locale: locale.toString(),
       );
 
   String get undo => Intl.message(
-        'Undo',
+        'Rückgängig machen',
         name: 'undo',
         args: [],
         locale: locale.toString(),
       );
 
   String get deleteStationConfirmation => Intl.message(
-        'Delete this station?',
+        'Antwort wirklich löschen?',
         name: 'deleteStationConfirmation',
         args: [],
         locale: locale.toString(),
       );
 
   String get delete => Intl.message(
-        'Delete',
+        'löschen',
         name: 'delete',
         args: [],
         locale: locale.toString(),
       );
 
   String get cancel => Intl.message(
-        'Cancel',
+        'Abbrechen',
         name: 'cancel',
         args: [],
         locale: locale.toString(),
@@ -219,7 +219,8 @@ class ArchSampleKeys {
   static const stationList = Key('__stationList__');
   static const stationsLoading = Key('__stationsLoading__');
   static final stationItem = (int id) => Key('StationItem__${id}');
-  static final stationItemCheckbox = (int id) => Key('StationItem__${id}__Checkbox');
+  static final stationItemCheckbox =
+      (int id) => Key('StationItem__${id}__Checkbox');
   static final stationItemTask = (int id) => Key('StationItem__${id}__Task');
   static final stationItemNote = (int id) => Key('StationItem__${id}__Note');
 

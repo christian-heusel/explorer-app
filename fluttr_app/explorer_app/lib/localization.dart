@@ -10,7 +10,7 @@ class FlutterBlocLocalizations {
     );
   }
 
-  String get appTitle => "Flutter Stations";
+  String get appTitle => "Explorer 2021";
 }
 
 class FlutterBlocLocalizationsDelegate
