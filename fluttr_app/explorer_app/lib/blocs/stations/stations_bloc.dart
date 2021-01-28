@@ -9,7 +9,8 @@ import 'package:explorer_app/FileStorage/station_entity.dart';
 class StationsBloc extends Bloc<StationsEvent, StationsState> {
   final StationsRepositoryFlutter stationsRepository;
 
-  StationsBloc({@required this.stationsRepository}) : super(StationsLoadInProgress());
+  StationsBloc({@required this.stationsRepository})
+      : super(StationsLoadInProgress());
 
   @override
   Stream<StationsState> mapEventToState(StationsEvent event) async* {
@@ -42,7 +43,8 @@ class StationsBloc extends Bloc<StationsEvent, StationsState> {
   Stream<StationsState> _mapStationAddedToState(StationAdded event) async* {
     if (state is StationsLoadSuccess) {
       final List<Station> updatedStations =
-          List.from((state as StationsLoadSuccess).stations)..add(event.station);
+          List.from((state as StationsLoadSuccess).stations)
+            ..add(event.station);
       yield StationsLoadSuccess(updatedStations);
       _saveStations(updatedStations);
     }
@@ -72,8 +74,9 @@ class StationsBloc extends Bloc<StationsEvent, StationsState> {
 
   Stream<StationsState> _mapToggleAllToState() async* {
     if (state is StationsLoadSuccess) {
-      final allComplete =
-          (state as StationsLoadSuccess).stations.every((station) => station.complete);
+      final allComplete = (state as StationsLoadSuccess)
+          .stations
+          .every((station) => station.complete);
       final List<Station> updatedStations = (state as StationsLoadSuccess)
           .stations
           .map((station) => station.copyWith(complete: !allComplete))
