@@ -18,32 +18,45 @@ class StationItem extends StatelessWidget {
     return Container(
       key: ArchSampleKeys.stationItem(station.id),
       child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         onTap: onTap,
-        leading: Checkbox(
-          key: ArchSampleKeys.stationItemCheckbox(station.id),
-          value: station.complete,
-          onChanged: (bool placeholder) {},
+        leading: Container(
+          padding: EdgeInsets.only(right: 12.0),
+          decoration: new BoxDecoration(
+              border: new Border(
+                  right: new BorderSide(width: 1.0, color: Colors.black87))),
+          child: station.complete
+              ? Icon(Icons.done, color: Colors.green)
+              : Icon(
+                  Icons.close,
+                  color: Colors.red,
+                ),
         ),
         title: Hero(
           tag: '${station.id}__heroTag',
           child: Container(
             width: MediaQuery.of(context).size.width,
             child: Text(
-              station.id.toString(),
+              "Station ${station.id.toString()}",
               key: ArchSampleKeys.stationItemTask(station.id),
-              style: Theme.of(context).textTheme.headline6,
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
         ),
+
+        // TODO: This should display the Station Title
         subtitle: station.userInput.note.isNotEmpty
             ? Text(
                 station.userInput.note,
                 key: ArchSampleKeys.stationItemNote(station.id),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: TextStyle(color: Colors.black),
               )
             : null,
+        trailing:
+            Icon(Icons.keyboard_arrow_right, color: Colors.black, size: 30.0),
       ),
     );
   }

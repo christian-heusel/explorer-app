@@ -59,8 +59,9 @@ class DetailsScreen extends StatelessWidget {
                                       bottom: 16.0,
                                     ),
                                     child: Text(
-                                      station.id.toString(),
-                                      key: ArchSampleKeys.detailsStationItemTask,
+                                      "Antwort zu Station ${station.id.toString()}",
+                                      key:
+                                          ArchSampleKeys.detailsStationItemTask,
                                       style:
                                           Theme.of(context).textTheme.headline5,
                                     ),
