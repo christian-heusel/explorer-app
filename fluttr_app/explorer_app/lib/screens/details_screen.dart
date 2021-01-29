@@ -33,19 +33,6 @@ class DetailsScreen extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Checkbox(
-                                key: FlutterStationsKeys.detailsScreenCheckBox,
-                                value: station.complete,
-                                onChanged: (_) {
-                                  /* BlocProvider.of<StationsBloc>(context).add(
-                                    StationUpdated(
-                                      station.copyWith(complete: !station.complete),
-                                    ),
-                                  );*/
-                                }),
-                          ),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,8 +62,22 @@ class DetailsScreen extends StatelessWidget {
                               ],
                             ),
                           ),
+                          Icon(
+                            Icons.check,
+                            color: Colors.green,
+                            size: 36.0,
+                          )
                         ],
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40.0),
+                        child: Row(
+                            // CH TODO: Add the real date here
+                            children: [
+                              Icon(Icons.access_time),
+                              Text(" 23. Oktober um 01:40 Uhr"),
+                            ]),
+                      )
                     ],
                   ),
                 ),
