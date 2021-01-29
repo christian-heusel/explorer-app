@@ -21,29 +21,53 @@ class FilteredStations extends StatelessWidget {
           return LoadingIndicator(key: ArchSampleKeys.stationsLoading);
         } else if (state is FilteredStationsLoadSuccess) {
           final stations = state.filteredStations;
-          return GridView.builder(
+          return ListView.builder(
             key: ArchSampleKeys.stationList,
             itemCount: stations.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio:
-                    2.5), //TODO better rotatio (problem with high resolution)
             itemBuilder: (BuildContext context, int index) {
               final station = stations[index];
-              return StationItem(
-                station: station,
-                onTap: () async {
-                  final removedStation = await Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) {
-                      return DetailsScreen(id: station.id);
-                    }),
-                  );
-                },
+              return Card(
+                elevation: 8.0,
+                margin:
+                    new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                child: Container(
+                  decoration:
+                      BoxDecoration(color: Color.fromRGBO(255, 255, 255, .9)),
+                  child: StationItem(
+                    station: station,
+                    onTap: () async {
+                      final removedStation = await Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) {
+                          // Directly go to the edit screen for stations that have not yet been completed
+                          if (!station.complete) {
+                            return AddEditScreen(
+                              key: ArchSampleKeys.editStationScreen,
+                              onSave: (complete, userInput) {
+                                BlocProvider.of<StationsBloc>(context).add(
+                                  StationUpdated(
+                                    station.copyWith(
+                                        complete: complete,
+                                        userInput: userInput),
+                                  ),
+                                );
+                              },
+                              isEditing: true,
+                              station: station,
+                            );
+                          } else {
+                            return DetailsScreen(id: station.id);
+                          }
+                        }),
+                      );
+                    },
+                  ),
+                ),
               );
             },
           );
         } else {
-          return Container(key: FlutterStationsKeys.filteredStationsEmptyContainer);
+          return Container(
+              key: FlutterStationsKeys.filteredStationsEmptyContainer);
         }
       },
     );

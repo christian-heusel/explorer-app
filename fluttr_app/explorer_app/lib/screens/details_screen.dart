@@ -12,6 +12,112 @@ class DetailsScreen extends StatelessWidget {
   DetailsScreen({Key key, @required this.id})
       : super(key: key ?? ArchSampleKeys.stationDetailsScreen);
 
+  topContent(context, station) => Stack(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(left: 10.0),
+            height: MediaQuery.of(context).size.height * 0.5,
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage("assets/images/explorer_logo.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.5,
+            padding: EdgeInsets.all(40.0),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
+            child: Center(
+              child: topContentText(station),
+            ),
+          ),
+          Positioned(
+            left: 8.0,
+            top: 60.0,
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back, color: Colors.white),
+            ),
+          )
+        ],
+      );
+
+  topContentText(station) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 60.0),
+          Icon(
+            Icons.add_a_photo,
+            color: Colors.white,
+            size: 40.0,
+          ),
+          Container(
+            width: 90.0,
+            child: new Divider(color: Colors.green),
+          ),
+          SizedBox(height: 10.0),
+          Text(
+            "Station 5",
+            style: TextStyle(color: Colors.white, fontSize: 45.0),
+          ),
+          SizedBox(height: 30.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Icon(
+                  Icons.place,
+                  color: Colors.white70,
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 5.0),
+                      child: Text(
+                        "Placeholder",
+                        style: TextStyle(color: Colors.white),
+                      ))),
+              Expanded(
+                  flex: 1,
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ))
+            ],
+          ),
+        ],
+      );
+
+  bottomContentText(context, station) => Text(
+        station.userInput.toString(),
+        style: TextStyle(fontSize: 18.0),
+      );
+
+  readButton(context) => Container(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          onPressed: () => {},
+          color: Color.fromRGBO(58, 66, 86, 1.0),
+          child:
+              Text("TAKE THIS LESSON", style: TextStyle(color: Colors.white)),
+        ),
+      );
+
+  bottomContent(context, station) => Container(
+        // height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        // color: Theme.of(context).primaryColor,
+        padding: EdgeInsets.all(40.0),
+        child: Center(child: (bottomContentText(context, station))),
+      );
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<StationsBloc, StationsState>(
@@ -21,91 +127,37 @@ class DetailsScreen extends StatelessWidget {
             .firstWhere((station) => station.id == id, orElse: () => null);
         final localizations = ArchSampleLocalizations.of(context);
         return Scaffold(
-          appBar: AppBar(
-            title: Text(localizations.stationDetails),
+          body: Column(
+            children: <Widget>[
+              topContent(context, station),
+              bottomContent(context, station),
+            ],
           ),
-          body: station == null
-              ? Container(key: FlutterStationsKeys.emptyDetailsContainer)
-              : Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: ListView(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Checkbox(
-                                key: FlutterStationsKeys.detailsScreenCheckBox,
-                                value: station.complete,
-                                onChanged: (_) {
-                                  /* BlocProvider.of<StationsBloc>(context).add(
-                                    StationUpdated(
-                                      station.copyWith(complete: !station.complete),
-                                    ),
-                                  );*/
-                                }),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Hero(
-                                  tag: '${station.id}__heroTag',
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.only(
-                                      top: 8.0,
-                                      bottom: 16.0,
-                                    ),
-                                    child: Text(
-                                      station.id.toString(),
-                                      key: ArchSampleKeys.detailsStationItemTask,
-                                      style:
-                                          Theme.of(context).textTheme.headline5,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  station.userInput.toString(),
-                                  key: ArchSampleKeys.detailsStationItemNote,
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
           floatingActionButton: FloatingActionButton(
             key: ArchSampleKeys.editStationFab,
             tooltip: localizations.editStation,
             child: Icon(Icons.edit),
-            onPressed: station == null
-                ? null
-                : () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return AddEditScreen(
-                            key: ArchSampleKeys.editStationScreen,
-                            onSave: (complete, userInput) {
-                              BlocProvider.of<StationsBloc>(context).add(
-                                StationUpdated(
-                                  station.copyWith(
-                                      complete: complete, userInput: userInput),
-                                ),
-                              );
-                            },
-                            isEditing: true,
-                            station: station,
-                          );
-                        },
-                      ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return AddEditScreen(
+                      key: ArchSampleKeys.editStationScreen,
+                      onSave: (complete, userInput) {
+                        BlocProvider.of<StationsBloc>(context).add(
+                          StationUpdated(
+                            station.copyWith(
+                                complete: complete, userInput: userInput),
+                          ),
+                        );
+                      },
+                      isEditing: true,
+                      station: station,
                     );
                   },
+                ),
+              );
+            },
           ),
         );
       },
