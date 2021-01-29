@@ -38,7 +38,25 @@ class FilteredStations extends StatelessWidget {
                     onTap: () async {
                       final removedStation = await Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) {
-                          return DetailsScreen(id: station.id);
+                          // Directly go to the edit screen for stations that have not yet been completed
+                          if (!station.complete) {
+                            return AddEditScreen(
+                              key: ArchSampleKeys.editStationScreen,
+                              onSave: (complete, userInput) {
+                                BlocProvider.of<StationsBloc>(context).add(
+                                  StationUpdated(
+                                    station.copyWith(
+                                        complete: complete,
+                                        userInput: userInput),
+                                  ),
+                                );
+                              },
+                              isEditing: true,
+                              station: station,
+                            );
+                          } else {
+                            return DetailsScreen(id: station.id);
+                          }
                         }),
                       );
                     },
