@@ -7,6 +7,7 @@ import 'dart:core';
 
 import 'package:meta/meta.dart';
 import 'package:explorer_app/FileStorage/station_entity.dart';
+import 'package:explorer_app/FileStorage/ServerAccess.dart';
 import 'file_storage.dart';
 import 'web_client.dart';
 
@@ -34,13 +35,12 @@ class StationsRepositoryFlutter implements StationsRepository {
   /// error, it attempts to load the Stations from a Web Client.
   @override
   Future<List<StationEntity>> loadStations() async {
+    ServerAccess server = ServerAccess();
     try {
       return await fileStorage.loadStations();
-    } catch (e) {
-      final stations = await webClient.fetchStations();
-
+    }  catch (e) {
+      final stations = await server.fetchStations();
       fileStorage.saveStations(stations);
-
       return stations;
     }
   }
