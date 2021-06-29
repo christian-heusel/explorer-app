@@ -50,7 +50,7 @@ type ComplexityRoot struct {
 		ResultNumber        func(childComplexity int) int
 		ResultOption        func(childComplexity int) int
 		ResultText          func(childComplexity int) int
-		Station             func(childComplexity int) int
+		StationID           func(childComplexity int) int
 		SynchronizationTime func(childComplexity int) int
 		UUID                func(childComplexity int) int
 	}
@@ -61,7 +61,7 @@ type ComplexityRoot struct {
 		Brand           func(childComplexity int) int
 		ID              func(childComplexity int) int
 		PhoneModel      func(childComplexity int) int
-		Team            func(childComplexity int) int
+		TeamID          func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -147,12 +147,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Answer.ResultText(childComplexity), true
 
-	case "Answer.station":
-		if e.complexity.Answer.Station == nil {
+	case "Answer.stationID":
+		if e.complexity.Answer.StationID == nil {
 			break
 		}
 
-		return e.complexity.Answer.Station(childComplexity), true
+		return e.complexity.Answer.StationID(childComplexity), true
 
 	case "Answer.synchronization_time":
 		if e.complexity.Answer.SynchronizationTime == nil {
@@ -203,12 +203,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Device.PhoneModel(childComplexity), true
 
-	case "Device.team":
-		if e.complexity.Device.Team == nil {
+	case "Device.teamID":
+		if e.complexity.Device.TeamID == nil {
 			break
 		}
 
-		return e.complexity.Device.Team(childComplexity), true
+		return e.complexity.Device.TeamID(childComplexity), true
 
 	case "Mutation.createAnswer":
 		if e.complexity.Mutation.CreateAnswer == nil {
@@ -429,7 +429,7 @@ type Team {
 
 type Answer {
   UUID: String!
-  station: Station!
+  stationID: Int!
   answer_time: Time!
   synchronization_time: Time!
   result_option: Int
@@ -449,7 +449,7 @@ type Station {
 
 type Device {
   ID: String!
-  team: Team!
+  teamID: Int!
   brand: String
   phone_model: String
   android_codename: String
@@ -690,7 +690,7 @@ func (ec *executionContext) _Answer_UUID(ctx context.Context, field graphql.Coll
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Answer_station(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Answer_stationID(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -708,7 +708,7 @@ func (ec *executionContext) _Answer_station(ctx context.Context, field graphql.C
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Station, nil
+		return obj.StationID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -720,9 +720,9 @@ func (ec *executionContext) _Answer_station(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.Station)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNStation2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐStation(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Answer_answer_time(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
@@ -926,7 +926,7 @@ func (ec *executionContext) _Device_ID(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Device_team(ctx context.Context, field graphql.CollectedField, obj *model.Device) (ret graphql.Marshaler) {
+func (ec *executionContext) _Device_teamID(ctx context.Context, field graphql.CollectedField, obj *model.Device) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -944,7 +944,7 @@ func (ec *executionContext) _Device_team(ctx context.Context, field graphql.Coll
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Team, nil
+		return obj.TeamID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -956,9 +956,9 @@ func (ec *executionContext) _Device_team(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.Team)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNTeam2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐTeam(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Device_brand(ctx context.Context, field graphql.CollectedField, obj *model.Device) (ret graphql.Marshaler) {
@@ -2802,8 +2802,8 @@ func (ec *executionContext) _Answer(ctx context.Context, sel ast.SelectionSet, o
 				}
 				return res
 			})
-		case "station":
-			out.Values[i] = ec._Answer_station(ctx, field, obj)
+		case "stationID":
+			out.Values[i] = ec._Answer_stationID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
@@ -2850,8 +2850,8 @@ func (ec *executionContext) _Device(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "team":
-			out.Values[i] = ec._Device_team(ctx, field, obj)
+		case "teamID":
+			out.Values[i] = ec._Device_teamID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -3321,16 +3321,6 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) marshalNStation2ᚖgithubᚗcomᚋchristianᚑheuselᚋexplorerᚑappᚋserverᚋgraphᚋmodelᚐStation(ctx context.Context, sel ast.SelectionSet, v *model.Station) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._Station(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {

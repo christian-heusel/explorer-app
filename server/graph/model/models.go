@@ -11,7 +11,7 @@ import (
 
 type Answer struct {
 	UUID                uuid.UUID `gorm:"type:uuid;primary_key;" json:"UUID"`
-	Station             *Station  `json:"station"`
+	StationID           int       `json:"station" gorm:"references:station.ID"`
 	AnswerTime          time.Time `json:"answer_time"`
 	SynchronizationTime time.Time `json:"synchronization_time"`
 	ResultOption        *int      `json:"result_option"`
@@ -30,7 +30,7 @@ func (answer *Answer) BeforeCreate(db *gorm.DB) error {
 
 type Device struct {
 	ID              string  `json:"ID"`
-	Team            *Team   `json:"team"`
+	TeamID          int     `json:"team" gorm:"references:team.ID"`
 	Brand           *string `json:"brand"`
 	PhoneModel      *string `json:"phone_model"`
 	AndroidCodename *string `json:"android_codename"`

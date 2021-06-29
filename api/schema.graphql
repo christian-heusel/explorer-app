@@ -12,7 +12,7 @@ type Team {
 
 type Answer {
   UUID: String!
-  station: Station!
+  stationID: Int!
   answer_time: Time!
   synchronization_time: Time!
   result_option: Int
@@ -32,7 +32,7 @@ type Station {
 
 type Device {
   ID: String!
-  team: Team!
+  teamID: Int!
   brand: String
   phone_model: String
   android_codename: String
