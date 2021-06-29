@@ -11,7 +11,7 @@ type Team {
 }
 
 type Answer {
-  ID: Int!
+  UUID: String!
   station: Station!
   answer_time: Time!
   synchronization_time: Time!

@@ -10,6 +10,10 @@ import (
 	"github.com/christian-heusel/explorer-app/server/graph/model"
 )
 
+func (r *answerResolver) UUID(ctx context.Context, obj *model.Answer) (string, error) {
+	return obj.UUID.String(), nil
+}
+
 func (r *queryResolver) GetStations(ctx context.Context) ([]*model.Station, error) {
 	var stations []*model.Station
 	r.DB.Find(&stations)
@@ -19,7 +23,11 @@ func (r *queryResolver) GetStations(ctx context.Context) ([]*model.Station, erro
 	return stations, nil
 }
 
+// Answer returns generated.AnswerResolver implementation.
+func (r *Resolver) Answer() generated.AnswerResolver { return &answerResolver{r} }
+
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
+type answerResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

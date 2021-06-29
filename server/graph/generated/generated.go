@@ -8,6 +8,7 @@ import (
 	"errors"
 	"strconv"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -35,6 +36,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Answer() AnswerResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 }
@@ -45,12 +47,12 @@ type DirectiveRoot struct {
 type ComplexityRoot struct {
 	Answer struct {
 		AnswerTime          func(childComplexity int) int
-		ID                  func(childComplexity int) int
 		ResultNumber        func(childComplexity int) int
 		ResultOption        func(childComplexity int) int
 		ResultText          func(childComplexity int) int
 		Station             func(childComplexity int) int
 		SynchronizationTime func(childComplexity int) int
+		UUID                func(childComplexity int) int
 	}
 
 	Device struct {
@@ -90,6 +92,9 @@ type ComplexityRoot struct {
 	}
 }
 
+type AnswerResolver interface {
+	UUID(ctx context.Context, obj *model.Answer) (string, error)
+}
 type MutationResolver interface {
 	CreateTeam(ctx context.Context, name *string, members *int) (*model.Team, error)
 	CreateAnswer(ctx context.Context, stationNumber int, answerTime time.Time, resultOption *int, resultText *string, resultNumber *float64) (*model.Answer, error)
@@ -120,13 +125,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Answer.AnswerTime(childComplexity), true
-
-	case "Answer.ID":
-		if e.complexity.Answer.ID == nil {
-			break
-		}
-
-		return e.complexity.Answer.ID(childComplexity), true
 
 	case "Answer.result_number":
 		if e.complexity.Answer.ResultNumber == nil {
@@ -162,6 +160,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Answer.SynchronizationTime(childComplexity), true
+
+	case "Answer.UUID":
+		if e.complexity.Answer.UUID == nil {
+			break
+		}
+
+		return e.complexity.Answer.UUID(childComplexity), true
 
 	case "Device.android_codename":
 		if e.complexity.Device.AndroidCodename == nil {
@@ -423,7 +428,7 @@ type Team {
 }
 
 type Answer {
-  ID: Int!
+  UUID: String!
   station: Station!
   answer_time: Time!
   synchronization_time: Time!
@@ -650,7 +655,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Answer_ID(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Answer_UUID(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -661,14 +666,14 @@ func (ec *executionContext) _Answer_ID(ctx context.Context, field graphql.Collec
 		Object:     "Answer",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
+		return ec.resolvers.Answer().UUID(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -680,9 +685,9 @@ func (ec *executionContext) _Answer_ID(ctx context.Context, field graphql.Collec
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Answer_station(ctx context.Context, field graphql.CollectedField, obj *model.Answer) (ret graphql.Marshaler) {
@@ -2783,25 +2788,34 @@ func (ec *executionContext) _Answer(ctx context.Context, sel ast.SelectionSet, o
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Answer")
-		case "ID":
-			out.Values[i] = ec._Answer_ID(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+		case "UUID":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Answer_UUID(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "station":
 			out.Values[i] = ec._Answer_station(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "answer_time":
 			out.Values[i] = ec._Answer_answer_time(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "synchronization_time":
 			out.Values[i] = ec._Answer_synchronization_time(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "result_option":
 			out.Values[i] = ec._Answer_result_option(ctx, field, obj)

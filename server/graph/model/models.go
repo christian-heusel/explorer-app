@@ -4,16 +4,28 @@ package model
 
 import (
 	"time"
+
+	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 type Answer struct {
-	ID                  int       `json:"ID"`
+	UUID                uuid.UUID `gorm:"type:uuid;primary_key;" json:"UUID"`
 	Station             *Station  `json:"station"`
 	AnswerTime          time.Time `json:"answer_time"`
 	SynchronizationTime time.Time `json:"synchronization_time"`
 	ResultOption        *int      `json:"result_option"`
 	ResultText          *string   `json:"result_text"`
 	ResultNumber        *float64  `json:"result_number"`
+}
+
+// BeforeCreate will set a UUID rather than numeric ID.
+// taken from
+// https://github.com/FachschaftMathPhysInfo/ostseee/blob/master/server/go/model_base.go
+func (answer *Answer) BeforeCreate(db *gorm.DB) error {
+	uuid := uuid.NewV4()
+	answer.UUID = uuid
+	return nil
 }
 
 type Device struct {
