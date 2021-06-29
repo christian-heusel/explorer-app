@@ -13,14 +13,14 @@ import (
 	"github.com/christian-heusel/explorer-app/server/graph/generated"
 	"github.com/christian-heusel/explorer-app/server/graph/model"
 	"github.com/christian-heusel/explorer-app/server/utils"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"gorm.io/driver/postgres"
+	_ "gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 const defaultPort = "8080"
 
 func initDB() *gorm.DB {
-	databaseConnectionType := "postgres"
 	databaseConnectionString := os.Getenv("DB_CONNECTION_STRING")
 
 	if databaseConnectionString != "" {
@@ -30,10 +30,16 @@ func initDB() *gorm.DB {
 	}
 	err := fmt.Errorf("initial connect failed")
 
-	db, err := gorm.Open(databaseConnectionType, databaseConnectionString)
+	db, err := gorm.Open(
+		postgres.Open(databaseConnectionString),
+		&gorm.Config{},
+	)
 	for err != nil {
 		log.Println(err)
-		db, err = gorm.Open(databaseConnectionType, databaseConnectionString)
+		db, err = gorm.Open(
+			postgres.Open(databaseConnectionString),
+			&gorm.Config{},
+		)
 		time.Sleep(500 * time.Millisecond)
 	}
 
@@ -42,7 +48,7 @@ func initDB() *gorm.DB {
 	deploymentEnv := os.Getenv("DEPLOYMENT_ENV")
 	if deploymentEnv != "production" {
 		log.Print("deployment environment: " + deploymentEnv)
-		db.LogMode(true)
+		// db.LogMode(true)
 	}
 
 	if utils.HasToInitialize() {

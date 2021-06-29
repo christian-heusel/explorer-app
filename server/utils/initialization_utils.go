@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/christian-heusel/explorer-app/server/graph/model"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func checkForColHeaders(indexMap map[string]int, necessary []string, optional []string) {
