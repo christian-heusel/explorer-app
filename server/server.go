@@ -21,7 +21,11 @@ import (
 const defaultPort = "8080"
 
 func initDB() *gorm.DB {
-	databaseConnectionString := os.Getenv("DB_CONNECTION_STRING")
+	databaseConnectionString := fmt.Sprintf("host=%s port=5432 user=%s dbname=%s password=%s sslmode=disable",
+		os.Getenv("DB_HOST"),
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_DB"),
+		os.Getenv("POSTGRES_PASSWORD"))
 
 	if databaseConnectionString != "" {
 		log.Println(databaseConnectionString)

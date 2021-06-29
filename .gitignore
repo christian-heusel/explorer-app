@@ -7,7 +7,7 @@
 .env.local
 .env.*.local
 explorer_app-server.env
-explorer_app-server_db.env
+postgres.env
 
 # Log files
 npm-debug.log*

@@ -6,7 +6,7 @@ services:
     image: postgres:13
     restart: always
     env_file:
-      - server/explorer_app-server_db.env
+      - env_files/postgres.env
     networks:
       - internal
     volumes:
@@ -19,7 +19,8 @@ services:
       - "127.0.0.1:3000:8081"
     restart: always
     env_file:
-      - server/explorer_app-server.env
+      - env_files/explorer_app-server.env
+      - env_files/postgres.env
     networks:
       - internal
     volumes:
