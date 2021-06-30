@@ -17,7 +17,7 @@
   notify: restart networking
 
 - name: Set used newtwork interface down
-  command: ifconfig {{ interface_in }} down
+  command: "ifconfig {{ interface_in }} down"
 
 - name: ensure that the files in interfaces.d are sourced
   lineinfile:
@@ -59,26 +59,33 @@
   command: sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
   when: allow_connection
 
-# - name: set the correct WiFi country
-#   command: raspi-config nonint do_wifi_country "{{ wifi_country }}"
+- name: get the WIFI country
+  command: "raspi-config nonint get_wifi_country"
+  register: current_wifi_country
+  changed_when: false
+
+- name: set the correct WiFi country
+  command: "raspi-config nonint do_wifi_country {{ wifi_country }}"
+  when: not current_wifi_country.stdout ==  wifi_country
+
 
 - name: set the correct country code in /etc/default/crda
   lineinfile:
     path: /etc/default/crda
     regexp: '^REGDOMAIN='
     line: "REGDOMAIN={{ wifi_country }}"
-  notify: unmask hostapd
+  notify: restart networking
 
 - name: Set used network interface up
-  command: ifconfig {{interface_in}} up
+  command: "ifconfig {{ interface_in }} up"
 
 # TODO: replace this with ansible.builtin.iptables
 - name: Iptable settings
-  command: iptables {{item}}
+  command: iptables {{ item }}
   with_items:
-    - -t nat -A POSTROUTING -o {{interface_out}} -j MASQUERADE
-    - -A FORWARD -i {{interface_out}} -o {{interface_in}} -m state --state RELATED,ESTABLISHED -j ACCEPT
-    - -A FORWARD -i {{interface_in}} -o {{interface_out}} -j ACCEPT
+    - "-t nat -A POSTROUTING -o {{ interface_out }} -j MASQUERADE"
+    - "-A FORWARD -i {{ interface_out }} -o {{ interface_in }} -m state --state RELATED,ESTABLISHED -j ACCEPT"
+    - "-A FORWARD -i {{ interface_in }} -o {{ interface_out }} -j ACCEPT"
   when: allow_connection
   notify: restart networking
 
