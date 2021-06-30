@@ -1,16 +1,16 @@
 ---
 - name: Check that the config files exist
   stat:
-    path: "{{ project_root }}{{ project_name }}/server/{{ item }}"
+    path: "{{ project_root }}{{ project_name }}/env_files/{{ item }}"
   register: stat_result
   with_items:
-    - "explorer_app-server_db.env"
+    - "postgres.env"
     - "explorer_app-server.env"
 
 - name: create the .env files, if they dont exist already
   copy:
-    src: "{{ project_root }}{{ project_name }}/server/{{ item.name }}"
-    dest: "{{ project_root }}{{ project_name }}/server/{{ item..name.split('.')[0] + '.' + item.name.split('.')[1] }}"
+    src: "{{ project_root }}{{ project_name }}/env_files/{{ item.item }}.example"
+    dest: "{{ project_root }}{{ project_name }}/env_files/{{ item.item }}"
     remote_src: yes
     mode: 0600
   with_items:

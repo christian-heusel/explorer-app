@@ -20,7 +20,7 @@
 
 - name: set the initialize env var for the container
   lineinfile:
-    path: "{{ project_root }}{{ project_name }}/server/explorer_app-server.env"
+    path: "{{ project_root }}{{ project_name }}/env_files/explorer_app-server.env"
     state: absent
     regexp: '^FORCE_INITIALIZATION='
   listen: apply the new initial data
@@ -46,7 +46,7 @@
 
 - name: unset the initialize env var for the container
   lineinfile:
-    path: "{{ project_root }}{{ project_name }}/server/explorer_app-server.env"
+    path: "{{ project_root }}{{ project_name }}/env_files/explorer_app-server.env"
     line: "FORCE_INITIALIZATION=false"
   listen: apply the new initial data
 
