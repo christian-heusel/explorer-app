@@ -63,6 +63,7 @@
   command: "raspi-config nonint get_wifi_country"
   register: current_wifi_country
   changed_when: false
+  ignore_errors: yes
 
 - name: set the correct WiFi country
   command: "raspi-config nonint do_wifi_country {{ wifi_country }}"

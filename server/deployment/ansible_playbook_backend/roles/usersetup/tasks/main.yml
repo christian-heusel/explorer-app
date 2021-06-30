@@ -13,4 +13,5 @@
 - name: install some convenient packages
   apt:
     name: ["neovim", "screenfetch", "iotop", "htop", "console-data"]
+    update_cache: true
     state: present
