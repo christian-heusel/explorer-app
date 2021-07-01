@@ -4,7 +4,7 @@
 
 - name: Install the needed packages
   apt:
-    name: ["firmware-ralink", "hostapd",  "wireless-tools", "dnsmasq", "iw"]
+    name: ["firmware-ralink", "hostapd", "wireless-tools", "dnsmasq", "iw"]
     state: present
 
 - name: configure dnsmasq

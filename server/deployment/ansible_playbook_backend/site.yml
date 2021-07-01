@@ -33,9 +33,9 @@
   vars_files:
     - vars/apache.yml
   roles:
-    - { role: geerlingguy.apache }
+    - role: geerlingguy.apache
 
 - hosts:
-   - raspberrys
+    - raspberrys
   roles:
-   - ansible-wifi-router
+    - ansible-wifi-router
