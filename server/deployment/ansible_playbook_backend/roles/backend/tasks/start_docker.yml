@@ -25,5 +25,5 @@
 - name: build and start the docker image
   community.general.docker_compose:
     project_src: "{{ project_root }}{{ project_name }}"
-    state: present
+    state: absent
     build: yes
