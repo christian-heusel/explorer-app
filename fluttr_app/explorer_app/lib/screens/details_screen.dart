@@ -99,17 +99,6 @@ class DetailsScreen extends StatelessWidget {
         style: TextStyle(fontSize: 18.0),
       );
 
-  readButton(context) => Container(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
-        width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          onPressed: () => {},
-          color: Color.fromRGBO(58, 66, 86, 1.0),
-          child:
-              Text("TAKE THIS LESSON", style: TextStyle(color: Colors.white)),
-        ),
-      );
-
   bottomContent(context, station) => Container(
         // height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
