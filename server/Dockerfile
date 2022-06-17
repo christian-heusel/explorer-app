@@ -1,4 +1,4 @@
-FROM golang:1.17
+FROM golang:1.18
 MAINTAINER Christian Heusel <christian@heusel.eu>
 
 WORKDIR /go/src
