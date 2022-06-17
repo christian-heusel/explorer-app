@@ -1,6 +1,6 @@
-# Explorer 2021 App
+# Explorer 2023 App
 
-Diese App soll für den [Explorer 2021](https://www.ejwue.de/arbeitsbereiche/jungenarbeit) die Auswertung erleichtern. Der Explorer soll vom 03. Juni - 05. Juni auf der [Dobelmühle](http://www.dobelmuehle.de/) in Aulendorf stattfinden.
+Diese App soll für den [Explorer 2023](https://www.ejwue.de/arbeitsbereiche/jungenarbeit) die Auswertung erleichtern. Der Explorer soll vom 08. Juni - 011. Juni auf der [Dobelmühle](http://www.dobelmuehle.de/) in Aulendorf stattfinden.
 
 Problem bei der Auswertung ist, dass die alle Teams zum Ende der 33 Stunden gleichzeitig ihre Tourbücher abgeben und die Ergebnisse dann von den Aufschrieben digitalisiert werden müssen, was sehr viel Arbeit und Stress für das Auswertungsteam bedeutet.
 
