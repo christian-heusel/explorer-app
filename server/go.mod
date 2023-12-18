@@ -9,7 +9,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/sethvargo/go-diceware v0.2.0
 	github.com/vektah/gqlparser/v2 v2.4.5
-	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
+	golang.org/x/crypto v0.17.0 // indirect
 	gorm.io/driver/postgres v1.3.7
 	gorm.io/gorm v1.23.6
 )
